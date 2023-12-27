@@ -1,0 +1,74 @@
+﻿@model VehicleDetails.Models.RequiredModels.VehicleModel
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/MainView.cshtml";
+}
+
+<div class="container justify-content-center shadow shadow-lg " style="width:40rem">
+
+    <h2 class="d-flex justify-content-center">Add New Vehicle Data</h2>
+    @using (Html.BeginForm("Create", "Home", FormMethod.Post, new { id = "formData", @class = "needs-validation", novalidate = "novalidate" }))
+    {
+        <div class="form">
+            <div class="form-group">
+
+                @Html.LabelFor(m => m.VehicleName, new { @class = "mt-5" })
+                @Html.TextBoxFor(m => m.VehicleName, new { @class = "form-control w-30", placeholder = "Enter Vehicle Name" })
+               
+                @Html.ValidationMessageFor(m => m.VehicleName, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.price)
+                @Html.TextBoxFor(m => m.price, new { @class = "form-control w-30", placeholder = "Enter Price" })
+               
+                @Html.ValidationMessageFor(m => m.price, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.ManufactureDate)
+            
+            @Html.TextBoxFor(m => m.ManufactureDate, new { @type = "date", @class = "form-control w-30" })
+            @Html.ValidationMessageFor(m => m.ManufactureDate, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form w-50">
+            @Html.LabelFor(m => m.AvailabilityStatus)
+           
+            @Html.DropDownListFor(m => m.AvailabilityStatus, new SelectList(new List<SelectListItem>
+            {
+                new SelectListItem { Text = "Availability Status", Value = "" },
+                new SelectListItem { Text = "Available", Value = "Available" },
+                new SelectListItem { Text = "UnAvailable", Value = "UnAvailable" }
+
+            }, "Value", "Text"), new { @class = "form-control w-30" })
+
+            @Html.ValidationMessageFor(m => m.AvailabilityStatus, "", new { @class = "text-danger" })
+        </div>
+        <div class="form">
+            <div class="form-group">
+                <div class="d-flex">
+
+                    <div>
+                        @Html.LabelFor(m => m.VehicleCategoryID)
+                        @Html.DropDownListFor(m => m.VehicleCategoryID, new SelectList(Model.BrandCategorynames, "CategoryID", "CategoryName"), "Select Category", new { @class = "form-control w-40" })
+                       
+                        @Html.ValidationMessageFor(m => m.VehicleCategoryID, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div>
+                        @Html.LabelFor(m => m.VehicleBrandID)
+                        @Html.DropDownListFor(m => m.VehicleBrandID, new SelectList(Model.BrandCategorynames, "BrandID", "BrandName"), "Select Brand", new { @class = "form-control w-40" })
+                      
+                        @Html.ValidationMessageFor(m => m.VehicleBrandID, "", new { @class = "text-danger" })
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+        <span class="d-flex justify-content-end">
+            <input type="submit" value="submit" class="btn btn-success m-5" />
+        </span>
+    }
+</div>
+

@@ -1,0 +1,39 @@
+﻿@model VehicleDetails.Models.Vehicle
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/MainView.cshtml";
+
+}
+
+@*@{ 
+    var add=5;
+    object check()
+    {
+        object data=Model.price > 0 ? "dsaf" : 5;
+        add = add + 10;
+        return data;
+    }
+}*@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col align-self-center">
+
+            <div class="container d-flex rounded border border-dark pl-0">
+                <div class="text-black bg-light d-flex">
+                    <img class="card-img w-98" src="~/Asserts/VehicleImage.jpg" alt="Card image">
+                </div>
+                <div class="card-img bg-light ml-2">
+                    <h5 class="card-title">Vehicle Name: @Model.VehicleName</h5>
+                    <p class="card-text">Availability Status: @Model.AvailabilityStatus</p>
+                    <p class="card-text">Manufacture Date: @Model.ManufactureDate.Value.ToString("d/MM/yyy")</p>
+                    <p class="card-text">Price: @Model.price</p>
+                    @*<p class="card-text">Price: @check().ToString()</p>*@
+                    <div class="d-flex justify-content-around">
+                        <a href="/home/edit/@Model.VehicleID" class="btn btn-danger" type="submit">edit</a>
+                        <a href="/home/delete/@Model.VehicleID" class="btn btn-danger" type="submit">Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

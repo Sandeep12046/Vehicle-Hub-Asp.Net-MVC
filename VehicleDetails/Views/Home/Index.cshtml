@@ -1,0 +1,91 @@
+﻿@model List<VehicleDetails.Models.Vehicle>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/MainView.cshtml";
+}
+
+
+@section search{
+    <form class="form-inline d-flex my-2 my-lg-0" action="">
+        <input class="form-control mr-sm-2" type="search" id="search" name="search" placeholder="search" value="@ViewBag.Search" aria-label="Search">
+        <button class="btn btn-warning my-2 my-sm-0" type="submit">Search</button>
+    </form>
+}
+
+<span class="d-flex justify-content-end"><button type="button" id="buttonText" class="btn btn-warning m-5" onclick="ChangeView()">Grid View</button></span>
+<div class="container-fluid" id="gridView" style="display:none">
+    <div class="container-fluid col-12 g-6 d-flex flex-wrap">
+        @foreach (var data in Model)
+        {
+            <a href="/home/details/@data.VehicleID" class="text-decoration-none justify-content-between" style="color:black">
+                <div class="card" style="width: 18rem; margin: 1rem;">
+                    <img class="card-img-top" src="~/Asserts/VehicleImage.jpg" alt="Card image cap">
+                    <div class="card-body">
+                        <h4>@data.VehicleName</h4>
+                        <p>@data.ManufactureDate.Value.ToString("d/MM/yyyy")</p>
+                    </div>
+                </div>
+            </a>
+        }
+    </div>
+</div>
+<div class="container-fluid d-flex justify-content-center">
+    <div class="table-responsive-xl">
+        <table class="table" id="showTable" style="display:block">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Vehicle Name</th>
+                    <th scope="col">Availability Status</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Manufacture Date</th>
+                    <th scope="col">Active</th>
+                    <th scope="col">Edit</th>
+                    <th scope="col">Update</th>
+                    <th scope="col">Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var data in Model)
+                {
+                    <tr class="table-active">
+                        <td>@data.VehicleName</td>
+                        <td>@data.AvailabilityStatus</td>
+                        <td>@data.price</td>
+                        <td>@data.ManufactureDate</td>
+                        <td>@data.Active</td>
+                        <td>
+                            <a href="/home/details/@data.VehicleID" class="btn btn-success" style="color:black">View</a>
+                        </td>
+                        <td>
+                            <a href="/home/edit/@data.VehicleID" class="btn btn-warning" type="submit">Edit</a>
+                        </td>
+                        <td>
+                            <a href="/home/delete/@data.VehicleID" class="btn btn-danger" type="submit">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<script>
+
+    var showGrid = true;
+    function ChangeView() {
+        showGrid = !showGrid;
+        var element = document.getElementById("gridView");
+        var element2 = document.getElementById("showTable");
+        element.style.display = showGrid ? "none" : "block"
+        element2.style.display = showGrid ? "block" : "none";
+        if (element2.style.display == "block") {
+            document.getElementById("buttonText").innerHTML = "Grid View"
+        } else {
+            document.getElementById("buttonText").innerHTML = "Table View"
+        }
+    }
+</script>
+
+
+

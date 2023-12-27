@@ -1,0 +1,63 @@
+﻿@model VehicleDetails.Models.RequiredModels.VehicleModel
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/MainView.cshtml";
+}
+
+<h2>Edit Vehicle Details</h2>
+
+
+
+
+<div class="container-fluid border border-light shadow shadow-lg">
+    <form action="/home/edit" method="post">
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="inputEmail4">Vehicle Name</label>
+                <input type="hidden" value="@Model.VehicleId" id="VehicleID" name="VehicleID" />
+                <input type="text" class="form-control" id="VehicleName" name="VehicleName" value="@Model.VehicleName" placeholder="Enter Vehicle Name">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="inputPassword4">Price</label>
+                <input type="text" class="form-control" id="price" name="price" value="@Model.price" placeholder="Enter Price">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="ManufactureDate">ManufactureDate</label>
+            <input type="date" class="form-control" id="ManufactureDate" value="@Model.ManufactureDate" name="ManufactureDate">
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="inputState">Category</label>
+                <select id="VehicleCategoryID" name="VehicleCategoryID" class="form-control">
+                    <option selected>Select Category</option>
+                    @foreach (var data in Model.BrandCategorynames)
+                    {
+                        <option value="@data.CategoryID">@data.CategoryName</option>
+                    }
+
+                </select>
+
+                <label for="VehicleBrandID">Brand</label>
+                <select id="VehicleBrandID" name="VehicleBrandID" class="form-control">
+                    <option value="" selected>Select Brand</option>
+                    @foreach (var data in Model.BrandCategorynames)
+                    {
+                        <option value="@data.BrandID">@data.BrandName</option>
+                    }
+
+
+                </select>
+            </div>
+            <div class="form-group col-md-2">
+                <label for="inputState">State</label>
+                <select id="AvailabilityStatus" name="AvailabilityStatus" class="form-control">
+                    <option selected>@Model.AvailabilityStatus</option>
+                    <option value="Available">Available</option>
+                    <option value="UnAvailable">UnAvailable</option>
+                </select>
+            </div>
+        </div>
+        <span class="d-flex justify-content-end"> <button type="submit" class="btn btn-warning">Submit</button></span>
+    </form>
+</div>
