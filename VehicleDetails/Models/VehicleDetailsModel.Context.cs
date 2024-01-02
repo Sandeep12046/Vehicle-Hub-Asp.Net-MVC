@@ -29,5 +29,7 @@ namespace VehicleDetails.Models
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<Vehicle> Vehicles { get; set; }
+        public virtual DbSet<Favority> Favorities { get; set; }
+        public virtual DbSet<Review> Reviews { get; set; }
     }
 }

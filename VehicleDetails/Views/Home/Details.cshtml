@@ -1,39 +1,106 @@
-﻿@model VehicleDetails.Models.Vehicle
+﻿@model VehicleDetails.Models.RequiredModels.ViewModels.BrandCategories
 @{
     ViewBag.Title = "Details";
     Layout = "~/Views/Shared/MainView.cshtml";
 
 }
 
-@*@{ 
-    var add=5;
-    object check()
-    {
-        object data=Model.price > 0 ? "dsaf" : 5;
-        add = add + 10;
-        return data;
-    }
-}*@
-<div class="container-fluid">
+@*@{
+        var add=5;
+        object check()
+        {
+            object data=Model.price > 0 ? "dsaf" : 5;
+            add = add + 10;
+            return data;
+        }
+    }*@
+@*<div class="container-fluid">
     <div class="row">
-        <div class="col align-self-center">
+        <div class="col">
 
-            <div class="container d-flex rounded border border-dark pl-0">
+            <div class="container d-flex justify-content-center rounded border border-dark pl-0">
                 <div class="text-black bg-light d-flex">
-                    <img class="card-img w-98" src="~/Asserts/VehicleImage.jpg" alt="Card image">
+                    <img class="card-img w-98" src="@Model.vehicles.ImageUrl" alt="Card image">
                 </div>
                 <div class="card-img bg-light ml-2">
-                    <h5 class="card-title">Vehicle Name: @Model.VehicleName</h5>
-                    <p class="card-text">Availability Status: @Model.AvailabilityStatus</p>
-                    <p class="card-text">Manufacture Date: @Model.ManufactureDate.Value.ToString("d/MM/yyy")</p>
-                    <p class="card-text">Price: @Model.price</p>
-                    @*<p class="card-text">Price: @check().ToString()</p>*@
+                    <h4 class="card-title">Brand : @Model.brand.BrandName</h4>
+                    <h5 class="card-title">Vehicle : @Model.vehicles.VehicleName</h5>
+                    <p class="card-text">Fuel: @Model.vehicles.FuelType</p>
+                    <p class="card-text">Mailage : @Model.vehicles.Mileage</p>
+                    <p class="card-text">Price: @Model.vehicles.price</p>
+                    <p class="card-text">Availability Status: @Model.vehicles.AvailabilityStatus</p>
+                    <p class="card-text">Manufacture Date: @Model.vehicles.ManufactureDate.Value.ToString("d/MM/yyy")</p>
+                  
                     <div class="d-flex justify-content-around">
-                        <a href="/home/edit/@Model.VehicleID" class="btn btn-danger" type="submit">edit</a>
-                        <a href="/home/delete/@Model.VehicleID" class="btn btn-danger" type="submit">Delete</a>
+                        <a href="/home/edit/@Model.vehicles.VehicleID" class="btn btn-danger" type="submit">edit</a>
+                        <a href="/home/delete/@Model.vehicles.VehicleID" class="btn btn-danger" type="submit">Delete</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>*@
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col">
+            <div class="card text-center">
+                <div class="card-header text-bg-dark">
+                    <h4>@Model.brand.BrandName @Model.vehicles.VehicleName</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <img class="card-img w-98" src="@Model.vehicles.ImageUrl" alt="Card image">
+                        </div>
+                        <div class="col-md-6" style="text-align:start !important">
+                            <h4 class="card-title">Brand : @Model.brand.BrandName</h4>
+                            <h5 class="card-title">Vehicle : @Model.vehicles.VehicleName</h5>
+                            <p class="card-text">Fuel: @Model.vehicles.FuelType</p>
+                            <p class="card-text">Mailage : @Model.vehicles.Mileage</p>
+                            <p class="card-text">Price: @Model.vehicles.price</p>
+                            <p class="card-text">Availability Status: @Model.vehicles.AvailabilityStatus</p>
+                            <p class="card-text">Manufacture Date: @Model.vehicles.ManufactureDate.Value.ToString("d/MM/yyy")</p>
+                            @using (Html.BeginForm("CreateComment", "Review", FormMethod.Post))
+                            {
+                                <div class="form-group ">
+                                    @Html.HiddenFor(model => model.vehicles.VehicleID)
+                                    @Html.LabelFor(model => model.reviewModel.Comment, new { @class= "text-bg-dark" })
+                                    @Html.TextAreaFor(model => model.reviewModel.Comment, new { @class = "form-control" })
+                                </div>
+                                <div class="d-flex justify-content-end"><button type="submit" class="btn btn btn-warning">Submit</button></div>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-bg-dark">
+                    <h6>Reviews @Model.reviews.Count()</h6>
+                </div>
+
+            </div>
+            <div class="col-12">
+                <div class="d-flex justify-content-center flex-wrap">
+                    @foreach (var data in Model.reviews)
+                    {
+
+                        <div class="card-group col-2 m-3">
+                            <div class="card">
+                                <div class="">
+                                    <div class="d-flex justify-content-end"><a href="/Home/RemoveComment/@Model.vehicles.VehicleID" type="submit" class="text-decoration-none text-bg-light">☓</a></div>
+                                    
+                                </div>
+                                <div class="card-body">
+                                    <small class="text-muted"></small>
+                                    <p class="card-text">@data.Comment</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+

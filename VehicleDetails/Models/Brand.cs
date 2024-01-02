@@ -14,10 +14,20 @@ namespace VehicleDetails.Models
     
     public partial class Brand
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Brand()
+        {
+            this.Vehicles = new HashSet<Vehicle>();
+        }
+    
         public int BrandID { get; set; }
         public string BrandName { get; set; }
         public Nullable<int> BrandCategoryID { get; set; }
+        public Nullable<int> Active { get; set; }
+        public string ImageUrl { get; set; }
     
         public virtual Category Category { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Vehicle> Vehicles { get; set; }
     }
 }

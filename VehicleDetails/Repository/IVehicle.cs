@@ -5,17 +5,21 @@ using System.Text;
 using System.Threading.Tasks;
 using VehicleDetails.Models;
 using VehicleDetails.Models.RequiredModels;
-
+using VehicleDetails.Models.RequiredModels.ViewModels;
 namespace VehicleDetails.Repository
 {
     internal interface IVehicle
     {
-        void InsertNewVehicle(VehicleModel vehicle);
-        void UpdateVehicle(Vehicle vehicle);
+        void InsertNewVehicle(BrandCategories vehicle);
+        void UpdateVehicle(BrandCategories vehicle);
         Vehicle GetVehicleById(int id);
-        IEnumerable<Vehicle> GetAllVehicles();
+        List<Vehicle> GetAllVehicles();
+        List<Vehicle> GetAllVehicleByBrand(int id);
         void DeleteVehicle(int id);
-        List<BrandCategorynames> GetBrandAndCategoryName();
+        //List<BrandCategoryData> GetBrandAndCategoryName();
         IEnumerable<Vehicle> searchData(string search);
+        List<VehicleModel> GetAllVehicleSearch(string search);
+
+       
     }
 }

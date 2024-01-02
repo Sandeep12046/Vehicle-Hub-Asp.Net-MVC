@@ -4,7 +4,7 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/MainView.cshtml";
 
-  
+
 }
 
 
@@ -18,59 +18,28 @@
                 <h3 class="w3-bar-item m-3 text-center catHeading">Categories</h3>
                 @foreach (var cat in Model)
                 {
-                   
-                        <a href="#" id="viewCheck" onclick="CheckView(@cat.CategoryID)" class="sideMenuStyle"> <div class="col bg bg-gradient catLinks">@cat.CategoryName  </div></a>
-                  
+
+                    <a href="#" id="viewCheck" onclick="CheckView(@cat.CategoryID)" class="sideMenuStyle"> <div class="col bg bg-gradient catLinks">@cat.CategoryName  </div></a>
+
                     var idPass = @cat.CategoryID;
-                    
+
                 }
 
             </div>
         </div>
         <div class="col-10">
-            @*<div class="row">
 
-            @foreach (var data in Model)
-            {
-                <div class="">
-                    <a href="/category/vehicleDetails/@data.CategoryID" class="text-decoration-none" style="color:black">
-                        <div class="card " style="width: 18rem; margin: 1rem;">
-                            <img class="card-img-top" src="~/Asserts/VehicleImage.jpg" alt="Card image cap">
-                            <div class="card-body">
-                                <h4>@data.CategoryName</h4>
-                            </div>
-
-                        </div>
-                    </a>
-                </div>
-            }
-        </div>*@
             <div id="checks">
                 <div id="CategoryVehicleData">
                     <div class="card bg-dark text-white">
-                        <img class="card-img" src="~/Asserts/Bike.jpg" alt="Card image">
+                        <img class="card-img" src="~/Asserts/Bike.jpg" alt="Card image" style="height:46rem;" >
                         <div class="card-img-overlay">
-                            <h5 class="card-title">Card title</h5>
-                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                            <p class="card-text">Last updated 3 mins ago</p>
+                            <h5 class="card-title">Vehicles</h5>
+                            <p class="card-text">Life is a Journey. Enjoy the Ride</p>
+                            @*<p class="card-text">Last updated 3 mins ago</p>*@
                         </div>
                     </div>
-                    @*<div class="card bg-dark text-white h-50">
-                        <img class="card-img" src="~/Asserts/car.jpg" alt="Card image">
-                        <div class="card-img-overlay">
-                            <h5 class="card-title">Card title</h5>
-                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                            <p class="card-text">Last updated 3 mins ago</p>
-                        </div>
-                    </div>
-                    <div class="card bg-dark text-white h-50">
-                        <img class="card-img" src="~/Asserts/VehicleImage.jpg" alt="Card image">
-                        <div class="card-img-overlay">
-                            <h5 class="card-title">Card title</h5>
-                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                            <p class="card-text">Last updated 3 mins ago</p>
-                        </div>
-                    </div>*@
+
                 </div>
             </div>
         </div>
@@ -84,7 +53,7 @@
     function CheckView(id) {
         /*debugger;*/
         $(document).ready(() => {
-           
+
             $.ajax({
                 url: `/category/vehicleDetails/${id}`,
                 type: 'get',
@@ -103,7 +72,7 @@
 
         })
     }
-    
+
 
 </script>
 
@@ -111,24 +80,22 @@
 
 <style>
     .sideMenuStyle {
-        font-family:'Times New Roman';
-        font-size:18px;
-        margin:3px;
-        text-align:center;
-        color:#303030;
-       
+        font-family: 'Times New Roman';
+        font-size: 18px;
+        margin: 3px;
+        text-align: center;
+        color: #303030;
     }
 
-    .sideMenuStyle:hover{
-        text-decoration:none;
-        color:darkslategrey;
+        .sideMenuStyle:hover {
+            text-decoration: none;
+            color: darkslategrey;
+        }
 
-    }
-
-    .catHeading{
-        color:#303030;
-        font-family:'Times New Roman';
-        background-color:cadetblue;
+    .catHeading {
+        color: #303030;
+        font-family: 'Times New Roman';
+        background-color: cadetblue;
     }
 
     .catLinks {
@@ -136,7 +103,27 @@
         margin-bottom: 10px;
     }
 
-    .catLinks:hover{
-        background-color:lightgray;
-    }
+        .catLinks:hover {
+            background-color: lightgray;
+        }
 </style>
+
+
+
+@*<div class="row">
+
+        @foreach (var data in Model)
+        {
+            <div class="">
+                <a href="/category/vehicleDetails/@data.CategoryID" class="text-decoration-none" style="color:black">
+                    <div class="card " style="width: 18rem; margin: 1rem;">
+                        <img class="card-img-top" src="~/Asserts/VehicleImage.jpg" alt="Card image cap">
+                        <div class="card-body">
+                            <h4>@data.CategoryName</h4>
+                        </div>
+
+                    </div>
+                </a>
+            </div>
+        }
+    </div>*@

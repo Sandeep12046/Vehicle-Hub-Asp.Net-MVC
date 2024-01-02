@@ -1,63 +1,77 @@
-﻿@model VehicleDetails.Models.RequiredModels.VehicleModel
+﻿@model VehicleDetails.Models.RequiredModels.ViewModels.BrandCategories
+
 @{
     ViewBag.Title = "Edit";
     Layout = "~/Views/Shared/MainView.cshtml";
+    
+    var ids = Model.vehicles.VehicleID;
 }
 
-<h2>Edit Vehicle Details</h2>
+<h2 class="text-center">Edit Vehicle Details</h2>
 
+<div class="container-fluid border border-light">
+    @using (Html.BeginForm("Edit", "Home", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
 
-
-
-<div class="container-fluid border border-light shadow shadow-lg">
-    <form action="/home/edit" method="post">
-        <div class="form-row">
-            <div class="form-group col-md-6">
-                <label for="inputEmail4">Vehicle Name</label>
-                <input type="hidden" value="@Model.VehicleId" id="VehicleID" name="VehicleID" />
-                <input type="text" class="form-control" id="VehicleName" name="VehicleName" value="@Model.VehicleName" placeholder="Enter Vehicle Name">
+        <div class="form-row ">
+            <div class="form-group col-md-4">
+                @Html.LabelFor(model => model.vehicles.VehicleName)
+                @Html.HiddenFor(model => model.vehicles.VehicleID)
+                <input type="hidden" id="@Model.vehicles.VehicleID" name="@Model.vehicles.VehicleID" value="@ids"/>
+                @Html.TextBoxFor(model => model.vehicles.VehicleName, new { @class = "form-control", placeholder = "Enter Vehicle Name" })
+                @Html.ValidationMessageFor(model=>model.vehicles.VehicleName, null, new { @class = "text-danger" })
             </div>
-            <div class="form-group col-md-6">
-                <label for="inputPassword4">Price</label>
-                <input type="text" class="form-control" id="price" name="price" value="@Model.price" placeholder="Enter Price">
+            <div class="form-group col-md-4">
+                @Html.LabelFor(model => model.vehicles.price)
+                @Html.TextBoxFor(model => model.vehicles.price, new { @class = "form-control", placeholder = "Enter Price" })
+                @Html.ValidationMessageFor(model => model.vehicles.price, null, new { @class = "text-danger" })
+            </div>
+            <div class="form-group col-md-4">
+                @Html.LabelFor(model => model.vehicles.ManufactureDate)
+                @Html.TextBoxFor(model => model.vehicles.ManufactureDate, new { @class = "form-control", type = "date" })
+                @Html.ValidationMessageFor(model => model.vehicles.ManufactureDate, null, new { @class = "text-danger" })
+            </div>
+            <div class="form-group col-md-4">
+                @Html.LabelFor(model => model.vehicles.FuelType)
+                @Html.TextBoxFor(model => model.vehicles.FuelType, new { @class = "form-control", placeholder = "Enter Fuel Type" })
+                @Html.ValidationMessageFor(model => model.vehicles.FuelType, null, new { @class = "text-danger" })
+            </div>
+            <div class="form-group col-md-4">
+                @Html.LabelFor(model => model.vehicles.Mileage)
+                @Html.TextBoxFor(model => model.vehicles.Mileage, new { @class = "form-control", placeholder = "Enter Mileage" })
+                @Html.ValidationMessageFor(model => model.vehicles.Mileage, null, new { @class = "text-danger" })
+            </div>
+            <div class="form-group col-md-4">
+                @Html.LabelFor(model => model.vehicles.ImageUrl)
+                @Html.TextBoxFor(model => model.vehicles.ImageUrl, new { @class = "form-control", placeholder = "Enter Image URL" })
+                @Html.ValidationMessageFor(model => model.vehicles.ImageUrl, null, new { @class = "text-danger" })
+            </div>
+            <div class="form-group col-md-4">
+                @Html.LabelFor(model => model.vehicles.VehicleCategoryID)
+                @Html.DropDownListFor(model => model.vehicles.VehicleCategoryID, new SelectList(Model.Categories, "CategoryID", "CategoryName"), "Select Category", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.vehicles.VehicleCategoryID, null, new { @class = "text-danger" })
+            </div>
+            <div class="form-group col-md-4">
+                @Html.LabelFor(model => model.vehicles.VehicleBrandID)
+                @Html.DropDownListFor(model => model.vehicles.VehicleBrandID, new SelectList(Model.Brands, "BrandID", "BrandName"), "Select Brand", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.vehicles.VehicleBrandID, null, new { @class = "text-danger" })
+            </div>
+            <div class="form-group col-md-4">
+                @Html.LabelFor(model => model.vehicles.AvailabilityStatus)
+                @Html.DropDownListFor(model => model.vehicles.AvailabilityStatus, new SelectList(new List<string> { "Available", "UnAvailable" }), "Select AvailabilityStatus", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.vehicles.AvailabilityStatus, null, new { @class = "text-danger" })
+            </div>
+            <div class="form-group col-md-4">
+                <img src="@Model.vehicles.ImageUrl" alt="Vehicle Image" style="height: 15rem; width: 20rem;">
             </div>
         </div>
-        <div class="form-group">
-            <label for="ManufactureDate">ManufactureDate</label>
-            <input type="date" class="form-control" id="ManufactureDate" value="@Model.ManufactureDate" name="ManufactureDate">
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-6">
-                <label for="inputState">Category</label>
-                <select id="VehicleCategoryID" name="VehicleCategoryID" class="form-control">
-                    <option selected>Select Category</option>
-                    @foreach (var data in Model.BrandCategorynames)
-                    {
-                        <option value="@data.CategoryID">@data.CategoryName</option>
-                    }
 
-                </select>
-
-                <label for="VehicleBrandID">Brand</label>
-                <select id="VehicleBrandID" name="VehicleBrandID" class="form-control">
-                    <option value="" selected>Select Brand</option>
-                    @foreach (var data in Model.BrandCategorynames)
-                    {
-                        <option value="@data.BrandID">@data.BrandName</option>
-                    }
-
-
-                </select>
-            </div>
-            <div class="form-group col-md-2">
-                <label for="inputState">State</label>
-                <select id="AvailabilityStatus" name="AvailabilityStatus" class="form-control">
-                    <option selected>@Model.AvailabilityStatus</option>
-                    <option value="Available">Available</option>
-                    <option value="UnAvailable">UnAvailable</option>
-                </select>
-            </div>
-        </div>
-        <span class="d-flex justify-content-end"> <button type="submit" class="btn btn-warning">Submit</button></span>
-    </form>
+        <span class="d-flex justify-content-end">
+            <button type="submit" class="btn btn-warning">Submit</button>
+        </span>
+    }
 </div>
+
+
+

@@ -4,6 +4,8 @@
     <EntitySetMapping Name="Brands">
       <EntityTypeMapping TypeName="VehicleDBContext.Brand">
         <MappingFragment StoreEntitySet="Brands">
+          <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
+          <ScalarProperty Name="Active" ColumnName="Active" />
           <ScalarProperty Name="BrandID" ColumnName="BrandID" />
           <ScalarProperty Name="BrandName" ColumnName="BrandName" />
           <ScalarProperty Name="BrandCategoryID" ColumnName="BrandCategoryID" />
@@ -13,6 +15,8 @@
     <EntitySetMapping Name="Categories">
       <EntityTypeMapping TypeName="VehicleDBContext.Category">
         <MappingFragment StoreEntitySet="Category">
+          <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
+          <ScalarProperty Name="Active" ColumnName="Active" />
           <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
           <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
         </MappingFragment>
@@ -32,6 +36,10 @@
     <EntitySetMapping Name="Vehicles">
       <EntityTypeMapping TypeName="VehicleDBContext.Vehicle">
         <MappingFragment StoreEntitySet="Vehicles">
+          <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="Mileage" ColumnName="Mileage" />
+          <ScalarProperty Name="FuelType" ColumnName="FuelType" />
           <ScalarProperty Name="VehicleID" ColumnName="VehicleID" />
           <ScalarProperty Name="VehicleName" ColumnName="VehicleName" />
           <ScalarProperty Name="price" ColumnName="price" />
@@ -40,6 +48,29 @@
           <ScalarProperty Name="Active" ColumnName="Active" />
           <ScalarProperty Name="VehicleCategoryID" ColumnName="VehicleCategoryID" />
           <ScalarProperty Name="VehicleBrandID" ColumnName="VehicleBrandID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Favorities">
+      <EntityTypeMapping TypeName="VehicleDBContext.Favority">
+        <MappingFragment StoreEntitySet="Favorities">
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="DateTime" ColumnName="DateTime" />
+          <ScalarProperty Name="VehicleID" ColumnName="VehicleID" />
+          <ScalarProperty Name="FavoriteID" ColumnName="FavoriteID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Reviews">
+      <EntityTypeMapping TypeName="VehicleDBContext.Review">
+        <MappingFragment StoreEntitySet="Reviews">
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="DateTime" ColumnName="DateTime" />
+          <ScalarProperty Name="Comment" ColumnName="Comment" />
+          <ScalarProperty Name="VehicleID" ColumnName="VehicleID" />
+          <ScalarProperty Name="ReviewID" ColumnName="ReviewID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

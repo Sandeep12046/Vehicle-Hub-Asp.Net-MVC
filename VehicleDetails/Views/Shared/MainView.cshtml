@@ -17,7 +17,7 @@
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-info">
+    @*<nav class="navbar navbar-expand-lg navbar-light bg-info">
         <a class="navbar-brand" href="#">Vehicle Hub</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -32,17 +32,117 @@
                     <a class="nav-link" href="/category/index">Category</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/home/create">Add new Data</a>
+                    <a class="nav-link" href="/home/create">Add New Vehicle</a>
                 </li>
 
             </ul>
             @RenderSection("search", false)
         </div>
-    </nav>
+    </nav>*@
+
+    @*<div>
+        @RenderBody()
+    </div>*@
+    @*<div class="" style="">
+        <div class="card-footer text-muted text-center bg-dark">
+            © 2024 Vehicle Hub, Inc
+            <div>
+                <hr />
+            </div>
+            <div>
+                <div class="container-fluid">
+                    <div class="row">
+                      
+                        <div class="col-4">
+                            <p>Home</p>
+                            <p>Categories</p>
+                        </div>
+                        <div class="col-4">
+                            <p>FAQs</p>
+                            <p>About Us</p>
+                        </div>
+                        <div class="col-4">
+                            <p>Subscribe to our Vehicle Hub</p>
+                            <p>Monthly digest of whats new and exciting from us.</p>
+                            <div class="d-flex">
+                                <input type="email" class="form-control" placeholder="Enter email" />
+                                <button class="btn btn-warning">Subscribe</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>*@
 
     <div>
-        @RenderBody()
-    </div>  
+        <div class="">
+            <div class="col p-0">
+                <div>
+                    <nav class="navbar navbar-expand-lg navbar-light bg-info">
+                        <a class="navbar-brand" href="#">Vehicle Hub</a>
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav mr-auto">
+                                <li class="nav-item active">
+                                    <a class="nav-link" href="/home/index">Home</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/category/index">Category</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/home/create">Add New Vehicle</a>
+                                </li>
+
+                            </ul>
+                            @RenderSection("search", false)
+                        </div>
+                    </nav>
+                </div>
+                <div>
+                    <div>
+                        @RenderBody()
+                    </div>
+                </div>
+                <div>
+                    <div >
+                        <div class="card-footer text-muted text-center bg-dark">
+                            © 2024 Vehicle Hub, Inc
+                            <div>
+                                <hr />
+                            </div>
+                            <div>
+                                <div class="container-fluid">
+                                    <div class="row">
+
+                                        <div class="col-4">
+                                            <p>Home</p>
+                                            <p>Categories</p>
+                                        </div>
+                                        <div class="col-4">
+                                            <p>FAQs</p>
+                                            <p>About Us</p>
+                                        </div>
+                                        <div class="col-4">
+                                            <p>Subscribe to our Vehicle Hub</p>
+                                            <p>Monthly digest of whats new and exciting from us.</p>
+                                            <div class="d-flex">
+                                                <input type="email" class="form-control" placeholder="Enter email" />
+                                                <button class="btn btn-warning">Subscribe</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
 

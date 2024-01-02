@@ -27,10 +27,5 @@ namespace VehicleDetails.Controllers
             return View(data);
         }
 
-        public ActionResult VehicleDetails1(int id)
-        {
-            IEnumerable<Vehicle> data = category.GetVehiclesByCategories(id).ToList();
-            return Json(data);
-        }
     }
 }

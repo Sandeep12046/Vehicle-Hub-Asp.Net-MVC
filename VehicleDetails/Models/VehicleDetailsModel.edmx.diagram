@@ -11,6 +11,11 @@
         <EntityTypeShape EntityType="VehicleDBContext.Vehicle" Width="1.5" PointX="3" PointY="3.625" IsExpanded="true" />
         <AssociationConnector Association="VehicleDBContext.FK_Brands_Category" ManuallyRouted="false" />
         <AssociationConnector Association="VehicleDBContext.FK_Vehicles_Category" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="VehicleDBContext.Favority" Width="1.5" PointX="5.25" PointY="4" />
+        <EntityTypeShape EntityType="VehicleDBContext.Review" Width="1.5" PointX="5.25" PointY="7" />
+        <AssociationConnector Association="VehicleDBContext.FK_Vehicles_Brands" />
+        <AssociationConnector Association="VehicleDBContext.FK_Favorities_Vehicles" />
+        <AssociationConnector Association="VehicleDBContext.FK_Reviews_Vehicles" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

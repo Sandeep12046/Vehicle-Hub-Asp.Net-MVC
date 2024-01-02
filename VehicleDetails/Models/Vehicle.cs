@@ -14,6 +14,13 @@ namespace VehicleDetails.Models
     
     public partial class Vehicle
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Vehicle()
+        {
+            this.Favorities = new HashSet<Favority>();
+            this.Reviews = new HashSet<Review>();
+        }
+    
         public int VehicleID { get; set; }
         public string VehicleName { get; set; }
         public Nullable<int> price { get; set; }
@@ -22,7 +29,16 @@ namespace VehicleDetails.Models
         public Nullable<int> Active { get; set; }
         public Nullable<int> VehicleCategoryID { get; set; }
         public Nullable<int> VehicleBrandID { get; set; }
+        public string FuelType { get; set; }
+        public Nullable<int> Mileage { get; set; }
+        public Nullable<int> Status { get; set; }
+        public string ImageUrl { get; set; }
     
         public virtual Category Category { get; set; }
+        public virtual Brand Brand { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Favority> Favorities { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Review> Reviews { get; set; }
     }
 }

@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using VehicleDetails.Models;
 using VehicleDetails.Models.RequiredModels;
+using VehicleDetails.Models.RequiredModels.ViewModels;
 
 namespace VehicleDetails.Repository
 {
@@ -21,7 +22,7 @@ namespace VehicleDetails.Repository
             VehicleDBEntitie.SaveChanges();
         }
 
-        public IEnumerable<Vehicle> GetAllVehicles()
+        public List<Vehicle> GetAllVehicles()
         {
             return VehicleDBEntitie.Vehicles.ToList();
         }
@@ -32,53 +33,89 @@ namespace VehicleDetails.Repository
             return singleData;
         }
 
-        public void InsertNewVehicle(VehicleModel vehicle)
+        public void InsertNewVehicle(BrandCategories vehicle)
         {
             Vehicle vehicles=new Vehicle();
-            vehicles.VehicleName = vehicle.VehicleName;
-            vehicles.price=vehicle.price;
-            vehicles.ManufactureDate=vehicle.ManufactureDate;
-            vehicles.AvailabilityStatus=vehicle.AvailabilityStatus;
-            vehicles.Active=vehicle.AvailabilityStatus=="Available"?1:0;
-            vehicles.VehicleBrandID=vehicle.VehicleBrandID;
-            vehicles.VehicleCategoryID=vehicle.VehicleCategoryID;
+            vehicles.VehicleName = vehicle.vehicles.VehicleName;
+            vehicles.price=vehicle.vehicles.price;
+            vehicles.ManufactureDate=vehicle.vehicles.ManufactureDate;
+            vehicles.AvailabilityStatus=vehicle.vehicles.AvailabilityStatus;
+            vehicles.Active=vehicle.vehicles.AvailabilityStatus=="Available"?1:0;
+            vehicles.VehicleBrandID=vehicle.vehicles.VehicleBrandID;
+            vehicles.VehicleCategoryID=vehicle.vehicles.VehicleCategoryID;
+            vehicles.FuelType=vehicle.vehicles.FuelType;
+            vehicles.ImageUrl=vehicle.vehicles.ImageUrl;
+            vehicles.Mileage=vehicle.vehicles.Mileage;
+            vehicles.Status = vehicle.vehicles.Active == 1 ? 1 : 0;
             VehicleDBEntitie.Vehicles.Add(vehicles);
             VehicleDBEntitie.SaveChanges();
         }
 
-        public void UpdateVehicle(Vehicle vehicle)
+        public void UpdateVehicle(BrandCategories vehicle)
         {
-            Vehicle vehicle1=VehicleDBEntitie.Vehicles.Where(temp=>temp.VehicleID==vehicle.VehicleID).FirstOrDefault();
-            vehicle1.VehicleName = vehicle.VehicleName;
-            vehicle1.price = vehicle.price;
-            vehicle1.ManufactureDate = vehicle.ManufactureDate;
-            vehicle1.AvailabilityStatus = vehicle.AvailabilityStatus;
-            vehicle1.Active = vehicle.Active;
-            vehicle1.VehicleBrandID = vehicle.VehicleBrandID;
-            vehicle1.VehicleCategoryID = vehicle.VehicleCategoryID;
+            Vehicle vehicle1 = VehicleDBEntitie.Vehicles
+            .Where(temp => temp.VehicleID == vehicle.vehicles.VehicleID)
+            .FirstOrDefault();
 
-            VehicleDBEntitie.SaveChanges();
+            if (vehicle1 != null)
+            {
+                vehicle1.VehicleID = vehicle.vehicles.VehicleID;
+                vehicle1.VehicleName = vehicle.vehicles.VehicleName;
+                vehicle1.price = vehicle.vehicles.price;
+                vehicle1.ManufactureDate = vehicle.vehicles.ManufactureDate;
+                vehicle1.AvailabilityStatus = vehicle.vehicles.AvailabilityStatus;
+                vehicle1.Active = vehicle.vehicles.AvailabilityStatus == "Available" ? 1 : 0;
+                vehicle1.VehicleBrandID = vehicle.vehicles.VehicleBrandID;
+                vehicle1.VehicleCategoryID = vehicle.vehicles.VehicleCategoryID;
+                vehicle1.FuelType = vehicle.vehicles.FuelType;
+                vehicle1.Mileage = vehicle.vehicles.Mileage;
+                vehicle1.ImageUrl = vehicle.vehicles.ImageUrl;
+                vehicle1.Status = vehicle.vehicles.Active == 1 ? 1 : 0;
+                VehicleDBEntitie.SaveChanges();
+            }
         }
 
-        public List<BrandCategorynames> GetBrandAndCategoryName()
-        {
-            var data = from category in VehicleDBEntitie.Categories
-                       join brand in VehicleDBEntitie.Brands on category.CategoryID equals brand.BrandCategoryID
-                       select new BrandCategorynames
-                       {
-                           BrandName = brand.BrandName,
-                           BrandID = brand.BrandID,
-                           BrandCategoryID = (int)brand.BrandCategoryID,
-                           CategoryName = category.CategoryName,
-                           CategoryID = category.CategoryID
 
-                       };
-            return data.ToList();
-        }
 
         public IEnumerable<Vehicle> searchData(string search)
         {
             return VehicleDBEntitie.Vehicles.Where(temp => temp.VehicleName.Contains(search)).ToList();
         }
+
+        public List<VehicleModel> GetAllVehicleSearch(string search)
+        {
+            List<VehicleModel> vehicleModels=null;
+           
+            if (!string.IsNullOrEmpty(search))
+            {
+
+                vehicleModels = new List<VehicleModel>();
+                vehicleModels = searchData(search).Select(VehicleModel => new VehicleModel
+                {
+                    VehicleName = VehicleModel.VehicleName,
+                    VehicleBrandID = VehicleModel.VehicleBrandID,
+                    VehicleCategoryID = VehicleModel.VehicleCategoryID,
+                    VehicleID = VehicleModel.VehicleID,
+                    Active = VehicleModel.Active,
+                    AvailabilityStatus = VehicleModel.AvailabilityStatus,
+                    price = VehicleModel.price,
+                    ManufactureDate = VehicleModel.ManufactureDate,
+                    Mileage = VehicleModel.Mileage,
+                    ImageUrl = VehicleModel.ImageUrl,
+                    Status = VehicleModel.Status,
+                }).ToList();
+            }
+            return vehicleModels;
+        }
+
+        public List<Vehicle> GetAllVehicleByBrand(int id)
+        {
+
+            List<Vehicle> data = VehicleDBEntitie.Vehicles.Where(ids => ids.VehicleBrandID == id).ToList();
+
+            return data;
+        }
+
+       
     }
 }

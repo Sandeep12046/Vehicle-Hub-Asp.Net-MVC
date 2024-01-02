@@ -1,6 +1,27 @@
-﻿
+﻿@model VehicleDetails.Models.RequiredModels.ViewModels.BrandCategories
 @{
     ViewBag.Title = "DetailsView";
     Layout = "~/Views/Shared/MainView.cshtml";
 }
 
+<div class="container-fluid" id="gridView" style="display:block">
+    <div class="text-xl-center"><div class="m-4">Vehicles</div></div>
+    <div class="container-fluid col-12 g-6 d-flex flex-wrap justify-content-center">
+        @foreach (var data in Model.vehiclesModel.Take(4))
+        {
+            <a href="/home/details/@data.VehicleID" class="text-decoration-none justify-content-between" style="color:black">
+                <div class="card" style="width: 18rem; margin: 1rem;">
+                    <img class="card-img-top" src="@data.ImageUrl" alt="Card image cap" style="height:10rem">
+                    <div class="card-body">
+                        <h4>@data.VehicleName</h4>
+                        <p>@data.BrandName</p>
+                        <p>@data.price</p>
+                        <p>@data.FuelType</p>
+
+                    </div>
+                </div>
+            </a>
+        }
+    </div>
+    <div class="text-xl-center"><div class="m-5"><button type="submit" class="btn btn-light">View More</button></div></div>
+</div>

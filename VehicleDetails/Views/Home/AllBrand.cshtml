@@ -1,0 +1,21 @@
+﻿@model VehicleDetails.Models.RequiredModels.ViewModels.BrandCategories
+@{
+    ViewBag.Title = "AllBrand";
+    Layout = "~/Views/Shared/MainView.cshtml";
+}
+
+<div class="container-fluid" id="gridView" style="display:block">
+    <div class="container-fluid col-12 g-6 d-flex flex-wrap justify-content-center">
+        @foreach (var data in Model.Brands)
+        {
+            <a href="/home/AllVehicleByBrand/@data.BrandID" class="text-decoration-none justify-content-between" style="color:black">
+                <div class="card" style="width: 18rem; margin: 1rem;">
+                    <img class="card-img-top" src="@data.ImageUrl" alt="Card image cap" style="height:10rem">
+                    <div class="card-body">
+                        <h4>@data.BrandName</h4>
+                    </div>
+                </div>
+            </a>
+        }
+    </div>
+</div>

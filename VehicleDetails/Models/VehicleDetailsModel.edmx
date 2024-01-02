@@ -12,6 +12,8 @@
           <Property Name="BrandID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="BrandName" Type="nvarchar" MaxLength="30" />
           <Property Name="BrandCategoryID" Type="int" />
+          <Property Name="Active" Type="int" />
+          <Property Name="ImageUrl" Type="nvarchar" MaxLength="300" />
         </EntityType>
         <EntityType Name="Category">
           <Key>
@@ -19,6 +21,29 @@
           </Key>
           <Property Name="CategoryID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CategoryName" Type="nvarchar" MaxLength="30" />
+          <Property Name="Active" Type="int" />
+          <Property Name="ImageUrl" Type="nvarchar" MaxLength="300" />
+        </EntityType>
+        <EntityType Name="Favorities">
+          <Key>
+            <PropertyRef Name="FavoriteID" />
+          </Key>
+          <Property Name="FavoriteID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="VehicleID" Type="int" />
+          <Property Name="DateTime" Type="datetime" />
+          <Property Name="Active" Type="int" />
+          <Property Name="Status" Type="int" />
+        </EntityType>
+        <EntityType Name="Reviews">
+          <Key>
+            <PropertyRef Name="ReviewID" />
+          </Key>
+          <Property Name="ReviewID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="VehicleID" Type="int" />
+          <Property Name="Comment" Type="nvarchar" MaxLength="500" />
+          <Property Name="DateTime" Type="timestamp" StoreGeneratedPattern="Computed" />
+          <Property Name="Active" Type="int" />
+          <Property Name="Status" Type="int" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -42,6 +67,10 @@
           <Property Name="Active" Type="int" />
           <Property Name="VehicleCategoryID" Type="int" />
           <Property Name="VehicleBrandID" Type="int" />
+          <Property Name="FuelType" Type="nvarchar" MaxLength="30" />
+          <Property Name="Mileage" Type="int" />
+          <Property Name="Status" Type="int" />
+          <Property Name="ImageUrl" Type="nvarchar" MaxLength="300" />
         </EntityType>
         <Association Name="FK_Brands_Category">
           <End Role="Category" Type="Self.Category" Multiplicity="0..1" />
@@ -52,6 +81,42 @@
             </Principal>
             <Dependent Role="Brands">
               <PropertyRef Name="BrandCategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Favorities_Vehicles">
+          <End Role="Vehicles" Type="Self.Vehicles" Multiplicity="0..1" />
+          <End Role="Favorities" Type="Self.Favorities" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vehicles">
+              <PropertyRef Name="VehicleID" />
+            </Principal>
+            <Dependent Role="Favorities">
+              <PropertyRef Name="VehicleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reviews_Vehicles">
+          <End Role="Vehicles" Type="Self.Vehicles" Multiplicity="0..1" />
+          <End Role="Reviews" Type="Self.Reviews" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vehicles">
+              <PropertyRef Name="VehicleID" />
+            </Principal>
+            <Dependent Role="Reviews">
+              <PropertyRef Name="VehicleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Vehicles_Brands">
+          <End Role="Brands" Type="Self.Brands" Multiplicity="0..1" />
+          <End Role="Vehicles" Type="Self.Vehicles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Brands">
+              <PropertyRef Name="BrandID" />
+            </Principal>
+            <Dependent Role="Vehicles">
+              <PropertyRef Name="VehicleBrandID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -70,11 +135,25 @@
         <EntityContainer Name="VehicleDBContextStoreContainer">
           <EntitySet Name="Brands" EntityType="Self.Brands" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Favorities" EntityType="Self.Favorities" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Reviews" EntityType="Self.Reviews" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Vehicles" EntityType="Self.Vehicles" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Brands_Category" Association="Self.FK_Brands_Category">
             <End Role="Category" EntitySet="Category" />
             <End Role="Brands" EntitySet="Brands" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Favorities_Vehicles" Association="Self.FK_Favorities_Vehicles">
+            <End Role="Vehicles" EntitySet="Vehicles" />
+            <End Role="Favorities" EntitySet="Favorities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reviews_Vehicles" Association="Self.FK_Reviews_Vehicles">
+            <End Role="Vehicles" EntitySet="Vehicles" />
+            <End Role="Reviews" EntitySet="Reviews" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Vehicles_Brands" Association="Self.FK_Vehicles_Brands">
+            <End Role="Brands" EntitySet="Brands" />
+            <End Role="Vehicles" EntitySet="Vehicles" />
           </AssociationSet>
           <AssociationSet Name="FK_Vehicles_Category" Association="Self.FK_Vehicles_Category">
             <End Role="Category" EntitySet="Category" />
@@ -93,6 +172,9 @@
           <Property Name="BrandName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
           <Property Name="BrandCategoryID" Type="Int32" />
           <NavigationProperty Name="Category" Relationship="Self.FK_Brands_Category" FromRole="Brands" ToRole="Category" />
+          <Property Name="Active" Type="Int32" />
+          <NavigationProperty Name="Vehicles" Relationship="VehicleDBContext.FK_Vehicles_Brands" FromRole="Brand" ToRole="Vehicle" />
+          <Property Name="ImageUrl" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Category">
           <Key>
@@ -102,6 +184,8 @@
           <Property Name="CategoryName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Brands" Relationship="Self.FK_Brands_Category" FromRole="Category" ToRole="Brands" />
           <NavigationProperty Name="Vehicles" Relationship="Self.FK_Vehicles_Category" FromRole="Category" ToRole="Vehicles" />
+          <Property Name="Active" Type="Int32" />
+          <Property Name="ImageUrl" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="sysdiagram">
           <Key>
@@ -126,6 +210,13 @@
           <Property Name="VehicleCategoryID" Type="Int32" />
           <Property Name="VehicleBrandID" Type="Int32" />
           <NavigationProperty Name="Category" Relationship="Self.FK_Vehicles_Category" FromRole="Vehicles" ToRole="Category" />
+          <Property Name="FuelType" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="Mileage" Type="Int32" />
+          <Property Name="Status" Type="Int32" />
+          <Property Name="ImageUrl" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Brand" Relationship="VehicleDBContext.FK_Vehicles_Brands" FromRole="Vehicle" ToRole="Brand" />
+          <NavigationProperty Name="Favorities" Relationship="VehicleDBContext.FK_Favorities_Vehicles" FromRole="Vehicle" ToRole="Favority" />
+          <NavigationProperty Name="Reviews" Relationship="VehicleDBContext.FK_Reviews_Vehicles" FromRole="Vehicle" ToRole="Review" />
         </EntityType>
         <Association Name="FK_Brands_Category">
           <End Role="Category" Type="Self.Category" Multiplicity="0..1" />
@@ -164,7 +255,80 @@
             <End Role="Category" EntitySet="Categories" />
             <End Role="Vehicles" EntitySet="Vehicles" />
           </AssociationSet>
+          <EntitySet Name="Favorities" EntityType="VehicleDBContext.Favority" />
+          <EntitySet Name="Reviews" EntityType="VehicleDBContext.Review" />
+          <AssociationSet Name="FK_Vehicles_Brands" Association="VehicleDBContext.FK_Vehicles_Brands">
+            <End Role="Brand" EntitySet="Brands" />
+            <End Role="Vehicle" EntitySet="Vehicles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Favorities_Vehicles" Association="VehicleDBContext.FK_Favorities_Vehicles">
+            <End Role="Vehicle" EntitySet="Vehicles" />
+            <End Role="Favority" EntitySet="Favorities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reviews_Vehicles" Association="VehicleDBContext.FK_Reviews_Vehicles">
+            <End Role="Vehicle" EntitySet="Vehicles" />
+            <End Role="Review" EntitySet="Reviews" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="Favority">
+          <Key>
+            <PropertyRef Name="FavoriteID" />
+          </Key>
+          <Property Name="FavoriteID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="VehicleID" Type="Int32" />
+          <Property Name="DateTime" Type="DateTime" Precision="3" />
+          <Property Name="Active" Type="Int32" />
+          <Property Name="Status" Type="Int32" />
+          <NavigationProperty Name="Vehicle" Relationship="VehicleDBContext.FK_Favorities_Vehicles" FromRole="Favority" ToRole="Vehicle" />
+        </EntityType>
+        <EntityType Name="Review">
+          <Key>
+            <PropertyRef Name="ReviewID" />
+          </Key>
+          <Property Name="ReviewID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="VehicleID" Type="Int32" />
+          <Property Name="Comment" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="DateTime" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="Active" Type="Int32" />
+          <Property Name="Status" Type="Int32" />
+          <NavigationProperty Name="Vehicle" Relationship="VehicleDBContext.FK_Reviews_Vehicles" FromRole="Review" ToRole="Vehicle" />
+        </EntityType>
+        <Association Name="FK_Vehicles_Brands">
+          <End Type="VehicleDBContext.Brand" Role="Brand" Multiplicity="0..1" />
+          <End Type="VehicleDBContext.Vehicle" Role="Vehicle" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Brand">
+              <PropertyRef Name="BrandID" />
+            </Principal>
+            <Dependent Role="Vehicle">
+              <PropertyRef Name="VehicleBrandID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Favorities_Vehicles">
+          <End Type="VehicleDBContext.Vehicle" Role="Vehicle" Multiplicity="0..1" />
+          <End Type="VehicleDBContext.Favority" Role="Favority" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vehicle">
+              <PropertyRef Name="VehicleID" />
+            </Principal>
+            <Dependent Role="Favority">
+              <PropertyRef Name="VehicleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reviews_Vehicles">
+          <End Type="VehicleDBContext.Vehicle" Role="Vehicle" Multiplicity="0..1" />
+          <End Type="VehicleDBContext.Review" Role="Review" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vehicle">
+              <PropertyRef Name="VehicleID" />
+            </Principal>
+            <Dependent Role="Review">
+              <PropertyRef Name="VehicleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -174,6 +338,8 @@
           <EntitySetMapping Name="Brands">
             <EntityTypeMapping TypeName="VehicleDBContext.Brand">
               <MappingFragment StoreEntitySet="Brands">
+                <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
                 <ScalarProperty Name="BrandID" ColumnName="BrandID" />
                 <ScalarProperty Name="BrandName" ColumnName="BrandName" />
                 <ScalarProperty Name="BrandCategoryID" ColumnName="BrandCategoryID" />
@@ -183,6 +349,8 @@
           <EntitySetMapping Name="Categories">
             <EntityTypeMapping TypeName="VehicleDBContext.Category">
               <MappingFragment StoreEntitySet="Category">
+                <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
                 <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
                 <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
               </MappingFragment>
@@ -202,6 +370,10 @@
           <EntitySetMapping Name="Vehicles">
             <EntityTypeMapping TypeName="VehicleDBContext.Vehicle">
               <MappingFragment StoreEntitySet="Vehicles">
+                <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Mileage" ColumnName="Mileage" />
+                <ScalarProperty Name="FuelType" ColumnName="FuelType" />
                 <ScalarProperty Name="VehicleID" ColumnName="VehicleID" />
                 <ScalarProperty Name="VehicleName" ColumnName="VehicleName" />
                 <ScalarProperty Name="price" ColumnName="price" />
@@ -210,6 +382,29 @@
                 <ScalarProperty Name="Active" ColumnName="Active" />
                 <ScalarProperty Name="VehicleCategoryID" ColumnName="VehicleCategoryID" />
                 <ScalarProperty Name="VehicleBrandID" ColumnName="VehicleBrandID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Favorities">
+            <EntityTypeMapping TypeName="VehicleDBContext.Favority">
+              <MappingFragment StoreEntitySet="Favorities">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="DateTime" ColumnName="DateTime" />
+                <ScalarProperty Name="VehicleID" ColumnName="VehicleID" />
+                <ScalarProperty Name="FavoriteID" ColumnName="FavoriteID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Reviews">
+            <EntityTypeMapping TypeName="VehicleDBContext.Review">
+              <MappingFragment StoreEntitySet="Reviews">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="DateTime" ColumnName="DateTime" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="VehicleID" ColumnName="VehicleID" />
+                <ScalarProperty Name="ReviewID" ColumnName="ReviewID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

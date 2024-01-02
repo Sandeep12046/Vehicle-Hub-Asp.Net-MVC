@@ -7,6 +7,8 @@
     <Property Name="BrandID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="BrandName" Type="nvarchar" MaxLength="30" />
     <Property Name="BrandCategoryID" Type="int" />
+    <Property Name="Active" Type="int" />
+    <Property Name="ImageUrl" Type="nvarchar" MaxLength="300" />
   </EntityType>
   <EntityType Name="Category">
     <Key>
@@ -14,6 +16,29 @@
     </Key>
     <Property Name="CategoryID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="CategoryName" Type="nvarchar" MaxLength="30" />
+    <Property Name="Active" Type="int" />
+    <Property Name="ImageUrl" Type="nvarchar" MaxLength="300" />
+  </EntityType>
+  <EntityType Name="Favorities">
+    <Key>
+      <PropertyRef Name="FavoriteID" />
+    </Key>
+    <Property Name="FavoriteID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="VehicleID" Type="int" />
+    <Property Name="DateTime" Type="datetime" />
+    <Property Name="Active" Type="int" />
+    <Property Name="Status" Type="int" />
+  </EntityType>
+  <EntityType Name="Reviews">
+    <Key>
+      <PropertyRef Name="ReviewID" />
+    </Key>
+    <Property Name="ReviewID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="VehicleID" Type="int" />
+    <Property Name="Comment" Type="nvarchar" MaxLength="500" />
+    <Property Name="DateTime" Type="timestamp" StoreGeneratedPattern="Computed" />
+    <Property Name="Active" Type="int" />
+    <Property Name="Status" Type="int" />
   </EntityType>
   <EntityType Name="sysdiagrams">
     <Key>
@@ -37,6 +62,10 @@
     <Property Name="Active" Type="int" />
     <Property Name="VehicleCategoryID" Type="int" />
     <Property Name="VehicleBrandID" Type="int" />
+    <Property Name="FuelType" Type="nvarchar" MaxLength="30" />
+    <Property Name="Mileage" Type="int" />
+    <Property Name="Status" Type="int" />
+    <Property Name="ImageUrl" Type="nvarchar" MaxLength="300" />
   </EntityType>
   <Association Name="FK_Brands_Category">
     <End Role="Category" Type="Self.Category" Multiplicity="0..1" />
@@ -47,6 +76,42 @@
       </Principal>
       <Dependent Role="Brands">
         <PropertyRef Name="BrandCategoryID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Favorities_Vehicles">
+    <End Role="Vehicles" Type="Self.Vehicles" Multiplicity="0..1" />
+    <End Role="Favorities" Type="Self.Favorities" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Vehicles">
+        <PropertyRef Name="VehicleID" />
+      </Principal>
+      <Dependent Role="Favorities">
+        <PropertyRef Name="VehicleID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Reviews_Vehicles">
+    <End Role="Vehicles" Type="Self.Vehicles" Multiplicity="0..1" />
+    <End Role="Reviews" Type="Self.Reviews" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Vehicles">
+        <PropertyRef Name="VehicleID" />
+      </Principal>
+      <Dependent Role="Reviews">
+        <PropertyRef Name="VehicleID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Vehicles_Brands">
+    <End Role="Brands" Type="Self.Brands" Multiplicity="0..1" />
+    <End Role="Vehicles" Type="Self.Vehicles" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Brands">
+        <PropertyRef Name="BrandID" />
+      </Principal>
+      <Dependent Role="Vehicles">
+        <PropertyRef Name="VehicleBrandID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -65,11 +130,25 @@
   <EntityContainer Name="VehicleDBContextStoreContainer">
     <EntitySet Name="Brands" EntityType="Self.Brands" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Favorities" EntityType="Self.Favorities" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Reviews" EntityType="Self.Reviews" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Vehicles" EntityType="Self.Vehicles" Schema="dbo" store:Type="Tables" />
     <AssociationSet Name="FK_Brands_Category" Association="Self.FK_Brands_Category">
       <End Role="Category" EntitySet="Category" />
       <End Role="Brands" EntitySet="Brands" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Favorities_Vehicles" Association="Self.FK_Favorities_Vehicles">
+      <End Role="Vehicles" EntitySet="Vehicles" />
+      <End Role="Favorities" EntitySet="Favorities" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Reviews_Vehicles" Association="Self.FK_Reviews_Vehicles">
+      <End Role="Vehicles" EntitySet="Vehicles" />
+      <End Role="Reviews" EntitySet="Reviews" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Vehicles_Brands" Association="Self.FK_Vehicles_Brands">
+      <End Role="Brands" EntitySet="Brands" />
+      <End Role="Vehicles" EntitySet="Vehicles" />
     </AssociationSet>
     <AssociationSet Name="FK_Vehicles_Category" Association="Self.FK_Vehicles_Category">
       <End Role="Category" EntitySet="Category" />
