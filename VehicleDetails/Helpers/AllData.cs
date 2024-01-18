@@ -14,22 +14,25 @@ namespace VehicleDetails.Helpers
         IBrand BrandDAL;
         ICategory CategoryDAL;
         IReview IReviewDAL;
-
+        IUser UserDAL;
+        ILocation LocationDAL;
         public AllData()
         {
             this.VehicleDAL = new VehicleDAL(new VehicleDBEntities());
             this.BrandDAL = new BrandDAL(new VehicleDBEntities());
             this.CategoryDAL = new CategoryDAL(new VehicleDBEntities());
             this.IReviewDAL = new ReviewDAL(new VehicleDBEntities());
+            this.UserDAL=new UserDAl(new VehicleDBEntities());
+            this.LocationDAL=new LocationDal(new VehicleDBEntities());
         }
 
         public  object AllDataInfo()
         {
 
-            
+
             BrandCategories categoryCategories = new BrandCategories
             {
-                vehiclesModel = VehicleDAL.GetAllVehicles().OrderByDescending(d=>d.VehicleID).Select(VehicleModel => new VehicleModel
+                vehiclesModel = VehicleDAL.GetAllVehicles().OrderByDescending(d => d.VehicleID).Select(VehicleModel => new VehicleModel
                 {
                     VehicleName = VehicleModel.VehicleName,
                     VehicleBrandID = VehicleModel.VehicleBrandID,
@@ -42,23 +45,48 @@ namespace VehicleDetails.Helpers
                     Mileage = VehicleModel.Mileage,
                     ImageUrl = VehicleModel.ImageUrl,
                     Status = VehicleModel.Status,
+                    FuelType = VehicleModel.FuelType,
+                    Color = VehicleModel.Color,
+                    Description = VehicleModel.Description,
+                    Address = VehicleModel.Address,
+                    RegistrationNumber = VehicleModel.RegistrationNumber,
+                    Transmission = VehicleModel.Transmission,
+                    Owner = VehicleModel.Owner,
+                    VehicleType = VehicleModel.VehicleType,
                 }).ToList(),
-                Brands = BrandDAL.GetAllBrand().OrderByDescending(b=>b.BrandID).Select(BrandModel => new BrandModel
+                Brands = BrandDAL.GetAllBrand().OrderByDescending(b => b.BrandID).Select(BrandModel => new BrandModel
                 {
                     BrandID = BrandModel.BrandID,
                     BrandName = BrandModel.BrandName,
                     Active = BrandModel.Active,
                     BrandCategoryID = BrandModel.BrandCategoryID,
-                    ImageUrl=BrandModel.ImageUrl,
+                    ImageUrl = BrandModel.ImageUrl,
                 }).ToList(),
-                Categories = CategoryDAL.GetCategories().OrderByDescending(c=>c.CategoryID).Select(CategoryModel => new CategoryModel
+                Categories = CategoryDAL.GetCategories().OrderByDescending(c => c.CategoryID).Select(CategoryModel => new CategoryModel
                 {
                     CategoryID = CategoryModel.CategoryID,
                     CategoryName = CategoryModel.CategoryName,
-                    ImageUrl=CategoryModel.ImageUrl,
+                    ImageUrl = CategoryModel.ImageUrl,
                 }).ToList(),
-            };
-
+                userModel = UserDAL.GetUsers().OrderByDescending(u => u.UserID).Select(users => new UserModel
+                {
+                    UserID = users.UserID,
+                    FirstName = users.FirstName,
+                    LastName = users.LastName,
+                    Passwords = users.Passwords,
+                    Email = users.Email,
+                    UserType = users.UserType,
+                    UserTypeName = users.UserTypeName,
+                    Address = users.Address,
+                    PhoneNumber = users.PhoneNumber,
+                }).ToList(),
+                //locationModel = LocationDAL.GetLocation().Select(LocationModel => new LocationModel
+                //{
+                //    Locations = LocationModel.Locations,
+                //    LocationID = LocationModel.LocationID,
+                //}).ToList(),
+        };
+      
             return categoryCategories;
         }
     }

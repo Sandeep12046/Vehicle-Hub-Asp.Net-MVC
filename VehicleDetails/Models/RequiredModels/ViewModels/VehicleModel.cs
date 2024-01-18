@@ -43,12 +43,40 @@ namespace VehicleDetails.Models.RequiredModels.ViewModels
         [Display(Name = "Vehicle Image")]
         public string ImageUrl { get; set; }
         public string BrandName { get; set; }
+        public string CategoryName { get; set; }
+        public Nullable<int> VehicleUserID { get; set; }
+
+        [Required(ErrorMessage = "Please enter color")]
+        [Display(Name = "Color")]
+        public string Color { get; set; }
+        [Required(ErrorMessage = "Please enter registration Number")]
+        [Display(Name = "Registration Number")]
+        public string RegistrationNumber { get; set; }
+        [Required(ErrorMessage = "Please select transmission")]
+        [Display(Name = "Transmission")]
+        public string Transmission { get; set; }
+        [Required(ErrorMessage = "Please select owner1")]
+        [Display(Name = "Owner1")]
+        public List<string>  Owner1 { get; set; }
+        [Required(ErrorMessage = "Please select owner")]
+        [Display(Name = "Owner")]
+        public string Owner { get; set; }
+        [Required(ErrorMessage = "Please enter Address")]
+        [Display(Name = "Address")]
+        public string Address { get; set; }
+        [Required(ErrorMessage = "Please enter Description")]
+        [Display(Name = "Description")]
+        public string Description { get; set; }
+        public Nullable<int> VehicleType { get; set; }
         public string BrandID { get; set; }
         public virtual Category Category { get; set; }
         public virtual Brand Brand { get; set; }
-     
+
+       
         public virtual ICollection<Favority> Favorities { get; set; }
-   
+     
         public virtual ICollection<Review> Reviews { get; set; }
+        public virtual ICollection<Vehicle> Vehicles { get; set; }
+      
     }
 }

@@ -33,6 +33,7 @@
           <Property Name="DateTime" Type="datetime" />
           <Property Name="Active" Type="int" />
           <Property Name="Status" Type="int" />
+          <Property Name="UserID" Type="int" />
         </EntityType>
         <EntityType Name="Reviews">
           <Key>
@@ -41,9 +42,10 @@
           <Property Name="ReviewID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="VehicleID" Type="int" />
           <Property Name="Comment" Type="nvarchar" MaxLength="500" />
-          <Property Name="DateTime" Type="timestamp" StoreGeneratedPattern="Computed" />
+          <Property Name="DateTimes" Type="datetime" />
           <Property Name="Active" Type="int" />
           <Property Name="Status" Type="int" />
+          <Property Name="UserID" Type="int" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -54,6 +56,27 @@
           <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="version" Type="int" />
           <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Passwords" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="50" />
+          <Property Name="UserType" Type="int" Nullable="false" />
+          <Property Name="UserTypeName" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreatedAt" Type="datetime" Nullable="false" />
+          <Property Name="Address" Type="nvarchar" MaxLength="500" />
+          <Property Name="PhoneNumber" Type="bigint" />
+          <Property Name="UserImage" Type="nvarchar(max)" />
+          <Property Name="State" Type="nvarchar" MaxLength="80" />
+          <Property Name="ZipCode" Type="bigint" />
+          <Property Name="City" Type="nvarchar" MaxLength="100" />
+          <Property Name="Country" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Vehicles">
           <Key>
@@ -71,6 +94,14 @@
           <Property Name="Mileage" Type="int" />
           <Property Name="Status" Type="int" />
           <Property Name="ImageUrl" Type="nvarchar" MaxLength="300" />
+          <Property Name="VehicleUserID" Type="int" />
+          <Property Name="Color" Type="nvarchar" MaxLength="50" />
+          <Property Name="RegistrationNumber" Type="nvarchar" MaxLength="100" />
+          <Property Name="Transmission" Type="nvarchar" MaxLength="50" />
+          <Property Name="Owner" Type="nvarchar" MaxLength="50" />
+          <Property Name="Address" Type="nvarchar" MaxLength="1000" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="VehicleType" Type="int" />
         </EntityType>
         <Association Name="FK_Brands_Category">
           <End Role="Category" Type="Self.Category" Multiplicity="0..1" />
@@ -84,15 +115,31 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Favorities_Vehicles">
-          <End Role="Vehicles" Type="Self.Vehicles" Multiplicity="0..1" />
+        <Association Name="FK_Favorities_Favorities">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="Favorities" Type="Self.Favorities" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Vehicles">
-              <PropertyRef Name="VehicleID" />
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
             </Principal>
             <Dependent Role="Favorities">
-              <PropertyRef Name="VehicleID" />
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reviews_Reviews">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Reviews" Type="Self.Reviews" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Reviews">
+              <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -132,20 +179,74 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Vehicles_Vehicles">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Vehicles" Type="Self.Vehicles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Vehicles">
+              <PropertyRef Name="VehicleUserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="DeleteVehicleByUserID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id" Type="int" Mode="In" />
+          <Parameter Name="userID" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+        <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="VehicleDBContextStoreContainer">
           <EntitySet Name="Brands" EntityType="Self.Brands" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Favorities" EntityType="Self.Favorities" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Reviews" EntityType="Self.Reviews" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Vehicles" EntityType="Self.Vehicles" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Brands_Category" Association="Self.FK_Brands_Category">
             <End Role="Category" EntitySet="Category" />
             <End Role="Brands" EntitySet="Brands" />
           </AssociationSet>
-          <AssociationSet Name="FK_Favorities_Vehicles" Association="Self.FK_Favorities_Vehicles">
-            <End Role="Vehicles" EntitySet="Vehicles" />
+          <AssociationSet Name="FK_Favorities_Favorities" Association="Self.FK_Favorities_Favorities">
+            <End Role="Users" EntitySet="Users" />
             <End Role="Favorities" EntitySet="Favorities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reviews_Reviews" Association="Self.FK_Reviews_Reviews">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Reviews" EntitySet="Reviews" />
           </AssociationSet>
           <AssociationSet Name="FK_Reviews_Vehicles" Association="Self.FK_Reviews_Vehicles">
             <End Role="Vehicles" EntitySet="Vehicles" />
@@ -157,6 +258,10 @@
           </AssociationSet>
           <AssociationSet Name="FK_Vehicles_Category" Association="Self.FK_Vehicles_Category">
             <End Role="Category" EntitySet="Category" />
+            <End Role="Vehicles" EntitySet="Vehicles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Vehicles_Vehicles" Association="Self.FK_Vehicles_Vehicles">
+            <End Role="Users" EntitySet="Users" />
             <End Role="Vehicles" EntitySet="Vehicles" />
           </AssociationSet>
         </EntityContainer>
@@ -217,6 +322,15 @@
           <NavigationProperty Name="Brand" Relationship="VehicleDBContext.FK_Vehicles_Brands" FromRole="Vehicle" ToRole="Brand" />
           <NavigationProperty Name="Favorities" Relationship="VehicleDBContext.FK_Favorities_Vehicles" FromRole="Vehicle" ToRole="Favority" />
           <NavigationProperty Name="Reviews" Relationship="VehicleDBContext.FK_Reviews_Vehicles" FromRole="Vehicle" ToRole="Review" />
+          <Property Name="VehicleUserID" Type="Int32" />
+          <NavigationProperty Name="User" Relationship="VehicleDBContext.FK_Vehicles_Vehicles" FromRole="Vehicle" ToRole="User" />
+          <Property Name="Color" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RegistrationNumber" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Transmission" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Owner" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="VehicleType" Type="Int32" />
+          <Property Name="Address" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_Brands_Category">
           <End Role="Category" Type="Self.Category" Multiplicity="0..1" />
@@ -269,6 +383,57 @@
             <End Role="Vehicle" EntitySet="Vehicles" />
             <End Role="Review" EntitySet="Reviews" />
           </AssociationSet>
+          <EntitySet Name="Users" EntityType="VehicleDBContext.User" />
+          <AssociationSet Name="FK_Favorities_Users" Association="VehicleDBContext.FK_Favorities_Users">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Favority" EntitySet="Favorities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reviews_Users" Association="VehicleDBContext.FK_Reviews_Users">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Review" EntitySet="Reviews" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Vehicles_Vehicles" Association="VehicleDBContext.FK_Vehicles_Vehicles">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Vehicle" EntitySet="Vehicles" />
+          </AssociationSet>
+          <FunctionImport Name="DeleteVehicleDataByUser">
+            <Parameter Name="id" Mode="In" Type="Int32" />
+            <Parameter Name="userID" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_alterdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_creatediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_dropdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(VehicleDBContext.sp_helpdiagramdefinition_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(VehicleDBContext.sp_helpdiagrams_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_renamediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="new_diagramname" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_upgraddiagrams" />
+          <FunctionImport Name="DeleteVehicleByUserID">
+            <Parameter Name="id" Mode="In" Type="Int32" />
+            <Parameter Name="userID" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="Favority">
           <Key>
@@ -280,6 +445,8 @@
           <Property Name="Active" Type="Int32" />
           <Property Name="Status" Type="Int32" />
           <NavigationProperty Name="Vehicle" Relationship="VehicleDBContext.FK_Favorities_Vehicles" FromRole="Favority" ToRole="Vehicle" />
+          <Property Name="UserID" Type="Int32" />
+          <NavigationProperty Name="User" Relationship="VehicleDBContext.FK_Favorities_Users" FromRole="Favority" ToRole="User" />
         </EntityType>
         <EntityType Name="Review">
           <Key>
@@ -288,10 +455,12 @@
           <Property Name="ReviewID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="VehicleID" Type="Int32" />
           <Property Name="Comment" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="DateTime" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
           <Property Name="Active" Type="Int32" />
           <Property Name="Status" Type="Int32" />
           <NavigationProperty Name="Vehicle" Relationship="VehicleDBContext.FK_Reviews_Vehicles" FromRole="Review" ToRole="Vehicle" />
+          <Property Name="DateTimes" Type="DateTime" Precision="3" />
+          <Property Name="UserID" Type="Int32" />
+          <NavigationProperty Name="User" Relationship="VehicleDBContext.FK_Reviews_Users" FromRole="Review" ToRole="User" />
         </EntityType>
         <Association Name="FK_Vehicles_Brands">
           <End Type="VehicleDBContext.Brand" Role="Brand" Multiplicity="0..1" />
@@ -329,6 +498,77 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Passwords" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UserType" Type="Int32" Nullable="false" />
+          <Property Name="UserTypeName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Favorities" Relationship="VehicleDBContext.FK_Favorities_Users" FromRole="User" ToRole="Favority" />
+          <NavigationProperty Name="Reviews" Relationship="VehicleDBContext.FK_Reviews_Users" FromRole="User" ToRole="Review" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Vehicles" Relationship="VehicleDBContext.FK_Vehicles_Vehicles" FromRole="User" ToRole="Vehicle" />
+          <Property Name="Address" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="Int64" />
+          <Property Name="UserImage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="State" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="ZipCode" Type="Int64" />
+          <Property Name="City" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Country" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK_Favorities_Users">
+          <End Type="VehicleDBContext.User" Role="User" Multiplicity="0..1" />
+          <End Type="VehicleDBContext.Favority" Role="Favority" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Favority">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reviews_Users">
+          <End Type="VehicleDBContext.User" Role="User" Multiplicity="0..1" />
+          <End Type="VehicleDBContext.Review" Role="Review" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Review">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Vehicles_Vehicles">
+          <End Type="VehicleDBContext.User" Role="User" Multiplicity="0..1" />
+          <End Type="VehicleDBContext.Vehicle" Role="Vehicle" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Vehicle">
+              <PropertyRef Name="VehicleUserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <ComplexType Name="sp_helpdiagramdefinition_Result">
+          <Property Type="Int32" Name="version" Nullable="true" />
+          <Property Type="Binary" Name="definition" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_helpdiagrams_Result">
+          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+          <Property Type="Int32" Name="OwnerID" Nullable="false" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -370,6 +610,14 @@
           <EntitySetMapping Name="Vehicles">
             <EntityTypeMapping TypeName="VehicleDBContext.Vehicle">
               <MappingFragment StoreEntitySet="Vehicles">
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="VehicleType" ColumnName="VehicleType" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Owner" ColumnName="Owner" />
+                <ScalarProperty Name="Transmission" ColumnName="Transmission" />
+                <ScalarProperty Name="RegistrationNumber" ColumnName="RegistrationNumber" />
+                <ScalarProperty Name="Color" ColumnName="Color" />
+                <ScalarProperty Name="VehicleUserID" ColumnName="VehicleUserID" />
                 <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="Mileage" ColumnName="Mileage" />
@@ -388,6 +636,7 @@
           <EntitySetMapping Name="Favorities">
             <EntityTypeMapping TypeName="VehicleDBContext.Favority">
               <MappingFragment StoreEntitySet="Favorities">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="Active" ColumnName="Active" />
                 <ScalarProperty Name="DateTime" ColumnName="DateTime" />
@@ -399,15 +648,63 @@
           <EntitySetMapping Name="Reviews">
             <EntityTypeMapping TypeName="VehicleDBContext.Review">
               <MappingFragment StoreEntitySet="Reviews">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="DateTimes" ColumnName="DateTimes" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="Active" ColumnName="Active" />
-                <ScalarProperty Name="DateTime" ColumnName="DateTime" />
                 <ScalarProperty Name="Comment" ColumnName="Comment" />
                 <ScalarProperty Name="VehicleID" ColumnName="VehicleID" />
                 <ScalarProperty Name="ReviewID" ColumnName="ReviewID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="VehicleDBContext.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="ZipCode" ColumnName="ZipCode" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="UserImage" ColumnName="UserImage" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="UserTypeName" ColumnName="UserTypeName" />
+                <ScalarProperty Name="UserType" ColumnName="UserType" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="Passwords" ColumnName="Passwords" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="VehicleDBContext.Store.sp_alterdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="VehicleDBContext.Store.sp_creatediagram" />
+          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="VehicleDBContext.Store.sp_dropdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="VehicleDBContext.Store.sp_helpdiagramdefinition">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="VehicleDBContext.sp_helpdiagramdefinition_Result">
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="VehicleDBContext.Store.sp_helpdiagrams">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="VehicleDBContext.sp_helpdiagrams_Result">
+                <ScalarProperty Name="Database" ColumnName="Database" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Owner" ColumnName="Owner" />
+                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="VehicleDBContext.Store.sp_renamediagram" />
+          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="VehicleDBContext.Store.sp_upgraddiagrams" />
+          <FunctionImportMapping FunctionImportName="DeleteVehicleByUserID" FunctionName="VehicleDBContext.Store.DeleteVehicleByUserID" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

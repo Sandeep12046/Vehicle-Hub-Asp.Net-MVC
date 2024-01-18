@@ -11,6 +11,7 @@ namespace VehicleDetails.Repository
     public class ReviewDAL : IReview
     {
         VehicleDBEntities entities;
+        
         public ReviewDAL(VehicleDBEntities VehicleDBEntities) { 
         this.entities = VehicleDBEntities;
         }
@@ -21,22 +22,25 @@ namespace VehicleDetails.Repository
             return review;
         }
 
-        public void insertReviews(BrandCategories data)
+        public void insertReviews(BrandCategories data,int userID)
         {
+         
+            var date= DateTime.Now;
             Review review = new Review();
             review.VehicleID = data.vehicles.VehicleID;
             review.Comment=data.reviewModel.Comment;
             review.Active=data.reviewModel.Comment!=null?1:0;
             review.Status=data.reviewModel.Status!=null?1:0;
-            review.DateTime=data.reviewModel.DateTime;
+            review.DateTimes = date;
+            review.UserID = userID;
             entities.Reviews.Add(review);
             entities.SaveChanges();
         }
 
-        public void DetachReviews(int id)
+        public void DeleteReviews(int id,int userID)
         {
 
-            Review review = entities.Reviews.Where(ids=>ids.VehicleID==id).FirstOrDefault();
+            Review review = entities.Reviews.Where(ids=>ids.VehicleID==id || ids.UserID==userID).FirstOrDefault();
             entities.Reviews.Remove(review);
             entities.SaveChanges();
 

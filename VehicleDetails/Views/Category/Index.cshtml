@@ -14,7 +14,7 @@
     <div class="row w-100 h-100">
 
         <div class="col-2 shadow shadow-lg p-0">
-            <div class="w3-sidebar w3-light-grey w3-bar-block">
+            <div class="w3-sidebar w3-light-grey w3-bar-block" style="height: 100vh;">
                 <h3 class="w3-bar-item m-3 text-center catHeading">Categories</h3>
                 @foreach (var cat in Model)
                 {
@@ -108,22 +108,3 @@
         }
 </style>
 
-
-
-@*<div class="row">
-
-        @foreach (var data in Model)
-        {
-            <div class="">
-                <a href="/category/vehicleDetails/@data.CategoryID" class="text-decoration-none" style="color:black">
-                    <div class="card " style="width: 18rem; margin: 1rem;">
-                        <img class="card-img-top" src="~/Asserts/VehicleImage.jpg" alt="Card image cap">
-                        <div class="card-body">
-                            <h4>@data.CategoryName</h4>
-                        </div>
-
-                    </div>
-                </a>
-            </div>
-        }
-    </div>*@

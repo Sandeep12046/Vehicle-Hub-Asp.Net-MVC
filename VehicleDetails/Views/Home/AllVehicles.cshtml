@@ -2,17 +2,70 @@
 @{
     ViewBag.Title = "AllVehicles";
     Layout = "~/Views/Shared/MainView.cshtml";
+
+    var res = 0;
+    foreach (var data in Model.vehiclesModel)
+    {
+        res = (int)data.VehicleType;
+    }
+    var CheckBoxRes = @ViewBag.CheckBoxValue;
+
 }
+
+
+@*@section search{
+        <form class="form-inline d-flex my-2 my-lg-0" action="/home/allvehicles">
+            <input class="form-control mr-sm-2" type="search" id="search" name="search" placeholder="search" value="@ViewBag.Search" aria-label="Search">
+            <button class="btn btn-warning my-2 my-sm-0" type="submit">Search</button>
+        </form>
+    }*@
+
+
+
+<form action="/home/allvehicles" method="post" class="d-flex justify-content-center m-3">
+    <div class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" id="inlineCheckbox1" name="id" value="0" @(ViewBag.CheckBoxValue== 0 ? "checked" : "")>
+        <label class="form-check-label" for="inlineCheckbox1">All</label>
+    </div>
+    <div class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" id="inlineCheckbox2" name="id" value="1" @(ViewBag.CheckBoxValue == 1 ? "checked" : "")>
+        <label class="form-check-label" for="inlineCheckbox1">New</label>
+    </div>
+    <div class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" id="inlineCheckbox3" name="id" value="2" @(ViewBag.CheckBoxValue == 2 ? "checked" : "")>
+        <label class="form-check-label" for="inlineCheckbox2">Old</label>
+    </div>
+    @*<div class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" id="inlineCheckbox4" value="option3" disabled>
+        <label class="form-check-label" for="inlineCheckbox3">3 (disabled)</label>
+    </div>*@
+    <button class="btn btn-warning">Apply</button>
+</form>
+
+
 
 
 @section search{
     <form class="form-inline d-flex my-2 my-lg-0" action="/home/allvehicles">
-        <input class="form-control mr-sm-2" type="search" id="search" name="search" placeholder="search" value="@ViewBag.Search" aria-label="Search">
-        <button class="btn btn-warning my-2 my-sm-0" type="submit">Search</button>
+        <div class="input-group">
+            <input type="search" id="search" name="search" placeholder="search" value="@ViewBag.Search" class="form-control" aria-label="Text input with segmented dropdown button">
+            <div class="input-group-append">
+                <button class="btn  btn-warning" type="submit">Search</button>
+                @*<button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                        <div role="separator" class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Separated link</a>
+                    </div>*@
+            </div>
+        </div>
     </form>
 }
-
-<div class="container-fluid" id="gridView" style="display:block; height:100vh" ">
+<div class="container-fluid" id="gridView" style="display:block; height:auto">
     <div class="container-fluid col-12 g-6 d-flex flex-wrap justify-content-center">
         @foreach (var data in Model.vehiclesModel)
         {
@@ -21,13 +74,77 @@
                     <img class="card-img-top" src="@data.ImageUrl" alt="Card image cap" style="height:10rem">
                     <div class="card-body">
                         <h4>@data.VehicleName</h4>
-                        <p>@data.BrandName</p>
-                        <p>@data.price</p>
-                        <p>@data.FuelType</p>
-
+                        <p class="m-0">Price:<span class="text-muted">@data.price</span></p>
+                        <p class="m-0">Owner:<span class="text-muted">@data.Owner</span></p>
                     </div>
                 </div>
             </a>
         }
     </div>
 </div>
+
+
+@*<script>
+    debugger;
+    $(document).ready(() => {
+        $.ajax({
+            url: `/home/AllVehicles`,
+            type: "post",
+            dataType: "json",
+            contentText: "application/json",
+            success: (data, status) => {
+                console.log(data)
+            }
+        })
+    })
+
+</script>*@
+
+
+@*<script>
+        var checkedValue = 0;
+        $(document).ready(() => {
+            $("#checkBoxSubmit").on('click', () => {
+                check = document.getElementById("inlineCheckbox1").value;
+                check = document.getElementById("inlineCheckbox2").value;
+                check = document.getElementById("inlineCheckbox3").value;
+                console.log(check, "check")
+
+                switch (check) {
+                    case 1: $("inlineCheckbox1").prop("checked", true);
+                        break;
+                    case 2: $("inlineCheckbox2").prop("checked", true);
+                        break;
+                    case 3: $("inlineCheckbox3").prop("checked", true);
+                        break;
+                    default: $("inlineCheckbox1").prop("checked", true);
+                        break;
+                }
+            })
+        })
+
+    </script>*@
+
+@*<script>
+    $(document).ready(() => {
+        $("#checkBoxSubmit").on('click', () => {
+            var check = $("input[name='id']:checked").val();
+            console.log(check, "check");
+
+            switch (check) {
+                case "0":
+                    $("#inlineCheckbox1").prop("checked", true);
+                    break;
+                case "1":
+                    $("#inlineCheckbox2").prop("checked", true);
+                    break;
+                case "2":
+                    $("#inlineCheckbox3").prop("checked", true);
+                    break;
+                default:
+                    $("#inlineCheckbox1").prop("checked", true);
+                    break;
+            }
+        });
+    });
+</script>*@

@@ -54,7 +54,7 @@ namespace VehicleDetails.Repository
 
         public List<Vehicle> GetVehiclesByCategories(int id)
         {
-            List<Vehicle> data = VehicleDBEntitie.Vehicles.Where(ids => ids.VehicleCategoryID == id).ToList();
+            List<Vehicle> data = VehicleDBEntitie.Vehicles.Where(ids => ids.VehicleCategoryID == id && ids.Active!=0).ToList();
             return data;
         }
     }

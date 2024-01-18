@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.Ajax.Utilities;
+using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Web;
@@ -19,6 +21,7 @@ namespace VehicleDetails.Controllers
         IBrand BrandDAL;
         ICategory CategoryDAL;
         IReview IReviewDAL;
+        IUser userDAL;
         AllData allData;
         public HomeController()
         {
@@ -26,13 +29,13 @@ namespace VehicleDetails.Controllers
             this.BrandDAL=new BrandDAL(new VehicleDBEntities());
             this.CategoryDAL=new CategoryDAL(new VehicleDBEntities());
             this.IReviewDAL=new ReviewDAL(new VehicleDBEntities());
+            this.userDAL=new UserDAl(new VehicleDBEntities());
             this.allData = new AllData();
         }
    
         //[Route("home")]
         public ActionResult Index()
         {
-           
                 var data = allData.AllDataInfo();
                 return View(data);
            
@@ -70,97 +73,22 @@ namespace VehicleDetails.Controllers
         {
             if (ModelState.IsValid)
             {
-                VehicleDAL.InsertNewVehicle(newVehicle);
+                int userID = Convert.ToInt32(Session["UserID"]);
+                VehicleDAL.InsertNewVehicle(newVehicle, userID);
                 return RedirectToAction("Index");
             }
           return RedirectToAction("create");
         }
 
-
-        [HttpPost]
-        public ActionResult CreateBrandData(BrandCategories data)
-        {
-            BrandDAL.InsertBrandData(data);
-            return RedirectToAction("index");
-        }
-
-        [HttpPost]
-        public ActionResult CreateCategoryData(BrandCategories data)
-        {
-            CategoryDAL.CreteCategoryBrand(data);
-            return RedirectToAction("index");
-        }
-
-        [HttpGet]
-        //[Route("edit")]
-        public ActionResult Edit(int id)
-        {
-            BrandCategories model = new BrandCategories();
-
-            model.vehicles = new VehicleModel();
-            model.Categories = new List<CategoryModel>();
-
-            Vehicle data = VehicleDAL.GetVehicleById(id);
-            model.vehicles.VehicleID = data.VehicleID;
-            model.vehicles.price = data.price;
-            model.vehicles.VehicleName = data.VehicleName;
-            model.vehicles.AvailabilityStatus = data.AvailabilityStatus;
-            model.vehicles.ManufactureDate = (DateTime)data.ManufactureDate;
-            model.vehicles.VehicleCategoryID = data.VehicleCategoryID;
-            model.vehicles.VehicleBrandID = data.VehicleBrandID;
-            model.vehicles.FuelType= data.FuelType;
-            model.vehicles.ImageUrl= data.ImageUrl;
-            model.vehicles.Mileage= data.Mileage;
-            List<Brand> brands = BrandDAL.GetAllBrand();
-            model.Brands=brands.Select(b=>new BrandModel
-            {
-                BrandID=b.BrandID,
-                BrandName=b.BrandName,
-                Active=b.Active,
-                BrandCategoryID=b.BrandCategoryID,
-                ImageUrl=b.ImageUrl,
-            }).ToList();
-    
-            List<Category> categories = CategoryDAL.GetCategories();
-
-            model.Categories = categories.Select(c => new CategoryModel
-            {
-                CategoryID = c.CategoryID,
-                CategoryName = c.CategoryName,
-                ImageUrl = c.ImageUrl,
-                Active = c.Active,
-            }).ToList();
-
-            return View(model);
-        }
-
-
-
-        [HttpPost]
-        //[Route("edit")]
-        public ActionResult Edit(BrandCategories newVehicle) {
-            if (ModelState.IsValid)
-            {
-                VehicleDAL.UpdateVehicle(newVehicle);
-                return RedirectToAction("Index");
-            }
-            return View(newVehicle);
-        }
-
-        public ActionResult Delete(int id)
-        {
-            VehicleDAL.DeleteVehicle(id);
-            return RedirectToAction("Index");
-        }
-
-        //[Route("VehicleById")]
         public ActionResult Details(int id)
         {
             BrandCategories model = new BrandCategories();
             model.vehicles = new VehicleModel();
             model.brand=new BrandModel();
             model.reviews=new List<ReviewModel>();
+            model.user= new UserModel();
             Vehicle data=VehicleDAL.GetVehicleById(id);
+            UserModel usersData = userDAL.getUserByVehicleID(id);
             List<Review> reviews = IReviewDAL.getVehicleReviewById(id);
             List<Brand> brands = BrandDAL.GetAllBrand();
             model.vehicles.VehicleID = data.VehicleID;
@@ -170,38 +98,45 @@ namespace VehicleDetails.Controllers
             model.vehicles.ManufactureDate = (DateTime)data.ManufactureDate;
             model.vehicles.VehicleCategoryID = data.VehicleCategoryID;
             model.vehicles.VehicleBrandID = data.VehicleBrandID;
+            model.vehicles.VehicleUserID = data.VehicleUserID;
             model.vehicles.FuelType = data.FuelType;
             model.vehicles.ImageUrl = data.ImageUrl;
             model.vehicles.Mileage = data.Mileage;
+            model.vehicles.FuelType = data.FuelType;
+            model.vehicles.Color = data.Color;
+            model.vehicles.Description = data.Description;
+            model.vehicles.Address = data.Address;
+            model.vehicles.RegistrationNumber = data.RegistrationNumber;
+            model.vehicles.Transmission = data.Transmission;
+            model.vehicles.Owner = data.Owner;
             model.brand.BrandID = data.Brand.BrandID;
             model.brand.Active = data.Brand.Active;
             model.brand.BrandCategoryID=data.Brand.BrandCategoryID;
             model.brand.BrandName = data.Brand.BrandName;   
             model.brand.ImageUrl=data.Brand.ImageUrl;
+            model.user.Address = usersData.Address;
+            model.user.PhoneNumber = usersData.PhoneNumber;
+            model.user.FirstName = usersData.FirstName;
+            model.user.Email = usersData.Email;
             model.reviews = reviews.Select(ReviewModel => new ReviewModel
             {
                 ReviewID=ReviewModel.ReviewID,
                 Comment = ReviewModel.Comment,
-                DateTime = ReviewModel.DateTime,
+                DateTimes= (DateTime)ReviewModel.DateTimes,
+                UserID=ReviewModel.UserID,
+                VehicleID=ReviewModel.VehicleID,
             }).ToList();
             return View(model);
         }
 
-
-        public ActionResult AddReview(BrandCategories brandCategories)
+        public ActionResult AllVehicles(int id=0,string search = "")
         {
-
-            IReviewDAL.insertReviews(brandCategories);
-            return View(brandCategories);
-        }
-
-        public ActionResult AllVehicles(string search = "")
-        {
-            if (!string.IsNullOrEmpty(search))
+            if (!string.IsNullOrEmpty(search) || id!=null)
             {
                 BrandCategories brandCategories = new BrandCategories();
-                brandCategories.vehiclesModel = VehicleDAL.GetAllVehicleSearch(search);
+                brandCategories.vehiclesModel = VehicleDAL.GetAllVehicleSearch(id,search);
                 ViewBag.Search = search;
+                ViewBag.CheckBoxValue = id;
                 return View(brandCategories);
             } 
             else
@@ -218,7 +153,6 @@ namespace VehicleDetails.Controllers
 
             return View(data);
         }
-
 
         public ActionResult AllVehicleByBrand(int id)
         {
@@ -238,6 +172,13 @@ namespace VehicleDetails.Controllers
                 Mileage = VehicleModel.Mileage,
                 ImageUrl = VehicleModel.ImageUrl,
                 Status = VehicleModel.Status,
+                FuelType = VehicleModel.FuelType,
+                Color = VehicleModel.Color,
+                Owner=VehicleModel.Owner,
+                Description = VehicleModel.Description,
+                Address = VehicleModel.Address,
+                RegistrationNumber = VehicleModel.RegistrationNumber,
+                Transmission = VehicleModel.Transmission,
             }).ToList();
             
 
@@ -245,14 +186,19 @@ namespace VehicleDetails.Controllers
 
         }
 
-      
-
-
-     
-        public ActionResult RemoveComment(int id)
+        public ActionResult RemoveComment(int id,int userIDs)
         {
-            IReviewDAL.DetachReviews(id);
+            IReviewDAL.DeleteReviews(id, userIDs);
+
             return RedirectToAction("Index", "Home");
+        }
+
+
+        public ActionResult DeleteVehicleData(int id, int userID)
+        {
+            VehicleDAL.DeleteVehicle(id, userID);
+            
+            return RedirectToAction("Index");
         }
 
         public ActionResult Comment(int id)
@@ -275,6 +221,12 @@ namespace VehicleDetails.Controllers
             model.vehicles.FuelType = data.FuelType;
             model.vehicles.ImageUrl = data.ImageUrl;
             model.vehicles.Mileage = data.Mileage;
+            model.vehicles.Color = data.Color;
+            model.vehicles.Description = data.Description;
+            model.vehicles.Address = data.Address;
+            model.vehicles.RegistrationNumber = data.RegistrationNumber;
+            model.vehicles.Transmission = data.Transmission;
+            model.vehicles.Owner = data.Owner;
             model.brand.BrandID = data.Brand.BrandID;
             model.brand.Active = data.Brand.Active;
             model.brand.BrandCategoryID = data.Brand.BrandCategoryID;
@@ -284,11 +236,11 @@ namespace VehicleDetails.Controllers
             {
                 ReviewID = ReviewModel.ReviewID,
                 Comment = ReviewModel.Comment,
-                DateTime = ReviewModel.DateTime,
+                DateTimes = (DateTime)ReviewModel.DateTimes,
+                UserID= ReviewModel.UserID,
             }).ToList();
 
             return View();
         }
-
     }
 }

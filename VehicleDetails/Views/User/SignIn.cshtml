@@ -1,0 +1,37 @@
+﻿@model VehicleDetails.Models.RequiredModels.ViewModels.UserModel
+@{
+    ViewBag.Title = "SignIn";
+    Layout = "~/Views/Shared/MainView.cshtml";
+}
+
+<div class="min-vh-100">
+    <div class="d-flex justify-content-center h-100 align-items-lg-center">
+        <div class="col-6" style="margin:5rem;">
+            <div class="shadow shadow-lg p-5 opacity-75">
+                <p class="text-center" style=" font-size: xx-large; font-family: emoji; font-weight: bold;">Sign in</p>
+                @using (Html.BeginForm("SignIn", "User", FormMethod.Post, new { @class = "" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Email)
+                        @Html.TextBoxFor(model => model.Email, new { @class = "form-control", placeholder = "Enter your Email" })
+                        @Html.ValidationMessageFor(model => model.Email, null, new { @class = "text-danger" })
+                        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Passwords)
+                        @Html.TextBoxFor(model => model.Passwords, new { @class = "form-control", placeholder = "Enter your Password" })
+                        @Html.ValidationMessageFor(model => model.Passwords, null, new { @class = "text-danger" })
+                    </div>
+                    <button type="submit" class="btn btn-primary text-center">Submit</button>
+                }
+                <p class="text-center text-danger">@ViewBag.SignIn</p>
+                <div class="form-check">
+                    <label for="exampleInputPassword1">
+                        Don't have an account?<a href="/User/Register" type="submit"> Register</a>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

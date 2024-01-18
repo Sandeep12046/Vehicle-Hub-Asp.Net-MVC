@@ -2,105 +2,153 @@
 @{
     ViewBag.Title = "Details";
     Layout = "~/Views/Shared/MainView.cshtml";
+    var userIDs = Convert.ToInt32(Session["UserID"]);
 
 }
 
-@*@{
-        var add=5;
-        object check()
-        {
-            object data=Model.price > 0 ? "dsaf" : 5;
-            add = add + 10;
-            return data;
-        }
-    }*@
-@*<div class="container-fluid">
-    <div class="row">
-        <div class="col">
 
-            <div class="container d-flex justify-content-center rounded border border-dark pl-0">
-                <div class="text-black bg-light d-flex">
-                    <img class="card-img w-98" src="@Model.vehicles.ImageUrl" alt="Card image">
-                </div>
-                <div class="card-img bg-light ml-2">
-                    <h4 class="card-title">Brand : @Model.brand.BrandName</h4>
-                    <h5 class="card-title">Vehicle : @Model.vehicles.VehicleName</h5>
-                    <p class="card-text">Fuel: @Model.vehicles.FuelType</p>
-                    <p class="card-text">Mailage : @Model.vehicles.Mileage</p>
-                    <p class="card-text">Price: @Model.vehicles.price</p>
-                    <p class="card-text">Availability Status: @Model.vehicles.AvailabilityStatus</p>
-                    <p class="card-text">Manufacture Date: @Model.vehicles.ManufactureDate.Value.ToString("d/MM/yyy")</p>
-                  
-                    <div class="d-flex justify-content-around">
-                        <a href="/home/edit/@Model.vehicles.VehicleID" class="btn btn-danger" type="submit">edit</a>
-                        <a href="/home/delete/@Model.vehicles.VehicleID" class="btn btn-danger" type="submit">Delete</a>
+@if (Model != null)
+{
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <div class="card text-center">
+                    <div class="card-header text-bg-dark">
+                        <h4>@Model.brand.BrandName @Model.vehicles.VehicleName</h4>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>*@
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <img class="card-img w-98" src="@Model.vehicles.ImageUrl" alt="Card image">
+                            </div>
+                            <div class="col-md-6" style="text-align:start !important">
+                                <h4 class="card-title">Brand : @Model.brand.BrandName</h4>
+                                <h5 class="card-title">Vehicle Name : @Model.vehicles.VehicleName</h5>
+                                <p class="card-text">Fuel: @Model.vehicles.FuelType</p>
+                                <p class="card-text">Mailage : @Model.vehicles.Mileage</p>
+                                <p class="card-text">Price: @Model.vehicles.price</p>
+                                <p class="card-text">Transmission: @Model.vehicles.Transmission</p>
+                                <p class="card-text">Location: @Model.vehicles.Address</p>
+                                <p class="card-text">Availability Status: @Model.vehicles.AvailabilityStatus</p>
+                                <p class="card-text">Owner: @Model.vehicles.Owner</p>
+                                <p class="card-text">Manufacture Date: @Model.vehicles.ManufactureDate.Value.ToString("d/MM/yyy")</p>
+                                <p class="card-text">Description: @Model.vehicles.Description</p>
+                                @if (Model.vehicles.VehicleUserID == userIDs)
+                                {
+                                    <span></span>
+                                }
+                                else
+                                {
+                                    using (Html.BeginForm("CreateComment", "Review", FormMethod.Post))
+                                    {
+                                        <div class="form-group ">
+                                            @Html.HiddenFor(model => model.vehicles.VehicleID)
+                                            @Html.LabelFor(model => model.reviewModel.Comment, new { @class = "text-bg-dark" })
+                                            @Html.TextAreaFor(model => model.reviewModel.Comment, new { @class = "form-control" })
+                                        </div>
+                                        <div class="d-flex justify-content-end"><button type="submit" class="btn btn btn-warning">Submit</button></div>
+                                    }
+                                }
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col">
-            <div class="card text-center">
-                <div class="card-header text-bg-dark">
-                    <h4>@Model.brand.BrandName @Model.vehicles.VehicleName</h4>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <img class="card-img w-98" src="@Model.vehicles.ImageUrl" alt="Card image">
-                        </div>
-                        <div class="col-md-6" style="text-align:start !important">
-                            <h4 class="card-title">Brand : @Model.brand.BrandName</h4>
-                            <h5 class="card-title">Vehicle : @Model.vehicles.VehicleName</h5>
-                            <p class="card-text">Fuel: @Model.vehicles.FuelType</p>
-                            <p class="card-text">Mailage : @Model.vehicles.Mileage</p>
-                            <p class="card-text">Price: @Model.vehicles.price</p>
-                            <p class="card-text">Availability Status: @Model.vehicles.AvailabilityStatus</p>
-                            <p class="card-text">Manufacture Date: @Model.vehicles.ManufactureDate.Value.ToString("d/MM/yyy")</p>
-                            @using (Html.BeginForm("CreateComment", "Review", FormMethod.Post))
-                            {
-                                <div class="form-group ">
-                                    @Html.HiddenFor(model => model.vehicles.VehicleID)
-                                    @Html.LabelFor(model => model.reviewModel.Comment, new { @class= "text-bg-dark" })
-                                    @Html.TextAreaFor(model => model.reviewModel.Comment, new { @class = "form-control" })
-                                </div>
-                                <div class="d-flex justify-content-end"><button type="submit" class="btn btn btn-warning">Submit</button></div>
-                            }
+                                @using (Html.BeginForm("Create", "Favorite", FormMethod.Post))
+                                {
+                                    <div class="form-group ">
+                                        @Html.HiddenFor(model => model.vehicles.VehicleID)
+                                    </div>
+                                    <div class="d-flex justify-content-start"><button type="submit" class="btn btn btn-warning">Add to Favorite</button></div>
+                                }
 
-                        </div>
-                    </div>
-                </div>
-                <div class="card-footer text-bg-dark">
-                    <h6>Reviews @Model.reviews.Count()</h6>
-                </div>
 
-            </div>
-            <div class="col-12">
-                <div class="d-flex justify-content-center flex-wrap">
-                    @foreach (var data in Model.reviews)
-                    {
 
-                        <div class="card-group col-2 m-3">
-                            <div class="card">
-                                <div class="">
-                                    <div class="d-flex justify-content-end"><a href="/Home/RemoveComment/@Model.vehicles.VehicleID" type="submit" class="text-decoration-none text-bg-light">☓</a></div>
-                                    
-                                </div>
-                                <div class="card-body">
-                                    <small class="text-muted"></small>
-                                    <p class="card-text">@data.Comment</p>
-                                </div>
+                                @if (Model.vehicles.VehicleUserID == userIDs)
+                                {
+                                    <div class="d-flex justify-content-end">
+                                        <a href="@Url.Action("DeleteVehicleData", "Home", new { id = Model.vehicles.VehicleID, userID = Session["UserID"] })" class="text-decoration-none text-bg-light btn btn-danger">Delete</a>
+
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="d-flex justify-content-end">
+                                        <button type="button" class="btn btn-info m-2" data-toggle="modal" data-target="#exampleModalCenter">
+                                            Contact Us
+                                        </button>
+                                    </div>
+
+                                    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLongTitle">Contact Details</h5>
+                                                    @*<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>*@
+                                                </div>
+                                                <div class="modal-body">
+
+                                                    <p class="font-weight-bold">Name: @Model.user.FirstName</p>
+                                                    <p class="font-weight-bold">Email-Id: @Model.user.Email</p>
+                                                    <p class="font-weight-bold">Phone No: @Model.user.PhoneNumber</p>
+
+                                                    <p class="font-weight-bold">Address: @Model.vehicles.Address</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                    @*<button type="button" class="btn btn-primary">Save changes</button>*@
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+
                             </div>
                         </div>
+                    </div>
+                    <div class="card-footer text-bg-dark">
+                        <h6>Reviews @Model.reviews.Count()</h6>
+                    </div>
 
-                    }
                 </div>
+                <div class="col-12">
+                    <div class="d-flex justify-content-start flex-wrap">
+                        @foreach (var data in Model.reviews)
+                        {
+
+                            <div class="card-group col-2 m-3">
+                                <div class="card">
+                                    <div class="">
+                                        @if (@data.UserID == @userIDs)
+                                        {
+                                            <a href="@Url.Action("RemoveComment", "Home", new { id = data.VehicleID, userIDs = data.UserID })" class="text-decoration-none text-bg-light">☓</a>
+                                        }
+
+                                    </div>
+                                    <div class="card-body">
+                                        <small class="text-muted"></small>
+                                        <p class="card-text" style=" font-size: 20px; font-family: serif; font-weight: bolder;">@data.Comment</p>
+                                        <p class="card-text text-muted" style=" font-size: 12px; text-align: end;">@data.DateTimes</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        }
+
+
+
+                    </div>
+                </div>
+
+
             </div>
         </div>
     </div>
-</div>
+}
+else
+{
+    <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+}
+
 

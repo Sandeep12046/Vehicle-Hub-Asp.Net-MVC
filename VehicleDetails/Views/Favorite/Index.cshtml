@@ -1,0 +1,114 @@
+﻿@model VehicleDetails.Models.RequiredModels.ViewModels.BrandCategories
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/MainView.cshtml";
+
+    var compareBtn = Model.vehiclesModel.Count > 1 ? true : false;
+
+    var showFav = Model.vehiclesModel.Count > 0 ? true : false;
+}
+
+
+@if (compareBtn)
+{
+
+
+    <div class="d-flex justify-content-end" style="margin:2rem;">
+        <a href="#" class="text-decoration-none text-bg-light"><button type="button" class="btn btn-warning" data-toggle="modal" data-target="#exampleModalCenter">Compare Vehicles</button></a>
+    </div>
+}
+else
+{
+
+}
+
+
+@if (showFav)
+{
+    <div class="container-fluid" id="gridView" style=" height: 100vh;">
+        <div class="container-fluid col-12 g-6 d-flex flex-wrap justify-content-start">
+
+            @foreach (var data in Model.vehiclesModel)
+            {
+                <a href="@Url.Action("Details", "Home", new {id = data.VehicleID})" class="text-decoration-none justify-content-between" style="color:black">
+                    <div class="card" style="width: 18rem; margin: 1rem;">
+                        <img class="card-img-top" src="@data.ImageUrl" alt="Card image cap" style="height:10rem">
+                        <div class="card-body">
+                            <h4>@data.VehicleName</h4>
+                            <p class="text-muted">Price: @data.price</p>
+
+                            <div class="d-flex justify-content-between">
+                                <p class="text-muted">Mileage: @data.Mileage</p><i class="bi bi-trash">
+                                    <a href="/Favorite/DeleteFavorite/@data.VehicleID" class="text-decoration-none text-muted" type="submit">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                                            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                                        </svg>
+                                    </a>
+                                </i>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            }
+        </div>
+    </div>
+}
+else
+{
+    <p class="" style="text-align: center; height: 100vh; color: #303030; font-size: 24px; font-family: emoji; font-weight: bolder; ">No Favorites Added</p>
+}
+
+
+
+<div class="modal fade bd-example-modal-lg" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="transform: translate(-15rem, 78px);">
+        <div class="modal-content" style="width:80rem !important">
+            <div class="table-responsive-sm">
+                <table class="table">
+                    <thead class="thead-dark">
+                        <tr class="" style="font-size:14.2px">
+                            <th scope="col">SlNo.</th>
+                            <th scope="col">Image</th>
+                            <th scope="col">Vehicle Name</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Mileage</th>
+                            <th scope="col">Color</th>
+                            <th scope="col">Transmission</th>
+
+                            <th scope="col">Fuel Type</th>
+                            <th scope="col">Manufacture Date</th>
+                            <th scope="col">Availability Status</th>
+                            <th scope="col">Fuel Type</th>
+                            <th scope="col">Brand Name</th>
+                            <th scope="col">Category Name</th>
+                            @*<th scope="col">Category Name</th>*@
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var data in Model.vehiclesModel.Select((Data, Index) => new { Data = Data, Index = Index + 1 }))
+                        {
+                            <tr>
+                                <th scope="row">@data.Index</th>
+                                <td> <img class="card-img-top" src="@data.Data.ImageUrl" alt="Card image cap" style="height:5rem; width:5rem;"></td>
+                                <td>@data.Data.VehicleName</td>
+                                <td>@data.Data.price</td>
+                                <td>@data.Data.Mileage</td>
+                                <td>@data.Data.Color</td>
+                                <td>@data.Data.Transmission</td>
+
+                                <td>@data.Data.FuelType</td>
+                                <td>@data.Data.ManufactureDate.Value.ToString("dd-MM-yyyy")</td>
+                                <td>@data.Data.AvailabilityStatus</td>
+                                <td>@data.Data.FuelType</td>
+                                <td>@data.Data.BrandName</td>
+                                <td>@data.Data.CategoryName</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

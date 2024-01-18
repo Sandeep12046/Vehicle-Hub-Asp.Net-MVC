@@ -10,8 +10,8 @@ namespace VehicleDetails.Repository
 {
     internal interface IReview
     {
-        void insertReviews(BrandCategories review);
-        void DetachReviews(int id);
+        void insertReviews(BrandCategories review,int UserID);
+        void DeleteReviews(int id, int userID);
         List<Review> getVehicleReviewById(int review);
     }
 }
