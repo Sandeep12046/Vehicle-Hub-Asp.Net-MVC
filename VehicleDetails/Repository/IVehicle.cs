@@ -25,8 +25,10 @@ namespace VehicleDetails.Repository
         List<BrandModel> GetAllBrandDetails();
         List<CategoryModel> GetAllCategoryDetails();
 
-
+        ////List<VehicleModel> GetAllRelatedVehicles(int catId,int brandID,int vehID);
+        //List<VehicleModel> GetAllRelatedVehicle(int catId, int brandID, int vehID);
         List<VehicleModel> GellAllVehiclesMain();
+        List<VehicleModel> GetAllRelatedVehicles(int? vehicleBrandID, int? vehicleCategoryID, int id);
 
 
         //List<VehicleModel> CompareVehicleDetails();

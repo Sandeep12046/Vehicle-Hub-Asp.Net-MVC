@@ -76,6 +76,7 @@ namespace VehicleDetails.Repository
                               {
                                   UserID= id.UserID,
                                   UserName= id.UserName,
+                                  UserImage= id.UserImage,
                               }).FirstOrDefault();
             return isMatch;
         } 

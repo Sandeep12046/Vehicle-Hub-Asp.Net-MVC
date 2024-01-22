@@ -81,8 +81,8 @@
                                                 <div class="modal-header">
                                                     <h5 class="modal-title" id="exampleModalLongTitle">Contact Details</h5>
                                                     @*<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>*@
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>*@
                                                 </div>
                                                 <div class="modal-body">
 
@@ -100,8 +100,6 @@
                                         </div>
                                     </div>
                                 }
-
-
                             </div>
                         </div>
                     </div>
@@ -110,36 +108,67 @@
                     </div>
 
                 </div>
-                <div class="col-12">
-                    <div class="d-flex justify-content-start flex-wrap">
-                        @foreach (var data in Model.reviews)
-                        {
 
-                            <div class="card-group col-2 m-3">
-                                <div class="card">
-                                    <div class="">
-                                        @if (@data.UserID == @userIDs)
-                                        {
-                                            <a href="@Url.Action("RemoveComment", "Home", new { id = data.VehicleID, userIDs = data.UserID })" class="text-decoration-none text-bg-light">☓</a>
-                                        }
+                <div class="owl-carousel owl-theme">
 
-                                    </div>
-                                    <div class="card-body">
-                                        <small class="text-muted"></small>
-                                        <p class="card-text" style=" font-size: 20px; font-family: serif; font-weight: bolder;">@data.Comment</p>
-                                        <p class="card-text text-muted" style=" font-size: 12px; text-align: end;">@data.DateTimes</p>
-                                    </div>
-                                </div>
+                    @foreach (var data in Model.reviews)
+                    {
+                        <div class="card m-3" style="width: 15rem;">
+
+
+                            <div class="">
+                                @if (@data.UserID == @userIDs)
+                                {
+                                    <a href="@Url.Action("RemoveComment", "Home", new { id = data.VehicleID, userIDs = data.UserID })" class="text-decoration-none text-bg-light">☓</a>
+                                }
+
                             </div>
+                            <div class="card-body">
 
-                        }
+                                <p class="card-text" style=" font-size: 20px; font-family: serif; font-weight: bolder;"><span class="text-muted">@data.Comment</span></p>
+                                <p class="card-text text-muted" style=" font-size: 12px; text-align: end;">@data.DateTimes</p>
+                            </div>
+                        </div>
+                    }
+                </div>
+                @if (Model.vehiclesModel.Count() > 0)
+                {
+                    <div>
+                        <div>
+                            <p style=" margin: 3rem; font-size: 36px; font-family: emoji; font-style: inherit; font-weight: bold; text-align: start;">Realted Vehicles</p>
+                        </div>
 
+
+
+                        <div class="owl-carousel owl-theme">
+
+                            @foreach (var data in Model.vehiclesModel)
+                            {
+                                <div class="item">
+                                    <a href="/home/details/@data.VehicleID" class="text-decoration-none justify-content-between" style="color:black">
+                                        <div class="card shadow-lg" style="width: 18rem; margin: 1rem;">
+                                            <img class="card-img-top" src="@data.ImageUrl" alt="Card image cap" style="height:10rem">
+                                            <div class="card-body">
+                                                <h4>@data.BrandName</h4>
+                                                <p class="m-0">Price:<span class="text-muted">@data.price</span></p>
+                                                <p class="m-0">Owner:<span class="text-muted">@data.Owner</span></p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            }
+
+
+
+                        </div>
 
 
                     </div>
-                </div>
-
-
+                }
+                else
+                {
+                    <div></div>
+                }
             </div>
         </div>
     </div>
@@ -152,3 +181,25 @@ else
 }
 
 
+<script>
+    $('.owl-carousel').owlCarousel({
+        loop: true,
+        margin: 10,
+        responsiveClass: true,
+        responsive: {
+            0: {
+                items: 1,
+                nav: true
+            },
+            600: {
+                items: 3,
+                nav: false
+            },
+            1000: {
+                items: 3,
+                nav: true,
+                loop: false
+            }
+        }
+    })
+</script>

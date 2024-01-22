@@ -71,13 +71,11 @@ namespace VehicleDetails.Controllers
         //[Route("create")]
         public ActionResult Create(BrandCategories newVehicle)
         {
-            if (ModelState.IsValid)
-            {
+            
                 int userID = Convert.ToInt32(Session["UserID"]);
                 VehicleDAL.InsertNewVehicle(newVehicle, userID);
                 return RedirectToAction("Index");
-            }
-          return RedirectToAction("create");
+          
         }
 
         public ActionResult Details(int id)
@@ -87,10 +85,12 @@ namespace VehicleDetails.Controllers
             model.brand=new BrandModel();
             model.reviews=new List<ReviewModel>();
             model.user= new UserModel();
+            model.vehiclesModel = new List<VehicleModel>();
             Vehicle data=VehicleDAL.GetVehicleById(id);
             UserModel usersData = userDAL.getUserByVehicleID(id);
             List<Review> reviews = IReviewDAL.getVehicleReviewById(id);
             List<Brand> brands = BrandDAL.GetAllBrand();
+            
             model.vehicles.VehicleID = data.VehicleID;
             model.vehicles.price = data.price;
             model.vehicles.VehicleName = data.VehicleName;
@@ -126,6 +126,7 @@ namespace VehicleDetails.Controllers
                 UserID=ReviewModel.UserID,
                 VehicleID=ReviewModel.VehicleID,
             }).ToList();
+            model.vehiclesModel = VehicleDAL.GetAllRelatedVehicles((int)model.vehicles.VehicleBrandID, (int)model.vehicles.VehicleCategoryID,(int)id);
             return View(model);
         }
 
@@ -240,6 +241,17 @@ namespace VehicleDetails.Controllers
                 UserID= ReviewModel.UserID,
             }).ToList();
 
+            return View();
+        }
+
+
+        public ActionResult AboutUS()
+        {
+            return View();  
+        }
+
+        public ActionResult ContactUS()
+        {
             return View();
         }
     }

@@ -48,17 +48,20 @@ namespace VehicleDetails.Controllers
                 userData.user = UserDAl.SignInID(sigin);
                 var UserName = userData.user.UserName != null ? userData.user.UserName : "NA";
                 var UserID = userData.user.UserID != 0 ? userData.user.UserID : 0;
+                    var UserImage = userData.user.UserImage;
                 if (Sigin == "Admin")
                     {
                         Session["UserName"] = UserName;
                         Session["UserID"] = UserID;
+                        Session["UserImage"] = UserImage;
                         return RedirectToAction("AllVehicleDetails", "User");
                     }
                 else if (Sigin == "User")
                     {
                          Session["UserName"] = UserName;
                          Session["UserID"] = UserID;
-                         return RedirectToAction("Index", "Home");
+                         Session["UserImage"] = UserImage;
+                        return RedirectToAction("Index", "Home");
                     }
                      else
                          {
@@ -176,7 +179,8 @@ namespace VehicleDetails.Controllers
         {
             if (ModelState.IsValid)
             {
-                var data=string.Join(",",newVehicle.vehicles.Owner1);
+                //var data=string.Join(",",newVehicle.vehicles.Owner1);
+
                 int userID = Convert.ToInt32(Session["UserID"]);
                 VehicleDAL.InsertNewVehicle(newVehicle, userID);
                 return RedirectToAction("AllVehicleDetails");
@@ -320,7 +324,7 @@ namespace VehicleDetails.Controllers
                 UserDAl.UpdateUserData(data,path);
             }
             
-            return View();
+            return RedirectToAction("Index","Home");
         }
 
         public string UploadImage(HttpPostedFileBase file)
@@ -338,7 +342,7 @@ namespace VehicleDetails.Controllers
             {
                 return path;
             }
-            return "userImage";
+           
         }
     }
 

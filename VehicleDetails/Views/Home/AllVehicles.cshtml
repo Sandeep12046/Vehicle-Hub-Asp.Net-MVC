@@ -35,10 +35,7 @@
         <input class="form-check-input" type="checkbox" id="inlineCheckbox3" name="id" value="2" @(ViewBag.CheckBoxValue == 2 ? "checked" : "")>
         <label class="form-check-label" for="inlineCheckbox2">Old</label>
     </div>
-    @*<div class="form-check form-check-inline">
-        <input class="form-check-input" type="checkbox" id="inlineCheckbox4" value="option3" disabled>
-        <label class="form-check-label" for="inlineCheckbox3">3 (disabled)</label>
-    </div>*@
+    
     <button class="btn btn-warning">Apply</button>
 </form>
 
@@ -51,16 +48,7 @@
             <input type="search" id="search" name="search" placeholder="search" value="@ViewBag.Search" class="form-control" aria-label="Text input with segmented dropdown button">
             <div class="input-group-append">
                 <button class="btn  btn-warning" type="submit">Search</button>
-                @*<button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="sr-only">Toggle Dropdown</span>
-                    </button>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <a class="dropdown-item" href="#">Something else here</a>
-                        <div role="separator" class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Separated link</a>
-                    </div>*@
+               
             </div>
         </div>
     </form>
@@ -125,26 +113,3 @@
 
     </script>*@
 
-@*<script>
-    $(document).ready(() => {
-        $("#checkBoxSubmit").on('click', () => {
-            var check = $("input[name='id']:checked").val();
-            console.log(check, "check");
-
-            switch (check) {
-                case "0":
-                    $("#inlineCheckbox1").prop("checked", true);
-                    break;
-                case "1":
-                    $("#inlineCheckbox2").prop("checked", true);
-                    break;
-                case "2":
-                    $("#inlineCheckbox3").prop("checked", true);
-                    break;
-                default:
-                    $("#inlineCheckbox1").prop("checked", true);
-                    break;
-            }
-        });
-    });
-</script>*@

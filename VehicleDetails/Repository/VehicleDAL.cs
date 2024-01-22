@@ -154,8 +154,6 @@ namespace VehicleDetails.Repository
             }
         }
 
-
-
         public IEnumerable<Vehicle> searchData(int id,string search)
         {
             if (id == 0)
@@ -267,7 +265,32 @@ namespace VehicleDetails.Repository
             return allCategoryData.ToList();
         }
 
-       
+        public List<VehicleModel> GetAllRelatedVehicles(int? vehicleBrandID, int? vehicleCategoryID, int id)
+        {
+            List<VehicleModel> relatedData = (from info in VehicleDBEntitie.Vehicles
+             join info1 in VehicleDBEntitie.Categories on info.VehicleCategoryID equals info1.CategoryID
+             where info.VehicleCategoryID == vehicleCategoryID && info.VehicleCategoryID == vehicleBrandID && info.VehicleID!= id
+             select new VehicleModel
+            {
+                VehicleID = info.VehicleID,
+                VehicleBrandID = info.VehicleBrandID,
+                VehicleCategoryID = info.VehicleCategoryID,
+                VehicleName = info.VehicleName,
+                ImageUrl = info.ImageUrl,
+                price = info.price,
+                Address = info.Address,
+                Description = info.Description,
+                ManufactureDate = info.ManufactureDate,
+                Mileage = info.Mileage,
+                FuelType = info.FuelType,
+                Color = info.Color,
+                Transmission = info.Transmission,
+                RegistrationNumber = info.RegistrationNumber,
+                Owner = info.Owner,
+
+           }).ToList();
+            return relatedData;
+        }
     }
 }
 
