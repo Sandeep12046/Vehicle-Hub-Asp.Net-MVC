@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Helpers;
+using System.Web.UI.WebControls;
+using VehicleDetails.Helpers;
 using VehicleDetails.Models;
 using VehicleDetails.Models.RequiredModels.ViewModels;
 using VehicleDetails.Repository;
@@ -26,7 +28,7 @@ namespace VehicleDetails.Repository
             users.FirstName = user.FirstName;
             users.LastName = user.LastName;
             users.Email = user.Email;
-            users.Passwords = user.Passwords;
+            users.Passwords = AllData.HashPassword(user.Passwords);
             users.UserType = 0;
             users.UserTypeName  = "User";
             users.CreatedAt = date;
@@ -49,7 +51,7 @@ namespace VehicleDetails.Repository
             oldInfo.FirstName = user.FirstName;
             oldInfo.LastName = user.LastName;
             oldInfo.Email = user.Email;
-            oldInfo.Passwords = user.Passwords;
+            oldInfo.Passwords = AllData.HashPassword(user.Passwords);
             oldInfo.Address = user.Address;
             oldInfo.PhoneNumber = user.PhoneNumber;
             oldInfo.UserImage = path;
@@ -62,24 +64,30 @@ namespace VehicleDetails.Repository
 
         public string Signin(UserModel user)
         {
+            var hashedPassword = AllData.HashPassword(user.Passwords);
             string isMatch = (from id in Entities.Users
-                             where id.UserName == user.UserName || id.Email == user.Email && id.Passwords == user.Passwords
-                                 select id.UserTypeName).FirstOrDefault();
+                             where id.UserName == user.UserName || id.Email == user.Email && id.Passwords == hashedPassword
+                              select id.UserTypeName).FirstOrDefault();
             return isMatch;
         }
 
         public UserModel SignInID(UserModel user)
         {
+            var hashedPassword = AllData.HashPassword(user.Passwords);
+
             UserModel isMatch = (from id in Entities.Users
-                              where id.UserName == user.UserName || id.Email == user.Email && id.Passwords == user.Passwords
-                              select new UserModel
-                              {
-                                  UserID= id.UserID,
-                                  UserName= id.UserName,
-                                  UserImage= id.UserImage,
-                              }).FirstOrDefault();
+                                 where (id.UserName == user.UserName || id.Email == user.Email) && id.Passwords == hashedPassword
+                                 select new UserModel
+                                 {
+                                     UserID = id.UserID,
+                                     UserName = id.UserName,
+                                     UserImage = id.UserImage,
+                                     Email = id.Email,
+                                     Passwords = user.Passwords,
+                                 }).FirstOrDefault();
+
             return isMatch;
-        } 
+        }
 
         public List<UserModel> GetUsers()
         {
@@ -180,7 +188,7 @@ namespace VehicleDetails.Repository
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
                 Address = user.Address,
-                Passwords = user.Passwords,
+                //Passwords = user.Passwords,
                 UserType = (int)user.UserType,
                 UserTypeName = user.UserTypeName,
                 CreatedAt = user.CreatedAt,

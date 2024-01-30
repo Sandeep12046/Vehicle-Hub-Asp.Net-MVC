@@ -1,0 +1,212 @@
+﻿@model VehicleDetails.Models.RequiredModels.ViewModels.BrandCategories
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/MainView.cshtml";
+}
+
+<style>
+    .heading {
+        font-family: emoji;
+        font-size: 18px;
+        font-weight: bolder;
+    }
+
+    .options {
+        background-color: #ffff;
+        /* padding: 1rem;*/
+        overflow: auto;
+        height: 6rem;
+    }
+</style>
+
+<div class="d-flex" style="background-color: aliceblue;">
+    <div class="overflow-auto" style="margin: 1rem; padding: 1rem; overflow: auto; height: 41rem;">
+        <div class="border border-info" style="background-color: #ffff; padding: 1rem;margin: 1rem;">
+            <p class="heading">Budget</p>
+            <div class="options">
+
+                @foreach (var amount in Model.vehiclesModel)
+                {
+                    <span>
+                        <input type="checkbox" aria-label="Checkbox for following text input" id="price" name="price">
+                        <label for="Budget">@amount.price</label>
+                    </span><br />
+                }
+                @*<span>
+                    <input type="checkbox" aria-label="Checkbox for following text input">
+                    <label for="Budget">30000 to 250000</label>
+                </span><br />
+                <span>
+                    <input type="checkbox" aria-label="Checkbox for following text input">
+                    <label for="Budget">30000 to 250000</label>
+                </span><br />
+                <span>
+                    <input type="checkbox" aria-label="Checkbox for following text input">
+                    <label for="Budget">30000 to 250000</label>
+                </span><br />
+                <span>
+                    <input type="checkbox" aria-label="Checkbox for following text input">
+                    <label for="Budget">30000 to 250000</label>
+                </span><br />
+                <span>
+                    <input type="checkbox" aria-label="Checkbox for following text input">
+                    <label for="Budget">30000 to 250000</label>
+                </span><br />*@
+            </div>
+
+        </div>
+        <div class="border border-info" style="background-color: #ffff; padding: 1rem;margin: 1rem;">
+            <p class="heading">Category and Brand</p>
+            <div class="options">
+
+                <span>
+                    <input type="checkbox" aria-label="Checkbox for following text input">
+                    <label for="Budget">30000 to 250000</label>
+                </span><br />
+                <span>
+                    <input type="checkbox" aria-label="Checkbox for following text input">
+                    <label for="Budget">30000 to 250000</label>
+                </span><br />
+                <span>
+                    <input type="checkbox" aria-label="Checkbox for following text input">
+                    <label for="Budget">30000 to 250000</label>
+                </span><br />
+                <span>
+                    <input type="checkbox" aria-label="Checkbox for following text input">
+                    <label for="Budget">30000 to 250000</label>
+                </span><br />
+                <span>
+                    <input type="checkbox" aria-label="Checkbox for following text input">
+                    <label for="Budget">30000 to 250000</label>
+                </span><br />
+            </div>
+
+        </div>
+        <div class="border border-info" style="background-color: #ffff; padding: 1rem;margin: 1rem;">
+            <p class="heading">Make Year</p>
+            <div class="options">
+
+                <span>
+                    <input type="checkbox" aria-label="Checkbox for following text input">
+                    <label for="Budget">30000 to 250000</label>
+                </span><br />
+                <span>
+                    <input type="checkbox" aria-label="Checkbox for following text input">
+                    <label for="Budget">30000 to 250000</label>
+                </span><br />
+                <span>
+                    <input type="checkbox" aria-label="Checkbox for following text input">
+                    <label for="Budget">30000 to 250000</label>
+                </span><br />
+                <span>
+                    <input type="checkbox" aria-label="Checkbox for following text input">
+                    <label for="Budget">30000 to 250000</label>
+                </span><br />
+                <span>
+                    <input type="checkbox" aria-label="Checkbox for following text input">
+                    <label for="Budget">30000 to 250000</label>
+                </span><br />
+            </div>
+
+        </div>
+        <div class="border border-info" style="background-color: #ffff; padding: 1rem;margin: 1rem;">
+            <p class="heading">K m Driven</p>
+            <div class="options">
+
+                <span>
+                    <input type="checkbox" aria-label="Checkbox for following text input">
+                    <label for="Budget">30000 to 250000</label>
+                </span><br />
+                <span>
+                    <input type="checkbox" aria-label="Checkbox for following text input">
+                    <label for="Budget">30000 to 250000</label>
+                </span><br />
+                <span>
+                    <input type="checkbox" aria-label="Checkbox for following text input">
+                    <label for="Budget">30000 to 250000</label>
+                </span><br />
+                <span>
+                    <input type="checkbox" aria-label="Checkbox for following text input">
+                    <label for="Budget">30000 to 250000</label>
+                </span><br />
+                <span>
+                    <input type="checkbox" aria-label="Checkbox for following text input">
+                    <label for="Budget">30000 to 250000</label>
+                </span><br />
+            </div>
+
+        </div>
+        <div class="border border-info" style="background-color: #ffff; padding: 1rem;margin: 1rem;">
+            <p class="heading">Ownership</p>
+            <div class="options">
+
+                <span>
+                    <input type="checkbox" aria-label="Checkbox for following text input">
+                    <label for="Budget">New</label>
+                </span><br />
+                <span>
+                    <input type="checkbox" aria-label="Checkbox for following text input">
+                    <label for="Budget">First Hand</label>
+                </span><br />
+                <span>
+                    <input type="checkbox" aria-label="Checkbox for following text input">
+                    <label for="Budget">Second Hand</label>
+                </span><br />
+                <span>
+                    <input type="checkbox" aria-label="Checkbox for following text input">
+                    <label for="Budget">More</label>
+                </span><br />
+
+            </div>
+
+        </div>
+        <div class="border border-info" style="background-color: #ffff; padding: 1rem;margin: 1rem;">
+            <p class="heading">Hub Location</p>
+            <div class="options">
+
+                <span>
+                    <input type="checkbox" aria-label="Checkbox for following text input">
+                    <label for="Budget">Bangalore</label>
+                </span><br />
+                <span>
+                    <input type="checkbox" aria-label="Checkbox for following text input">
+                    <label for="Budget">Mysore</label>
+                </span><br />
+                <span>
+                    <input type="checkbox" aria-label="Checkbox for following text input">
+                    <label for="Budget">Mangalore</label>
+                </span><br />
+                <span>
+                    <input type="checkbox" aria-label="Checkbox for following text input">
+                    <label for="Budget">Chennai</label>
+                </span><br />
+                <span>
+                    <input type="checkbox" aria-label="Checkbox for following text input">
+                    <label for="Budget">Goa</label>
+                </span><br />
+            </div>
+
+        </div>
+        <div class="border border-info" style="background-color: #ffff; padding: 1rem;margin: 1rem;">
+            <p class="heading">Availability</p>
+            <div class="options">
+
+                <span>
+                    <input type="checkbox" aria-label="Checkbox for following text input">
+                    <label for="Budget">Available</label>
+                </span><br />
+                <span>
+                    <input type="checkbox" aria-label="Checkbox for following text input">
+                    <label for="Budget">UnAvailable</label>
+                </span><br />
+            </div>
+
+        </div>
+
+    </div>
+
+    @{
+        Html.RenderPartial("VehicleDetailsPartialView");
+    }
+
+</div>

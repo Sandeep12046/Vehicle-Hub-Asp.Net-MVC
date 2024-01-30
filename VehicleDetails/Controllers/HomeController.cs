@@ -1,17 +1,14 @@
-﻿using Microsoft.Ajax.Utilities;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Globalization;
 using System.Linq;
-using System.Web;
+using System.Net.Mail;
+using System.Net;
 using System.Web.Mvc;
 using VehicleDetails.Helpers;
 using VehicleDetails.Models;
-using VehicleDetails.Models.RequiredModels;
 using VehicleDetails.Models.RequiredModels.ViewModels;
 using VehicleDetails.Repository;
-
+using System.Threading.Tasks;
 namespace VehicleDetails.Controllers
 {
     //[RoutePrefix("vehicleDetails")]
@@ -46,7 +43,7 @@ namespace VehicleDetails.Controllers
         public ActionResult Create()
         {
 
-
+            int userID = Convert.ToInt32(Session["UserID"]);
             BrandCategories category = new BrandCategories
             {
                 Brands = BrandDAL.GetAllBrand().Select(BrandModel => new BrandModel
@@ -56,14 +53,17 @@ namespace VehicleDetails.Controllers
                     BrandCategoryID = BrandModel.BrandCategoryID,
                     ImageUrl = BrandModel.ImageUrl,
                 }).ToList(),
-                Categories = CategoryDAL.GetCategories().Select(CategoryModel=>new CategoryModel
+                Categories = CategoryDAL.GetCategories().Select(CategoryModel => new CategoryModel
                 {
                     CategoryID = CategoryModel.CategoryID,
                     CategoryName = CategoryModel.CategoryName,
-                    ImageUrl=CategoryModel.ImageUrl,
+                    ImageUrl = CategoryModel.ImageUrl,
                 }).ToList(),
+               
                 
             };
+            category.user = new UserModel();
+            category.user.UserType= userDAL.getUserByVehicleID(userID).UserType;
 
             return View(category);
         }
@@ -253,6 +253,118 @@ namespace VehicleDetails.Controllers
         public ActionResult ContactUS()
         {
             return View();
+        }
+
+
+
+        [HttpPost]
+        public ActionResult SendEmail()
+        {
+           try
+            {
+                SmtpClient smtpClient = new SmtpClient("smtp.gmail.com")
+                {
+                    Port = 587,
+                    Credentials = new NetworkCredential("sanjusandeep12046@gmail.com", "lgotlmqgefomscda"),
+                    EnableSsl = true,
+
+                };
+                MailMessage mailMessage = new MailMessage
+                {
+
+                    From = new MailAddress("sanjusandeep12046@gmail.com"),
+                    Subject = "Thank You for Your Inquiry - Vehicle Hub Name Customer Service Will Reach Out Soon",
+                    Body = "Thank you for reaching out to Vehicle Hub regarding your interest in selling vehicles on our platform. " +
+                    "We appreciate your inquiry, and our dedicated customer service team is eager to assist you.\r\n\r\n" +
+                    "A representative from our customer service department will be contacting you shortly to discuss your questions and provide you with the information you need. " +
+                    "We understand that your time is valuable, and we want to ensure that we address all your queries comprehensively.\r\n\r\nIn the meantime, " +
+                    "if there's anything specific you'd like to share or if you have additional details you'd like us to be aware of, please feel free to reply to this email.\r\n\r\n" +
+                    "We look forward to the opportunity to assist you and facilitate your experience on Vehicle Hub.\r\n\r\n" +
+                    "Thank you for considering Vehicle Hub as your platform for selling vehicles.\r\n\r\nBest regards,\r\n\r\n" +
+                    "Customer Service Team\r\nVehicle Hub\r\n" +
+                    "980225544554",
+                    IsBodyHtml = false, 
+                };
+
+                mailMessage.To.Add("sanjusandeep12046@gmail.com");
+                smtpClient.Send(mailMessage);
+                return Redirect("index");
+            }
+            catch (Exception ex)
+            {
+                return Content($"Error sending email: {ex.Message}");
+            }
+        }
+
+
+        public ActionResult SendEmailContactUS()
+        {
+            try
+            {
+                SmtpClient smtpClient = new SmtpClient("smtp.gmail.com")
+                {
+                    Port = 587,
+                    Credentials = new NetworkCredential("sanjusandeep12046@gmail.com", "lgotlmqgefomscda"),
+                    EnableSsl = true,
+                };
+                MailMessage mailMessage = new MailMessage
+                {
+                    From = new MailAddress("sanjusandeep12046@gmail.com"),
+                    Subject = "Thank You for Contacting Us!",
+                    Body = "Dear[Customer's Name],\r\n\r\n       " +
+                    "Thank you for reaching out to us! We appreciate your interest in our products and services." +
+                    "A member of our Sales team will be in touch with you shortly to discuss your requirements and guide you " +
+                    "through the process of finding the right vehicle and pricing that best suits your needs.\r\n\r\n        " +
+                    "We look forward to assisting you in making an informed decision and ensuring a smooth and enjoyable experience with our team.\r\n\r\n" +
+                    "If you have any immediate questions or concerns, feel free to reach out to us at[Your Contact Information].\r\n\r\n" +
+                    "Best regards,\r\n\r\n" +
+                    "Vehicle Hub\r\n" +
+                    "9874554214155",
+                    IsBodyHtml = false,
+                };
+
+                mailMessage.To.Add("sanjusandeep12046@gmail.com");
+                smtpClient.Send(mailMessage);
+                return Redirect("index");
+            }
+            catch (Exception ex)
+            {
+                return Content($"Error sending email: {ex.Message}");
+            }
+        }
+        public ActionResult EmailTestDrive()
+        {
+             int id=Convert.ToInt32(Session["UserID"]);
+            //BrandCategories userData= new BrandCategories();
+            //userData.user = new UserModel();
+            UserModel userData = userDAL.GetUserInfoById(id);
+            try
+            {
+                SmtpClient smtpClient = new SmtpClient("smtp.gmail.com")
+                {
+                    Port = 587,
+                    Credentials = new NetworkCredential("sanjusandeep12046@gmail.com", "lgotlmqgefomscda"),
+                    EnableSsl = true,
+                };
+                MailMessage mailMessage = new MailMessage
+                {
+                    From = new MailAddress("sanjusandeep12046@gmail.com"),
+                    Subject = "Thank You for Contacting Us!",
+                    Body = $"Dear {userData.UserName},\r\n\r\n" +
+                   $"We're delighted to offer {userData.UserName} an exclusive home test drive experience! \r\n\r\n" +
+                   $"Our representative will be bringing the latest models directly to {userData.UserName}'s doorstep at {userData.Address},\r\n\r\n " +
+                   $"and they can be reached at {userData.PhoneNumber} to schedule this personalized test drive.\r\n",
+                    IsBodyHtml = false,
+                };
+
+                mailMessage.To.Add("sanjusandeep12046@gmail.com");
+                smtpClient.Send(mailMessage);
+                return Redirect("index");
+            }
+            catch (Exception ex)
+            {
+                return Content($"Error sending email: {ex.Message}");
+            }
         }
     }
 }

@@ -46,6 +46,9 @@ namespace VehicleDetails.Models.RequiredModels.ViewModels
         public string Country { get; set; }
 
 
+        [Display(Name = "Remember Me")]
+        public bool RememberMe { get; set; }
+
         public System.DateTime CreatedAt { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -18,15 +18,24 @@
     </div>
 
     <div class="d-flex" style=" position: absolute; top: 10rem; left: 15rem; height: 17rem; padding: 1rem; margin: 2rem;">
-        <div class="shadow-lg m-2 text-center"  style="width: 25rem; background-color: #ffff; padding: 2rem; ">
-            <p style=" color: darkslategrey !important; font-family: emoji; font-weight: bold; font-size: 24px;">Talk to a member of our Sales team</p>
-            <p style="font-style: oblique; color: #303030;">We will help you the right vehicle and pricing for your needs</p>
-            <button style="color: darkslategrey; background-color: darkslategrey; color: #ffff;">Contact Sales</button>
-        </div>
-        <div class="shadow-lg m-2 text-center" style="width: 25rem; background-color: #ffff; padding: 2rem;">
-            <p style=" color: darkslategrey !important; font-family: emoji; font-weight: bold; font-size: 24px;">Product and account support</p>
-            <p style="font-style: oblique; color: #303030;">Your help center is always fresh and always open for help, If you con't find the answer you're looking for,We're here to lead a hand</p>
-            <button style="color: darkslategrey; background-color: darkslategrey; color: #ffff;">Go to the help Center</button>
-        </div>
+        <form action="/Home/SendEmail" method="post">
+            <div class="shadow-lg m-2 text-center" style="width: 25rem; background-color: #ffff; height: 14.6rem; padding: 2rem; ">
+                <p style=" color: darkslategrey !important; font-family: emoji; font-weight: bold; font-size: 24px;">Talk to a member of our Sales team</p>
+                <p style="font-style: oblique; color: #303030;">We will help you the right vehicle and pricing for your needs</p>
+                <button style="color: darkslategrey; background-color: darkslategrey; color: #ffff;">Contact Sales</button>
+            </div>
+        </form>
+        <form action="/Home/SendEmailContactUS" method="post">
+            <div class="shadow-lg m-2 text-center" style="width: 25rem; background-color: #ffff; padding: 2rem;">
+                <p style=" color: darkslategrey !important; font-family: emoji; font-weight: bold; font-size: 24px;">Product and account support</p>
+                <p style="font-style: oblique; color: #303030;">Your help center is always fresh and always open for help, If you con't find the answer you're looking for,We're here to lead a hand</p>
+                <button style="color: darkslategrey; background-color: darkslategrey; color: #ffff;">Go to the help Center</button>
+                @*<a href="" style="color: darkslategrey; background-color: darkslategrey; color: #ffff;">Go to the help Center</a>*@
+            </div>
+        </form>
     </div>
 </div>
+
+
+
+

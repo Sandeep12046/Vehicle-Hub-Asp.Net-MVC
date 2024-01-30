@@ -53,6 +53,15 @@
     <NavigationProperty Name="Brand" Relationship="VehicleDBContext.FK_Vehicles_Brands" FromRole="Vehicle" ToRole="Brand" />
     <NavigationProperty Name="Favorities" Relationship="VehicleDBContext.FK_Favorities_Vehicles" FromRole="Vehicle" ToRole="Favority" />
     <NavigationProperty Name="Reviews" Relationship="VehicleDBContext.FK_Reviews_Vehicles" FromRole="Vehicle" ToRole="Review" />
+    <Property Name="VehicleUserID" Type="Int32" />
+    <NavigationProperty Name="User" Relationship="VehicleDBContext.FK_Vehicles_Vehicles" FromRole="Vehicle" ToRole="User" />
+    <Property Name="Color" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="RegistrationNumber" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Transmission" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Owner" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="VehicleType" Type="Int32" />
+    <Property Name="Address" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
   </EntityType>
   <Association Name="FK_Brands_Category">
     <End Role="Category" Type="Self.Category" Multiplicity="0..1" />
@@ -105,6 +114,57 @@
       <End Role="Vehicle" EntitySet="Vehicles" />
       <End Role="Review" EntitySet="Reviews" />
     </AssociationSet>
+    <EntitySet Name="Users" EntityType="VehicleDBContext.User" />
+    <AssociationSet Name="FK_Favorities_Users" Association="VehicleDBContext.FK_Favorities_Users">
+      <End Role="User" EntitySet="Users" />
+      <End Role="Favority" EntitySet="Favorities" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Reviews_Users" Association="VehicleDBContext.FK_Reviews_Users">
+      <End Role="User" EntitySet="Users" />
+      <End Role="Review" EntitySet="Reviews" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Vehicles_Vehicles" Association="VehicleDBContext.FK_Vehicles_Vehicles">
+      <End Role="User" EntitySet="Users" />
+      <End Role="Vehicle" EntitySet="Vehicles" />
+    </AssociationSet>
+    <FunctionImport Name="DeleteVehicleDataByUser">
+      <Parameter Name="id" Mode="In" Type="Int32" />
+      <Parameter Name="userID" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_alterdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_creatediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_dropdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(VehicleDBContext.sp_helpdiagramdefinition_Result)">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(VehicleDBContext.sp_helpdiagrams_Result)">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_renamediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="new_diagramname" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_upgraddiagrams" />
+    <FunctionImport Name="DeleteVehicleByUserID">
+      <Parameter Name="id" Mode="In" Type="Int32" />
+      <Parameter Name="userID" Mode="In" Type="String" />
+    </FunctionImport>
   </EntityContainer>
   <EntityType Name="Favority">
     <Key>
@@ -116,6 +176,8 @@
     <Property Name="Active" Type="Int32" />
     <Property Name="Status" Type="Int32" />
     <NavigationProperty Name="Vehicle" Relationship="VehicleDBContext.FK_Favorities_Vehicles" FromRole="Favority" ToRole="Vehicle" />
+    <Property Name="UserID" Type="Int32" />
+    <NavigationProperty Name="User" Relationship="VehicleDBContext.FK_Favorities_Users" FromRole="Favority" ToRole="User" />
   </EntityType>
   <EntityType Name="Review">
     <Key>
@@ -124,10 +186,12 @@
     <Property Name="ReviewID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="VehicleID" Type="Int32" />
     <Property Name="Comment" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-    <Property Name="DateTime" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
     <Property Name="Active" Type="Int32" />
     <Property Name="Status" Type="Int32" />
     <NavigationProperty Name="Vehicle" Relationship="VehicleDBContext.FK_Reviews_Vehicles" FromRole="Review" ToRole="Vehicle" />
+    <Property Name="DateTimes" Type="DateTime" Precision="3" />
+    <Property Name="UserID" Type="Int32" />
+    <NavigationProperty Name="User" Relationship="VehicleDBContext.FK_Reviews_Users" FromRole="Review" ToRole="User" />
   </EntityType>
   <Association Name="FK_Vehicles_Brands">
     <End Type="VehicleDBContext.Brand" Role="Brand" Multiplicity="0..1" />
@@ -165,4 +229,75 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Email" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Passwords" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="UserType" Type="Int32" Nullable="false" />
+    <Property Name="UserTypeName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="Favorities" Relationship="VehicleDBContext.FK_Favorities_Users" FromRole="User" ToRole="Favority" />
+    <NavigationProperty Name="Reviews" Relationship="VehicleDBContext.FK_Reviews_Users" FromRole="User" ToRole="Review" />
+    <Property Name="UserName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Vehicles" Relationship="VehicleDBContext.FK_Vehicles_Vehicles" FromRole="User" ToRole="Vehicle" />
+    <Property Name="Address" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="PhoneNumber" Type="Int64" />
+    <Property Name="UserImage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="State" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+    <Property Name="ZipCode" Type="Int64" />
+    <Property Name="City" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Country" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <Association Name="FK_Favorities_Users">
+    <End Type="VehicleDBContext.User" Role="User" Multiplicity="0..1" />
+    <End Type="VehicleDBContext.Favority" Role="Favority" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="Favority">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Reviews_Users">
+    <End Type="VehicleDBContext.User" Role="User" Multiplicity="0..1" />
+    <End Type="VehicleDBContext.Review" Role="Review" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="Review">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Vehicles_Vehicles">
+    <End Type="VehicleDBContext.User" Role="User" Multiplicity="0..1" />
+    <End Type="VehicleDBContext.Vehicle" Role="Vehicle" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="Vehicle">
+        <PropertyRef Name="VehicleUserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <ComplexType Name="sp_helpdiagramdefinition_Result">
+    <Property Type="Int32" Name="version" Nullable="true" />
+    <Property Type="Binary" Name="definition" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="sp_helpdiagrams_Result">
+    <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+    <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+    <Property Type="Int32" Name="ID" Nullable="false" />
+    <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+    <Property Type="Int32" Name="OwnerID" Nullable="false" />
+  </ComplexType>
 </Schema>
