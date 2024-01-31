@@ -368,6 +368,8 @@ namespace VehicleDetails.Controllers
             }
             else
             {
+                
+                Session["UserImage"]= path;
                 UserDAl.UpdateUserData(data,path);
                 return RedirectToAction("Index", "Home");
             }

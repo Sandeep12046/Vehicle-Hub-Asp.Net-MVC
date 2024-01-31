@@ -72,75 +72,85 @@
                               </div>
                           </div>
                       }
-                      <div>
+                  <div>
+                      @if (Model.reviews.Count > 0)
+                      {
+
+
                           <div>
                               <p style=" margin: 1rem; font-size: 36px; font-family: emoji; font-style: inherit; font-weight: bold; text-align: start;">Reviews</p>
                           </div>
-                          <div class="owl-carousel owl-theme">
+                      }
+                      else
+                      {
+                          <span></span>
+                      }
 
-                              @foreach (var data in Model.reviews)
-                              {
+                      <div class="owl-carousel owl-theme">
 
-                                  <div class="card m-3">
-
-
-                                      <div class="">
-
-
-
-                                          @if (@data.UserID == @userIDs)
-                                          {
-                                              <a href="@Url.Action("RemoveComment", "Home", new { id = data.VehicleID, userIDs = data.UserID })" class="text-decoration-none text-bg-light" style="color:#303030; display:flex;justify-content:end;">☓</a>
-                                          }
-
-                                      </div>
-                                      <div class="card-body p-2">
-
-                                          <p class="card-text" style=" font-size: 20px; font-family: serif; font-weight: bolder;margin:0 !important;"><span class="text-muted">@data.Comment</span></p>
-                                          <p class="card-text text-muted" style=" font-size: 12px; text-align: end;">@data.DateTimes</p>
-                                      </div>
-                                  </div>
-                              }
-                          </div>
-                          @if (Model.vehiclesModel.Count() > 0)
+                          @foreach (var data in Model.reviews)
                           {
-                              <div>
-                                  <div>
-                                      <p style=" margin: 1rem; font-size: 36px; font-family: emoji; font-style: inherit; font-weight: bold; text-align: start;">Realted Vehicles</p>
-                                  </div>
+
+                              <div class="card m-3">
+
+
+                                  <div class="">
 
 
 
-                                  <div class="owl-carousel owl-theme">
-
-                                      @foreach (var data in Model.vehiclesModel)
+                                      @if (@data.UserID == @userIDs)
                                       {
-                                          <div class="item">
-                                              <a href="/home/details/@data.VehicleID" class="text-decoration-none justify-content-between" style="color:black">
-                                                  <div class="card shadow-lg" style="width: 14rem; margin: 1rem;">
-                                                      <img class="card-img-top" src="@data.ImageUrl" alt="Card image cap" style="height:10rem">
-                                                      <div class="card-body">
-                                                          <h4>@data.BrandName</h4>
-                                                          <p class="m-0">Price:<span class="text-muted">@data.price</span></p>
-                                                          <p class="m-0">Owner:<span class="text-muted">@data.Owner</span></p>
-                                                      </div>
-                                                  </div>
-                                              </a>
-                                          </div>
+                                          <a href="@Url.Action("RemoveComment", "Home", new { id = data.VehicleID, userIDs = data.UserID })" class="text-decoration-none text-bg-light" style="color:#303030; display:flex;justify-content:end;">☓</a>
                                       }
 
-
-
                                   </div>
+                                  <div class="card-body p-2">
+
+                                      <p class="card-text" style=" font-size: 20px; font-family: serif; font-weight: bolder;margin:0 !important;"><span class="text-muted">@data.Comment</span></p>
+                                      <p class="card-text text-muted" style=" font-size: 12px; text-align: end;">@data.DateTimes</p>
+                                  </div>
+                              </div>
+                          }
+                      </div>
+                      @if (Model.vehiclesModel.Count() > 0)
+                      {
+                          <div>
+                              <div>
+                                  <p style=" margin: 1rem; font-size: 36px; font-family: emoji; font-style: inherit; font-weight: bold; text-align: start;">Realted Vehicles</p>
+                              </div>
+
+
+
+                              <div class="owl-carousel owl-theme">
+
+                                  @foreach (var data in Model.vehiclesModel)
+                                  {
+                                      <div class="item">
+                                          <a href="/home/details/@data.VehicleID" class="text-decoration-none justify-content-between" style="color:black">
+                                              <div class="card shadow-lg" style="width: 14rem; margin: 1rem;">
+                                                  <img class="card-img-top" src="@data.ImageUrl" alt="Card image cap" style="height:10rem">
+                                                  <div class="card-body">
+                                                      <h4>@data.BrandName</h4>
+                                                      <p class="m-0">Price:<span class="text-muted">@data.price</span></p>
+                                                      <p class="m-0">Owner:<span class="text-muted">@data.Owner</span></p>
+                                                  </div>
+                                              </div>
+                                          </a>
+                                      </div>
+                                  }
+
 
 
                               </div>
-                          }
-                          else
-                          {
-                              <div></div>
-                          }
-                      </div>
+
+
+                          </div>
+                      }
+                      else
+                      {
+                          <div></div>
+                      }
+                  </div>
                   </div>
                   <div class="col-6">
                       <div>
@@ -160,7 +170,7 @@
                               </div>
                               <div>
                                   <p class="card-title headings">Make year</p>
-                                  <p class="card-text infoText">@Model.vehicles.ManufactureDate</p>
+                                  <p class="card-text infoText">@Model.vehicles.ManufactureDate.Value.ToString("dd-MM-yyyy")</p>
                               </div>
                               <div>
                                   <p class="card-title headings">Transmission</p>
@@ -338,149 +348,4 @@ else
 </script>
 
 
-
-<!--<div class="d-flex">
-    <div class="col">
-        <img class="card-img w-98" src="@Model.vehicles.ImageUrl" alt="Card image">
-        <button type="button" class="btn btn-primary">HOME TEST DRIVE</button>-->
-
-
-        
-
-        @*<div class="owl-carousel owl-theme">
-
-            @foreach (var data in Model.reviews)
-            {
-                <div class="card m-3" style="">
-
-
-                    <div class="">
-                        @if (@data.UserID == @userIDs)
-                        {
-                            <a href="@Url.Action("RemoveComment", "Home", new { id = data.VehicleID, userIDs = data.UserID })" class="text-decoration-none text-bg-light">☓</a>
-                        }
-
-                    </div>
-                    <div class="card-body">
-
-                        <p class="card-text" style=" font-size: 20px; font-family: serif; font-weight: bolder;"><span class="text-muted">@data.Comment</span></p>
-                        <p class="card-text text-muted" style=" font-size: 12px; text-align: end;">@data.DateTimes</p>
-                    </div>
-                </div>
-            }
-        </div>*@
-    <!--</div>
-    <div class="col">
-        <div>
-            <p class="card-title" style="font-family: emoji; font-weight: bold; font-size: 24px; "> @Model.vehicles.VehicleName</p>
-            <p style="font-size: 18px; font-family: emoji; font-weight: bold; color: midnightblue;">₹ @Model.vehicles.price</p>
-        </div>
-        <div style=" border: 3px solid #30303030; border-radius: 8px; padding: 10px;">
-            <p style="font-size: 16px; font-family: emoji; margin: 0 !important; font-weight: bold; color: #65656a;">Location: <span style="font-size: 18px; font-family: emoji; margin: 0 !important; font-weight: normal; color: #303030; ">@Model.vehicles.Address</span></p>
-        </div>
-
-        <div class="card border-dark mb-3" style="max-width: auto;">
-            <div class="card-header bg-transparent border-dark">Bike details</div>
-            <div class="card-body d-flex justify-content-around">
-                <div>
-                    <p class="card-title">Brand</p>
-                    <p class="card-text">@Model.brand.BrandName</p>
-                </div>
-                <div>
-                    <p class="card-title">Make year</p>
-                    <p class="card-text">@Model.vehicles.ManufactureDate</p>
-                </div>
-                <div>
-                    <p class="card-title">Transmission</p>
-                    <p class="card-text">@Model.vehicles.Transmission</p>
-                </div>
-
-            </div>-->
-            @*<div class="card-body d-flex justify-content-around" style=" border-top: 1px solid #303030;">
-            <div>
-                <p class="card-title">Brand</p>
-                <p class="card-text">@Model.brand.BrandName</p>
-            </div>
-            <div>
-                <p class="card-title">Make year</p>
-                <p class="card-text">@Model.vehicles.ManufactureDate</p>
-            </div>
-            <div>
-                <p class="card-title">Transmission</p>
-                <p class="card-text">@Model.vehicles.Transmission</p>
-            </div>
-
-        </div>*@
-            <!--<div class="card-footer bg-transparent border-dark" style=" display: flex; justify-content: space-around;">
-                <div>
-                    <p class="card-title">Registration No.</p>
-                    <p class="card-text">@Model.vehicles.RegistrationNumber</p>
-                </div>
-                <div>
-                    <p class="card-title">Ownership</p>
-                    <p class="card-text">@Model.vehicles.Owner</p>
-                </div>
-                <div>
-                    <p class="card-title">FuelType</p>
-                    <p class="card-text">@Model.vehicles.FuelType</p>
-                </div>
-
-            </div>
-            <div class="card-footer bg-transparent border-dark">Description</div>
-            <div class="card-footer bg-transparent border-dark">@Model.vehicles.Description</div>
-        </div>
-
-
-
-        <div class="card border-dark mb-3" style="max-width: auto;">
-            <div class="card-header bg-transparent border-dark">
-                <span>Effortless Purchase</span>
-                <p>Own your dream bike hassle-free with our flexible payment options.</p>
-            </div>
-            <div class="card-body d-flex justify-content-around">
-                <div class="text-center">
-                    <p class="card-title"><img src="https://www.beepkart.com/images/purchase_option_cash.png" style=" width: 32px; aspect-ratio: auto 32 / 32; height: 32px;"/></p>
-                    <p class="card-text">Cash</p>
-                </div>
-                <div class="text-center">
-                    
-                    <p class="card-title"><img src="https://www.beepkart.com/images/purchase_option_debit.png" style=" width: 32px; aspect-ratio: auto 32 / 32; height: 32px;"/></p>
-                    <p class="card-text">Debit Card</p>
-                </div>
-                <div class="text-center">
-                    <p class="card-title"><img src="https://www.beepkart.com/images/purchase_option_debit.png" style=" width: 32px; aspect-ratio: auto 32 / 32; height: 32px;"/></p>
-                    <p class="card-text">Credit Card</p>
-                </div>
-                <div class="text-center">
-                    <p class="card-title"><img src="https://www.beepkart.com/images/purchase_option_loan.png" style=" width: 32px; aspect-ratio: auto 32 / 32; height: 32px;"/></p>
-                    <p class="card-text">Loan</p>
-                </div>
-                <div class="text-center">
-                    <p class="card-title"><img src="https://www.beepkart.com/images/purchase_option_upi.png" style=" width: 32px; aspect-ratio: auto 32 / 32; height: 32px;" /></p>
-                    <p class="card-text">UPI</p>
-                </div>
-                <div class="text-center">
-                    <p class="card-title"><img src="https://www.beepkart.com/images/purchase_option_digital.png" style=" width: 32px; aspect-ratio: auto 32 / 32; height: 32px;"/></p>
-                    <p class="card-text">Digital Wallet</p>
-                </div>
-                <div class="text-center">
-                    <p class="card-title"><img src="https://www.beepkart.com/images/purchase_option_transfer.png" style=" width: 32px; aspect-ratio: auto 32 / 32; height: 32px;"/></p>
-                    <p class="card-text">Bank Transfer</p>
-                </div>
-            </div>
-            <div class="card-footer bg-transparent border-success">
-                <ul>
-                    <li>
-                        1.7% convenience fees (excl. GST) applicable on Debit/Credit Card & Net Banking transactions
-                    </li>
-                    <li>
-                        Processing fees and other loan charges applicable for Loans
-                    </li>
-                </ul>
-            </div>
-
-        </div>
-    </div>
-
-</div>-->
 
