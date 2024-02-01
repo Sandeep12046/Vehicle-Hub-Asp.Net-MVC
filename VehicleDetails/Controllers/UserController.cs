@@ -328,11 +328,28 @@ namespace VehicleDetails.Controllers
         }
 
 
+        //public ActionResult DeleteUserAccount(int id,int UserID)
+        //{
+        //    UserDAl.DeleteUserAccount(id);
+        //    return RedirectToAction("AllVehicleDetails");
+
+
+        //}
         public ActionResult DeleteUserAccount(int id)
         {
-            UserDAl.DeleteUserAccount(id);
-            return RedirectToAction("AllVehicleDetails");
+            try
+            {
+                UserDAl.DeleteUserAccount(id);
+                return RedirectToAction("AllVehicleDetails");
+            }
+            catch (Exception exception)
+            {
+                ViewBag.ErrorMessage = "An error occurred while deleting the user account.";
+                
+                return View("Error");
+            }
         }
+
 
 
         public ActionResult Activate(int id)

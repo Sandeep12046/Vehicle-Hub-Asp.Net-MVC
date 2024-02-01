@@ -1,3 +1,4 @@
+﻿
 ﻿@model VehicleDetails.Models.RequiredModels.ViewModels.UserModel
 @{
     ViewBag.Title = "SignIn";
@@ -17,7 +18,7 @@
 
 <div class="min-vh-100">
     <div class="d-flex justify-content-center h-100 align-items-lg-center">
-        <div class="col-6" style="margin:5rem;">
+        <div class="col-5" style="margin:5rem;">
             <div class="shadow shadow-lg p-5 opacity-75" style=" background-image: url(https://th.bing.com/th/id/OIP.3KwPAy62yYquFLjCR9VJjwHaE7?w=1050&h=699&rs=1&pid=ImgDetMain);">
                 <p class="text-center" style=" font-size: xx-large; font-family: emoji; font-weight: bold;">Sign in</p>
                 @using (Html.BeginForm("SignIn", "User", FormMethod.Post, new { @class = "" }))
@@ -72,7 +73,7 @@
             var type = passwordInput.type === 'password' ? 'text' : 'password';
             passwordInput.type = type;
 
-            togglePassword.className = type === 'password' ? 'fa fa-eye eyeBtn' :'fa fa-eye-slash eyeBtn';
+            togglePassword.className = type === 'password' ? 'fa fa-eye eyeBtn' : 'fa fa-eye-slash eyeBtn';
         });
     });
 </script>

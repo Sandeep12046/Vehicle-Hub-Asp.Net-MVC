@@ -2,18 +2,20 @@
 @{
     ViewBag.Title = "ContactUS";
     Layout = "~/Views/Shared/MainView.cshtml";
+
+
 }
 
 
 
 <div>
-    
+
     <div class="d-flex" style=" justify-content: center; background-color: honeydew; padding: 5rem; margin: 1rem;">
         <div class="col-5" style="background-color: #ffff;">
             <p style=" font-size: 42px; font-family: emoji; font-weight: lighter;">Contact</p>
         </div>
         <div class="col-5 p-0">
-            <img src="https://static.vecteezy.com/system/resources/previews/000/453/432/original/vector-contact-us-background.jpg"  style="height:25rem;width:35rem;"/>
+            <img src="https://static.vecteezy.com/system/resources/previews/000/453/432/original/vector-contact-us-background.jpg" style="height:25rem;width:35rem;" />
         </div>
     </div>
 
@@ -36,6 +38,91 @@
     </div>
 </div>
 
+<div>
+    <div class="d-flex justify-content-center" style="z-index:0;">
+        <div class="card bg-dark text-white" style="width: 75%;">
+            <img class="card-img" src="https://th.bing.com/th/id/OIP.zYN6xYPKjholLFMCJFyejAHaEK?rs=1&pid=ImgDetMain" alt="Card image">
+            <div class="card-img-overlay">
+                <h5 class="card-title">Any queries let us know</h5>
+                <p class="card-text"></p>
+                <p class="card-text"></p>
+            </div>
+        </div>
+    </div>
 
 
+    <div class="d-flex justify-content-center shadow-lg" style="width: 65%; width: 67%; position: relative; bottom: 18rem; left: 15.5rem; ">
+        <div class=" card bg-light text-dark p-4">
+            <div class="col">
+                <div class="d-flex">
+                    <img src="https://www.beepkart.com/images/phone.webp" style="height:48px;width:48px;" />
+                    <div class="pl-2">
+                        <p class="text-bg-dark headingStyle">
+                            Phone No.
+                        </p>
+                        <p>
+                            18001231442
+                        </p>
+                    </div>
+                </div>
+                <div class="d-flex">
+                    <img src="https://www.beepkart.com/images/mail.webp" style="height:48px;width:48px;" />
+                    <div class="pl-2">
+                        <p class="text-bg-dark headingStyle">
+                            Email
+                        </p>
+                        <p>
+                            contact@VehicleHub.com
+                        </p>
+                    </div>
+                </div>
+                <div class="d-flex">
+                    <img src="https://www.beepkart.com/images/location-pin.webp" style="height:48px;width:48px;" />
+                    <div class="pl-2">
+                        <p class="text-bg-dark headingStyle">
+                            Corporate Office
+                        </p>
+                        <p>
+                            Industrial Layout, Bengaluru, Karnataka 560095
+                            Industrial Layout, Mysore, Karnataka 560095
+                        </p>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <div class="col-4 card bg-light text-dark" style="">
 
+                    @using (Html.BeginForm("#", "#", FormMethod.Post, new { @class = "p-4" }))
+                    {
+                        <p style="font-size: 18px; color: #303030; font-family: emoji; font-weight: 700;">Let us know your queries</p>
+                        <div class="form-group">
+                            <label for="exampleFormControlInput1" class="headingStyle">Full Name</label>
+                            <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleFormControlInput1" class="headingStyle">Mobile no</label>
+                            <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleFormControlInput1" class="headingStyle">Email Id</label>
+                            <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1" class="headingStyle">Message</label>
+                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">SEND MESSAGE</button>
+                    }
+                </div>
+            </div>
+</div>
+
+
+<style>
+    .headingStyle {
+        font-size: 16px;
+        color: #303030;
+        font-family: emoji;
+        font-weight: 700;
+    }
+</style>

@@ -123,32 +123,37 @@ namespace VehicleDetails.Repository
 
         public UserModel getUserByVehicleID(int id)
         {
-            UserModel data = (from user in Entities.Users
-                        join veh in Entities.Vehicles on user.UserID equals veh.VehicleUserID
-                        where veh.VehicleID == id
-                        select new UserModel
-                        {
-                            Email = user.Email,
-                            FirstName = user.FirstName,
-                            PhoneNumber = user.PhoneNumber,
-                            Address=user.Address,
-                            UserID = user.UserID,
-                            UserName = user.UserName,
-                            LastName = user.LastName,                          
-                            Passwords = user.Passwords,
-                            UserType = (int)user.UserType,
-                            UserTypeName = user.UserTypeName,
-                            CreatedAt = user.CreatedAt,
-                            UserImage = user.UserImage,
-                            City = user.City,
-                            State = user.State,
-                            Country = user.Country,
-                            ZipCode = user.ZipCode,
-                        }).FirstOrDefault();
+            try
+            {
+                UserModel data = (from user in Entities.Users
+                                  join veh in Entities.Vehicles on user.UserID equals veh.VehicleUserID
+                                  where veh.VehicleID == id
+                                  select new UserModel
+                                  {
+                                      Email = user.Email,
+                                      FirstName = user.FirstName,
+                                      PhoneNumber = user.PhoneNumber,
+                                      Address = user.Address,
+                                      UserID = user.UserID,
+                                      UserName = user.UserName,
+                                      LastName = user.LastName,
+                                      Passwords = user.Passwords,
+                                      UserType = (int)user.UserType,
+                                      UserTypeName = user.UserTypeName,
+                                      CreatedAt = user.CreatedAt,
+                                      UserImage = user.UserImage,
+                                      City = user.City,
+                                      State = user.State,
+                                      Country = user.Country,
+                                      ZipCode = user.ZipCode,
+                                  }).FirstOrDefault();
 
-
-
-            return data;
+                return data ?? new UserModel(); 
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
 

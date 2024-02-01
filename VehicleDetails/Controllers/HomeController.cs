@@ -63,8 +63,21 @@ namespace VehicleDetails.Controllers
                 
             };
             category.user = new UserModel();
-            category.user.UserType= userDAL.getUserByVehicleID(userID).UserType;
 
+            if (category.user.UserType != 0)
+            {
+                category.user.UserType = userDAL.getUserByVehicleID(userID).UserType;
+
+            }
+            else if (category.user.UserType != 1)
+            {
+                category.user.UserType = userDAL.getUserByVehicleID(userID).UserType;
+            }
+            else
+            {
+                
+                category.user = new UserModel { UserType = 0 }; 
+            }
             return View(category);
         }
         [HttpPost]
