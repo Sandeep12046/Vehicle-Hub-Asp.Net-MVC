@@ -274,7 +274,7 @@ namespace VehicleDetails.Controllers
         {
             int? userID = Convert.ToInt32(Session["UserID"]);
             userDAL.SendQueryInfo(query);
-            AllData.sendMails(query);
+            SendMail.sendMails(query);
             if (userID!=0 && userID!=null)
             {
                 return RedirectToAction("Index");
@@ -290,77 +290,84 @@ namespace VehicleDetails.Controllers
         [HttpPost]
         public ActionResult SendEmail()
         {
-           try
-            {
-                SmtpClient smtpClient = new SmtpClient("smtp.gmail.com")
-                {
-                    Port = 587,
-                    Credentials = new NetworkCredential("sanjusandeep12046@gmail.com", "lgotlmqgefomscda"),
-                    EnableSsl = true,
 
-                };
-                MailMessage mailMessage = new MailMessage
-                {
 
-                    From = new MailAddress("sanjusandeep12046@gmail.com"),
-                    Subject = "Thank You for Your Inquiry - Vehicle Hub Name Customer Service Will Reach Out Soon",
-                    Body = "Thank you for reaching out to Vehicle Hub regarding your interest in selling vehicles on our platform. " +
-                    "We appreciate your inquiry, and our dedicated customer service team is eager to assist you.\r\n\r\n" +
-                    "A representative from our customer service department will be contacting you shortly to discuss your questions and provide you with the information you need. " +
-                    "We understand that your time is valuable, and we want to ensure that we address all your queries comprehensively.\r\n\r\nIn the meantime, " +
-                    "if there's anything specific you'd like to share or if you have additional details you'd like us to be aware of, please feel free to reply to this email.\r\n\r\n" +
-                    "We look forward to the opportunity to assist you and facilitate your experience on Vehicle Hub.\r\n\r\n" +
-                    "Thank you for considering Vehicle Hub as your platform for selling vehicles.\r\n\r\nBest regards,\r\n\r\n" +
-                    "Customer Service Team\r\nVehicle Hub\r\n" +
-                    "980225544554",
-                    IsBodyHtml = false, 
-                };
+            SendMail.MailSend();
+            return RedirectToAction("Index");
+           //try
+           // {
+           //     SmtpClient smtpClient = new SmtpClient("smtp.gmail.com")
+           //     {
+           //         Port = 587,
+           //         Credentials = new NetworkCredential("sanjusandeep12046@gmail.com", "lgotlmqgefomscda"),
+           //         EnableSsl = true,
 
-                mailMessage.To.Add("sanjusandeep12046@gmail.com");
-                smtpClient.Send(mailMessage);
-                return Redirect("index");
-            }
-            catch (Exception ex)
-            {
-                return Content($"Error sending email: {ex.Message}");
-            }
+            //     };
+            //     MailMessage mailMessage = new MailMessage
+            //     {
+
+            //         From = new MailAddress("sanjusandeep12046@gmail.com"),
+            //         Subject = "Thank You for Your Inquiry - Vehicle Hub Name Customer Service Will Reach Out Soon",
+            //         Body = "Thank you for reaching out to Vehicle Hub regarding your interest in selling vehicles on our platform. " +
+            //         "We appreciate your inquiry, and our dedicated customer service team is eager to assist you.\r\n\r\n" +
+            //         "A representative from our customer service department will be contacting you shortly to discuss your questions and provide you with the information you need. " +
+            //         "We understand that your time is valuable, and we want to ensure that we address all your queries comprehensively.\r\n\r\nIn the meantime, " +
+            //         "if there's anything specific you'd like to share or if you have additional details you'd like us to be aware of, please feel free to reply to this email.\r\n\r\n" +
+            //         "We look forward to the opportunity to assist you and facilitate your experience on Vehicle Hub.\r\n\r\n" +
+            //         "Thank you for considering Vehicle Hub as your platform for selling vehicles.\r\n\r\nBest regards,\r\n\r\n" +
+            //         "Customer Service Team\r\nVehicle Hub\r\n" +
+            //         "980225544554",
+            //         IsBodyHtml = false, 
+            //     };
+
+            //     mailMessage.To.Add("sanjusandeep12046@gmail.com");
+            //     smtpClient.Send(mailMessage);
+            //     return Redirect("index");
+            // }
+            // catch (Exception ex)
+            // {
+            //     return Content($"Error sending email: {ex.Message}");
+            // }
         }
 
 
         public ActionResult SendEmailContactUS()
         {
-            try
-            {
-                SmtpClient smtpClient = new SmtpClient("smtp.gmail.com")
-                {
-                    Port = 587,
-                    Credentials = new NetworkCredential("sanjusandeep12046@gmail.com", "lgotlmqgefomscda"),
-                    EnableSsl = true,
-                };
-                MailMessage mailMessage = new MailMessage
-                {
-                    From = new MailAddress("sanjusandeep12046@gmail.com"),
-                    Subject = "Thank You for Contacting Us!",
-                    Body = "Dear[Customer's Name],\r\n\r\n       " +
-                    "Thank you for reaching out to us! We appreciate your interest in our products and services." +
-                    "A member of our Sales team will be in touch with you shortly to discuss your requirements and guide you " +
-                    "through the process of finding the right vehicle and pricing that best suits your needs.\r\n\r\n        " +
-                    "We look forward to assisting you in making an informed decision and ensuring a smooth and enjoyable experience with our team.\r\n\r\n" +
-                    "If you have any immediate questions or concerns, feel free to reach out to us at[Your Contact Information].\r\n\r\n" +
-                    "Best regards,\r\n\r\n" +
-                    "Vehicle Hub\r\n" +
-                    "9874554214155",
-                    IsBodyHtml = false,
-                };
 
-                mailMessage.To.Add("sanjusandeep12046@gmail.com");
-                smtpClient.Send(mailMessage);
-                return Redirect("index");
-            }
-            catch (Exception ex)
-            {
-                return Content($"Error sending email: {ex.Message}");
-            }
+            SendMail.ContactUsMail();
+            return RedirectToAction("Index");
+            //try
+            //{
+            //    SmtpClient smtpClient = new SmtpClient("smtp.gmail.com")
+            //    {
+            //        Port = 587,
+            //        Credentials = new NetworkCredential("sanjusandeep12046@gmail.com", "lgotlmqgefomscda"),
+            //        EnableSsl = true,
+            //    };
+            //    MailMessage mailMessage = new MailMessage
+            //    {
+            //        From = new MailAddress("sanjusandeep12046@gmail.com"),
+            //        Subject = "Thank You for Contacting Us!",
+            //        Body = "Dear[Customer's Name],\r\n\r\n       " +
+            //        "Thank you for reaching out to us! We appreciate your interest in our products and services." +
+            //        "A member of our Sales team will be in touch with you shortly to discuss your requirements and guide you " +
+            //        "through the process of finding the right vehicle and pricing that best suits your needs.\r\n\r\n        " +
+            //        "We look forward to assisting you in making an informed decision and ensuring a smooth and enjoyable experience with our team.\r\n\r\n" +
+            //        "If you have any immediate questions or concerns, feel free to reach out to us at[Your Contact Information].\r\n\r\n" +
+            //        "Best regards,\r\n\r\n" +
+            //        "Vehicle Hub\r\n" +
+            //        "9874554214155",
+            //        IsBodyHtml = false,
+            //    };
+
+            //    mailMessage.To.Add("sanjusandeep12046@gmail.com");
+            //    smtpClient.Send(mailMessage);
+            //    return Redirect("index");
+            //}
+            //catch (Exception ex)
+            //{
+            //    return Content($"Error sending email: {ex.Message}");
+            //}
         }
         public ActionResult EmailTestDrive()
         {
@@ -368,7 +375,7 @@ namespace VehicleDetails.Controllers
             //BrandCategories userData= new BrandCategories();
             //userData.user = new UserModel();
             UserModel userData = userDAL.GetUserInfoById(id);
-            AllData.TestDriveEmail(userData);
+            SendMail.TestDriveEmail(userData);
 
             return View();
             //try
