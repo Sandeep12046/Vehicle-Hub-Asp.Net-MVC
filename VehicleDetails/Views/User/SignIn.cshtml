@@ -1,0 +1,80 @@
+﻿
+﻿@model VehicleDetails.Models.RequiredModels.ViewModels.UserModel
+@{
+    ViewBag.Title = "SignIn";
+    Layout = "~/Views/Shared/MainView.cshtml";
+}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<style>
+    .eyeBtn {
+        position: relative;
+        float: right;
+        /*    bottom: 2.3rem;*/
+        bottom: 1.5rem;
+        right: 5px;
+    }
+</style>
+
+
+<div class="min-vh-100">
+    <div class="d-flex justify-content-center h-100 align-items-lg-center">
+        <div class="col-5" style="margin:5rem;">
+            <div class="shadow shadow-lg p-5 opacity-75" style=" background-image: url(https://th.bing.com/th/id/OIP.3KwPAy62yYquFLjCR9VJjwHaE7?w=1050&h=699&rs=1&pid=ImgDetMain);">
+                <p class="text-center" style=" font-size: xx-large; font-family: emoji; font-weight: bold;">Sign in</p>
+                @using (Html.BeginForm("SignIn", "User", FormMethod.Post, new { @class = "" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Email)
+                        @Html.TextBoxFor(model => model.Email, new { @class = "form-control", placeholder = "Enter your Email" })
+                        @Html.ValidationMessageFor(model => model.Email, null, new { @class = "text-danger" })
+                        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Passwords)
+                        @Html.TextBoxFor(model => model.Passwords, new { @class = "form-control", placeholder = "Enter your Password", id = "passwordInput" })
+                        @*<div class="input-group-append eyeBtn">
+                                <button type="button" class="btn btn-outline-secondary" id="togglePassword">
+                                    <i class="fa fa-eye" aria-hidden="true"></i>
+                                </button>
+                            </div>*@
+                        @*<button type="button" class="btn btn-outline-secondary eyeBtn" id="togglePassword">
+                                <i class="fa fa-eye " aria-hidden="true"></i>
+                            </button>*@
+                        <i class="fa fa-eye eyeBtn" id="togglePassword" aria-hidden="true"></i>
+                        @Html.ValidationMessageFor(model => model.Passwords, null, new { @class = "text-danger" })
+                    </div>
+                    @Html.LabelFor(model => model.RememberMe)
+                    @Html.CheckBoxFor(model => model.RememberMe, new { @class = "m-2" })
+
+                    @*<input type="checkbox" id="remember" name="remember" />
+                        <label>Remember me</label><br />*@
+                    <button type="submit" class="btn btn-primary text-center">Submit</button>
+                }
+                <p class="text-center text-danger">@ViewBag.SignIn</p>
+
+
+                <div class="form-check" style=" position: relative; display: block; /* padding-left: 1.25rem; */ float: right !important; bottom: 3rem !important;">
+                    <label for="exampleInputPassword1">
+                        Don't have an account?<a href="/User/Register" type="submit"> Register</a>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var passwordInput = document.getElementById("passwordInput");
+        var togglePassword = document.getElementById("togglePassword");
+
+        togglePassword.addEventListener('click', function () {
+
+            var type = passwordInput.type === 'password' ? 'text' : 'password';
+            passwordInput.type = type;
+
+            togglePassword.className = type === 'password' ? 'fa fa-eye eyeBtn' : 'fa fa-eye-slash eyeBtn';
+        });
+    });
+</script>
+@*<span class="fa fa-eye" aria-hidden="true"></span>' : '<span class="fa fa-eye-slash" aria-hidden="true"></span>*@

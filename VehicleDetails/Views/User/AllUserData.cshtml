@@ -1,0 +1,78 @@
+﻿@model VehicleDetails.Models.RequiredModels.ViewModels.BrandCategories
+@{
+    ViewBag.Title = "AllUserData";
+    Layout = "~/Views/Shared/AdminMainView.cshtml";
+}
+
+<div class="table-responsive-sm">
+    <table class="table">
+        <thead class="thead-dark">
+            <tr class="" style="font-size:14px">
+                <th scope="col">SlNo.</th>
+                <th scope="col">User Name</th>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Address</th>
+                <th scope="col">Phone No</th>
+                <th scope="col" style="width:30%">Password</th>
+                <th scope="col">User Type</th>
+                <th scope="col">User Type Name</th>
+                <th scope="col">Created At</th>
+                @*<th scope="col">Active/DeActive</th>*@
+                <th scope="col">Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var data in Model.userModel.Select((Data, Index) => new { Data = Data, Index = Index+1 }))
+            {
+                <tr>
+
+                    <th scope="row">@data.Index</th>
+                    <td>@data.Data.UserName</td>
+                    <td>@data.Data.FirstName</td>
+                    <td>@data.Data.LastName</td>
+                    <td>@data.Data.Email</td>
+                    <td>
+                        @if (data.Data.Address.Length > 5)
+                        {
+                            <div style="word-wrap: break-word; max-width: 100px;">
+                                @data.Data.Address
+                            </div>
+                        }
+                        else
+                        {
+                            @data.Data.Address
+                        }
+                    </td>
+                    <td>@data.Data.PhoneNumber</td>
+                    <td>
+                        @if (data.Data.Passwords.Length > 5)
+                        {
+                            <div style="word-wrap: break-word; max-width: 100px;">
+                                @data.Data.Passwords
+                            </div>
+                        }
+                        else
+                        {
+                            @data.Data.Passwords
+                        }
+                    </td>
+
+                    <td>@data.Data.UserType</td>
+                    @*<td>@data.Data.UserTypeName</td>*@
+                    <td>@data.Data.CreatedAt</td>
+
+                    @*<td><button class="">Active/Deactive</button></td>*@
+                    @*<td><button class="btn btn-info">View</button></td>*@
+                    @*<td><button class="btn btn-warning">Activate</button></td>*@
+                    <td>
+                    <td><a href="@Url.Action("DeleteUserAccount", "User", new { id = data.Data.UserID })" class="btn btn-danger">Delete</a></td>
+
+
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

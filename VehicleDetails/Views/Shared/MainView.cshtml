@@ -1,148 +1,190 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "MainView";
+    //var signInfo = Convert.ToInt32(Session["UserID"]) != 0 ? "Logout" : "Login";
+    var signInfo = (Session["UserID"] != null && Convert.ToInt32(Session["UserID"]) != 0) ? "Logout" : "Login";
+    var restruct = ViewBag.Active == true ? true : false;
+    var images = (string)@Session["UserImage"];
 }
 
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vehicle Hub</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" />
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
-    <script src="~/Scripts/jquery.validate.js"></script>
-    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-x32I7TdMe8EkoV8w6o8CsftkDlXa6Ho2fbhGolXs7ljaRU5+ib7kgdWlZt1V8Xm6tBSX0dIVZzthhPSz6G4C1g==" crossorigin="anonymous" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+
+    <script>
+        function Login() {
+            alert("Please Login first");
+        }
+    </script>
+
+
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            position: relative;
+            bottom: 0;
+        }
+
+        .footer {
+            position: relative;
+            bottom: 0;
+            width: 100%;
+            background-color: #343a40;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        .catLinks:hover {
+            background-color: lightgray;
+        }
+    </style>
 </head>
-<body>
-
-    @*<nav class="navbar navbar-expand-lg navbar-light bg-info">
-        <a class="navbar-brand" href="#">Vehicle Hub</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="/home/index">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/category/index">Category</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/home/create">Add New Vehicle</a>
-                </li>
-
-            </ul>
-            @RenderSection("search", false)
-        </div>
-    </nav>*@
-
-    @*<div>
-        @RenderBody()
-    </div>*@
-    @*<div class="" style="">
-        <div class="card-footer text-muted text-center bg-dark">
-            © 2024 Vehicle Hub, Inc
-            <div>
-                <hr />
-            </div>
-            <div>
-                <div class="container-fluid">
-                    <div class="row">
-                      
-                        <div class="col-4">
-                            <p>Home</p>
-                            <p>Categories</p>
-                        </div>
-                        <div class="col-4">
-                            <p>FAQs</p>
-                            <p>About Us</p>
-                        </div>
-                        <div class="col-4">
-                            <p>Subscribe to our Vehicle Hub</p>
-                            <p>Monthly digest of whats new and exciting from us.</p>
-                            <div class="d-flex">
-                                <input type="email" class="form-control" placeholder="Enter email" />
-                                <button class="btn btn-warning">Subscribe</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>*@
+<body style="background-color: whitesmoke;">
 
     <div>
-        <div class="">
-            <div class="col p-0">
-                <div>
-                    <nav class="navbar navbar-expand-lg navbar-light bg-info">
-                        <a class="navbar-brand" href="#">Vehicle Hub</a>
-                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                            <span class="navbar-toggler-icon"></span>
+        <nav class="navbar navbar-expand-lg navbar-light bg-info" style=" position: sticky; top: 0; z-index: 3; width: 100%; ">
+
+            <a class="navbar-brand" href="/home/index">Vehicle Hub</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    @if (Convert.ToInt32(Session["UserID"]) != 0)
+                    {
+                        <li class="nav-item active">
+                            <a class="nav-link" href="/home/index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/category/index">Category</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Favorite/Index">Favorite</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Home/Create">Sell Vehicle</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Home/AboutUs">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Home/ContactUs">Contact</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item disabled">
+                            <a class="nav-link" href="#" onclick="Login()">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="Login()">Category</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="Login()">Favorite</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Home/AboutUs">About us</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Home/ContactUs">Contact</a>
+                        </li>
+                    }
+                </ul>
+
+
+                @if (signInfo.Equals("Logout"))
+                {
+                    <div class="dropdown d-flex justify-content-end mr-2">
+                        <img src="@Url.Content(@images)" class="rounded-circle mr-3" style=" height: 2.5rem; width: 2.5rem;" />
+                        <button class="btn btn-light" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            @Session["UserName"]
                         </button>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
+                            <a class="nav-link catLinks" href="/User/UserProfile" style="color: #303030; font-family: emoji;  font-size: 16px; ">Profile</a>
+                            @if (@ViewBag.VehUserID != 1)
+                            {
+                                <a class="nav-link catLinks" href="/User/MyVehicles" style="color: #303030; cursor: no-drop; cursor: @(ViewBag.VehUserID != 1 ? "default" : "no-drop"); font-family: emoji; font-size: 16px;">My Vehicles</a>
+                            }
+                            else
+                            {
+                                <span style="display:none"></span>
 
-                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                            <ul class="navbar-nav mr-auto">
-                                <li class="nav-item active">
-                                    <a class="nav-link" href="/home/index">Home</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/category/index">Category</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/home/create">Add New Vehicle</a>
-                                </li>
-
-                            </ul>
-                            @RenderSection("search", false)
+                            }
+                            @*<button class="dropdown-item" type="button">Another action</button> cursor: no-drop;*@
+                            <a class="nav-link catLinks" href="/User/SignOut" style="color: #303030; font-family: emoji; font-size: 16px;">@signInfo </a>
+                            <a class="nav-link catLinks" href="/Home/ContactUs" style="color: #303030; font-family: emoji; font-size: 16px;"> Contact Us  </a>
                         </div>
-                    </nav>
-                </div>
-                <div>
-                    <div>
-                        @RenderBody()
                     </div>
-                </div>
-                <div>
-                    <div >
-                        <div class="card-footer text-muted text-center bg-dark">
-                            © 2024 Vehicle Hub, Inc
-                            <div>
-                                <hr />
-                            </div>
-                            <div>
-                                <div class="container-fluid">
-                                    <div class="row">
+                }
+                else
+                {
+                    <a class="nav-link catLinks btn btn-light" href="/User/SignOut" style="color: #303030; font-family: emoji; font-size: 16px;">Login </a>
+                }
+                @RenderSection("search", false)
+                @RenderSection("Inbox", false)
+                <!--<div class="nav-item text-center d-flex">
+                @if (signInfo == "Logout")
+                {
 
-                                        <div class="col-4">
-                                            <p>Home</p>
-                                            <p>Categories</p>
-                                        </div>
-                                        <div class="col-4">
-                                            <p>FAQs</p>
-                                            <p>About Us</p>
-                                        </div>
-                                        <div class="col-4">
-                                            <p>Subscribe to our Vehicle Hub</p>
-                                            <p>Monthly digest of whats new and exciting from us.</p>
-                                            <div class="d-flex">
-                                                <input type="email" class="form-control" placeholder="Enter email" />
-                                                <button class="btn btn-warning">Subscribe</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+
+                    <div></div>
+                }-->
+                @*<a class="nav-link" href="#" style="color: #303030; font-family: emoji; font-size: 18px;">@Session["UserName"]</a>
+                    <a class="nav-link" href="/User/SignOut" style="color: #303030; font-family: emoji; font-size: 18px;">@signInfo </a>*@
+                <!--</div>-->
+            </div>
+        </nav>
+
+        <div style="position:relative">
+            @RenderBody()
+        </div>
+    </div>
+    <div class="footer text-muted text-center bg-dark">
+        © 2024 Vehicle Hub, Inc
+        <div>
+            <hr />
+        </div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-4">
+                    <p>Home</p>
+                    <p>Categories</p>
+                </div>
+                <div class="col-4">
+                    <p>FAQs</p>
+                    <p>About Us</p>
+                </div>
+                <div class="col-4">
+                    <p>Subscribe to our Vehicle Hub</p>
+                    <p>Monthly digest of whats new and exciting from us.</p>
+                    <div class="d-flex">
+                        <input type="email" class="form-control" placeholder="Enter email" />
+                        <button class="btn btn-warning">Subscribe</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
 </body>
 </html>
-

@@ -10,16 +10,27 @@ namespace VehicleDetails.Repository
 {
     internal interface IVehicle
     {
-        void InsertNewVehicle(BrandCategories vehicle);
+        void InsertNewVehicle(BrandCategories vehicle,int userID);
         void UpdateVehicle(BrandCategories vehicle);
         Vehicle GetVehicleById(int id);
+
+
         List<Vehicle> GetAllVehicles();
         List<Vehicle> GetAllVehicleByBrand(int id);
-        void DeleteVehicle(int id);
-        //List<BrandCategoryData> GetBrandAndCategoryName();
-        IEnumerable<Vehicle> searchData(string search);
-        List<VehicleModel> GetAllVehicleSearch(string search);
+        void DeleteVehicle(int id,int userID);
+        IEnumerable<Vehicle> searchData(int id, string search);
+        List<VehicleModel> GetAllVehicleSearch(int id,string search);
 
-       
+        List<VehicleModel> GetAllVehicleDetails();
+        List<BrandModel> GetAllBrandDetails();
+        List<CategoryModel> GetAllCategoryDetails();
+
+        ////List<VehicleModel> GetAllRelatedVehicles(int catId,int brandID,int vehID);
+        //List<VehicleModel> GetAllRelatedVehicle(int catId, int brandID, int vehID);
+        List<VehicleModel> GellAllVehiclesMain();
+        List<VehicleModel> GetAllRelatedVehicles(int? vehicleBrandID, int? vehicleCategoryID, int id);
+
+
+        //List<VehicleModel> CompareVehicleDetails();
     }
 }

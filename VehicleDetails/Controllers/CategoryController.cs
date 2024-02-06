@@ -17,6 +17,7 @@ namespace VehicleDetails.Controllers
         // GET: Category
         public ActionResult Index()
         {
+       
             IEnumerable<Category> categoriesList=category.GetCategories().ToList();
             return View(categoriesList);
         }

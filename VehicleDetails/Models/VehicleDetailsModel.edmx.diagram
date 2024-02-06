@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="0425c5066264466aa58b8637771ad7e3" Name="Diagram1">
+      <Diagram DiagramId="0425c5066264466aa58b8637771ad7e3" Name="Diagram1" ZoomLevel="82">
         <EntityTypeShape EntityType="VehicleDBContext.Brand" Width="1.5" PointX="3" PointY="1.125" IsExpanded="true" />
         <EntityTypeShape EntityType="VehicleDBContext.Category" Width="1.5" PointX="0.75" PointY="2.875" IsExpanded="true" />
         <EntityTypeShape EntityType="VehicleDBContext.sysdiagram" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
@@ -16,6 +16,12 @@
         <AssociationConnector Association="VehicleDBContext.FK_Vehicles_Brands" />
         <AssociationConnector Association="VehicleDBContext.FK_Favorities_Vehicles" />
         <AssociationConnector Association="VehicleDBContext.FK_Reviews_Vehicles" />
+        <EntityTypeShape EntityType="VehicleDBContext.User" Width="1.5" PointX="7.375" PointY="3.75" />
+        <AssociationConnector Association="VehicleDBContext.FK_Favorities_Users" />
+        <AssociationConnector Association="VehicleDBContext.FK_Reviews_Users" />
+        <AssociationConnector Association="VehicleDBContext.FK_Vehicles_Vehicles" />
+        <EntityTypeShape EntityType="VehicleDBContext.PlatformReview" Width="1.5" PointX="8.375" PointY="0.75" />
+        <EntityTypeShape EntityType="VehicleDBContext.UserQuery" Width="1.5" PointX="9.375" PointY="3.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

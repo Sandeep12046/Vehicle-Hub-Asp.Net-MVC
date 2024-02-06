@@ -1,0 +1,45 @@
+﻿@model VehicleDetails.Models.RequiredModels.ViewModels.BrandCategories
+@{
+    ViewBag.Title = "AllVehicleDetails";
+    Layout = "~/Views/Shared/AdminMainView.cshtml";
+}
+
+<div class="table-responsive-sm">
+    <table class="table">
+        <thead class="thead-dark">
+            <tr class="" style="font-size:17.1px">
+                <th scope="col">SlNo.</th>
+                <th scope="col">Vehicle Name</th>
+                <th scope="col">Milage</th>
+                <th scope="col">Fuel Type</th>
+                <th scope="col">Manufacture Date</th>
+                <th scope="col">Price</th>
+                <th scope="col">Availability Status</th>
+                <th scope="col">Active Status</th>
+                <th scope="col">Active</th>
+                <th scope="col">Deactive</th>
+                <th scope="col">Edit</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var data in Model.vehiclesModel.Select((Data, Index) => new { Data = Data, Index = Index+1 }))
+            {
+                <tr>
+                    <th scope="row">@data.Index</th>
+                    <td>@data.Data.VehicleName</td>
+                    <td>@data.Data.Mileage</td>
+                    <td>@data.Data.FuelType</td>
+                    <td>@data.Data.ManufactureDate.Value.ToString("dd-MM-yyyy")</td>
+                    <td>@data.Data.price</td>
+                    <td>@data.Data.AvailabilityStatus</td>
+                    <td>@data.Data.Active</td>
+                    <td><a href="/User/Activate/@data.Data.VehicleID" class="btn btn-warning" type="submit">Activate</a></td>
+                    <td><a href="/User/Deactivate/@data.Data.VehicleID" class="btn btn-danger" type="submit">Deactivete</a></td>
+                    <td><a href="/User/EditVehicleDetails/@data.Data.VehicleID" class="btn btn-info" type="submit">Edit</a></td>
+                    
+                </tr>
+            }
+            </tbody>
+    </table>
+    </div>

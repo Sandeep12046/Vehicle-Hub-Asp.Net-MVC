@@ -1,19 +1,6 @@
-﻿@model VehicleDetails.Models.RequiredModels.CategoryVehicle
-<div class="container-fluid col-12 g-6 d-flex flex-wrap">
-    @foreach (var data in Model._vehicles)
-    {
-
-        <a href="/home/details/@data.VehicleID" class="text-decoration-none justify-content-between" style="color:black">
-            <div class="card" style="width: 18rem; margin: 1rem;">
-                <img class="card-img-top" src="~/Asserts/VehicleImage.jpg" alt="Card image cap">
-                <div class="card-body">
-                    <h4>@data.VehicleName</h4>
-                    <p>@data.ManufactureDate.Value.ToString("d/MM/yyyy")</p>
-
-                </div>
-
-            </div>
-        </a>
-
-    }
+﻿
+<div>
+    <div class="col-12">
+        Data
+    </div>
 </div>

@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Web;
+using System.Net.Mail;
+using System.Net;
 using System.Web.Mvc;
 using VehicleDetails.Helpers;
 using VehicleDetails.Models;
-using VehicleDetails.Models.RequiredModels;
 using VehicleDetails.Models.RequiredModels.ViewModels;
 using VehicleDetails.Repository;
-
+using System.Threading.Tasks;
 namespace VehicleDetails.Controllers
 {
     //[RoutePrefix("vehicleDetails")]
@@ -19,6 +18,7 @@ namespace VehicleDetails.Controllers
         IBrand BrandDAL;
         ICategory CategoryDAL;
         IReview IReviewDAL;
+        IUser userDAL;
         AllData allData;
         public HomeController()
         {
@@ -26,13 +26,13 @@ namespace VehicleDetails.Controllers
             this.BrandDAL=new BrandDAL(new VehicleDBEntities());
             this.CategoryDAL=new CategoryDAL(new VehicleDBEntities());
             this.IReviewDAL=new ReviewDAL(new VehicleDBEntities());
+            this.userDAL=new UserDAl(new VehicleDBEntities());
             this.allData = new AllData();
         }
    
         //[Route("home")]
         public ActionResult Index()
         {
-           
                 var data = allData.AllDataInfo();
                 return View(data);
            
@@ -43,7 +43,7 @@ namespace VehicleDetails.Controllers
         public ActionResult Create()
         {
 
-
+            int userID = Convert.ToInt32(Session["UserID"]);
             BrandCategories category = new BrandCategories
             {
                 Brands = BrandDAL.GetAllBrand().Select(BrandModel => new BrandModel
@@ -53,116 +53,57 @@ namespace VehicleDetails.Controllers
                     BrandCategoryID = BrandModel.BrandCategoryID,
                     ImageUrl = BrandModel.ImageUrl,
                 }).ToList(),
-                Categories = CategoryDAL.GetCategories().Select(CategoryModel=>new CategoryModel
+                Categories = CategoryDAL.GetCategories().Select(CategoryModel => new CategoryModel
                 {
                     CategoryID = CategoryModel.CategoryID,
                     CategoryName = CategoryModel.CategoryName,
-                    ImageUrl=CategoryModel.ImageUrl,
+                    ImageUrl = CategoryModel.ImageUrl,
                 }).ToList(),
+               
                 
             };
+            category.user = new UserModel();
 
+            if (category.user.UserType != 0)
+            {
+                category.user.UserType = userDAL.getUserByVehicleID(userID).UserType;
+
+            }
+            else if (category.user.UserType != 1)
+            {
+                category.user.UserType = userDAL.getUserByVehicleID(userID).UserType;
+            }
+            else
+            {
+                
+                category.user = new UserModel { UserType = 0 }; 
+            }
             return View(category);
         }
         [HttpPost]
         //[Route("create")]
         public ActionResult Create(BrandCategories newVehicle)
         {
-            if (ModelState.IsValid)
-            {
-                VehicleDAL.InsertNewVehicle(newVehicle);
+            
+                int userID = Convert.ToInt32(Session["UserID"]);
+                VehicleDAL.InsertNewVehicle(newVehicle, userID);
                 return RedirectToAction("Index");
-            }
-          return RedirectToAction("create");
+          
         }
 
-
-        [HttpPost]
-        public ActionResult CreateBrandData(BrandCategories data)
-        {
-            BrandDAL.InsertBrandData(data);
-            return RedirectToAction("index");
-        }
-
-        [HttpPost]
-        public ActionResult CreateCategoryData(BrandCategories data)
-        {
-            CategoryDAL.CreteCategoryBrand(data);
-            return RedirectToAction("index");
-        }
-
-        [HttpGet]
-        //[Route("edit")]
-        public ActionResult Edit(int id)
-        {
-            BrandCategories model = new BrandCategories();
-
-            model.vehicles = new VehicleModel();
-            model.Categories = new List<CategoryModel>();
-
-            Vehicle data = VehicleDAL.GetVehicleById(id);
-            model.vehicles.VehicleID = data.VehicleID;
-            model.vehicles.price = data.price;
-            model.vehicles.VehicleName = data.VehicleName;
-            model.vehicles.AvailabilityStatus = data.AvailabilityStatus;
-            model.vehicles.ManufactureDate = (DateTime)data.ManufactureDate;
-            model.vehicles.VehicleCategoryID = data.VehicleCategoryID;
-            model.vehicles.VehicleBrandID = data.VehicleBrandID;
-            model.vehicles.FuelType= data.FuelType;
-            model.vehicles.ImageUrl= data.ImageUrl;
-            model.vehicles.Mileage= data.Mileage;
-            List<Brand> brands = BrandDAL.GetAllBrand();
-            model.Brands=brands.Select(b=>new BrandModel
-            {
-                BrandID=b.BrandID,
-                BrandName=b.BrandName,
-                Active=b.Active,
-                BrandCategoryID=b.BrandCategoryID,
-                ImageUrl=b.ImageUrl,
-            }).ToList();
-    
-            List<Category> categories = CategoryDAL.GetCategories();
-
-            model.Categories = categories.Select(c => new CategoryModel
-            {
-                CategoryID = c.CategoryID,
-                CategoryName = c.CategoryName,
-                ImageUrl = c.ImageUrl,
-                Active = c.Active,
-            }).ToList();
-
-            return View(model);
-        }
-
-
-
-        [HttpPost]
-        //[Route("edit")]
-        public ActionResult Edit(BrandCategories newVehicle) {
-            if (ModelState.IsValid)
-            {
-                VehicleDAL.UpdateVehicle(newVehicle);
-                return RedirectToAction("Index");
-            }
-            return View(newVehicle);
-        }
-
-        public ActionResult Delete(int id)
-        {
-            VehicleDAL.DeleteVehicle(id);
-            return RedirectToAction("Index");
-        }
-
-        //[Route("VehicleById")]
         public ActionResult Details(int id)
         {
             BrandCategories model = new BrandCategories();
             model.vehicles = new VehicleModel();
             model.brand=new BrandModel();
             model.reviews=new List<ReviewModel>();
+            model.user= new UserModel();
+            model.vehiclesModel = new List<VehicleModel>();
             Vehicle data=VehicleDAL.GetVehicleById(id);
+            UserModel usersData = userDAL.getUserByVehicleID(id);
             List<Review> reviews = IReviewDAL.getVehicleReviewById(id);
             List<Brand> brands = BrandDAL.GetAllBrand();
+            
             model.vehicles.VehicleID = data.VehicleID;
             model.vehicles.price = data.price;
             model.vehicles.VehicleName = data.VehicleName;
@@ -170,38 +111,46 @@ namespace VehicleDetails.Controllers
             model.vehicles.ManufactureDate = (DateTime)data.ManufactureDate;
             model.vehicles.VehicleCategoryID = data.VehicleCategoryID;
             model.vehicles.VehicleBrandID = data.VehicleBrandID;
+            model.vehicles.VehicleUserID = data.VehicleUserID;
             model.vehicles.FuelType = data.FuelType;
             model.vehicles.ImageUrl = data.ImageUrl;
             model.vehicles.Mileage = data.Mileage;
+            model.vehicles.FuelType = data.FuelType;
+            model.vehicles.Color = data.Color;
+            model.vehicles.Description = data.Description;
+            model.vehicles.Address = data.Address;
+            model.vehicles.RegistrationNumber = data.RegistrationNumber;
+            model.vehicles.Transmission = data.Transmission;
+            model.vehicles.Owner = data.Owner;
             model.brand.BrandID = data.Brand.BrandID;
             model.brand.Active = data.Brand.Active;
             model.brand.BrandCategoryID=data.Brand.BrandCategoryID;
             model.brand.BrandName = data.Brand.BrandName;   
             model.brand.ImageUrl=data.Brand.ImageUrl;
+            model.user.Address = usersData.Address;
+            model.user.PhoneNumber = usersData.PhoneNumber;
+            model.user.FirstName = usersData.FirstName;
+            model.user.Email = usersData.Email;
             model.reviews = reviews.Select(ReviewModel => new ReviewModel
             {
                 ReviewID=ReviewModel.ReviewID,
                 Comment = ReviewModel.Comment,
-                DateTime = ReviewModel.DateTime,
+                DateTimes= (DateTime)ReviewModel.DateTimes,
+                UserID=ReviewModel.UserID,
+                VehicleID=ReviewModel.VehicleID,
             }).ToList();
+            model.vehiclesModel = VehicleDAL.GetAllRelatedVehicles((int)model.vehicles.VehicleBrandID, (int)model.vehicles.VehicleCategoryID,(int)id);
             return View(model);
         }
 
-
-        public ActionResult AddReview(BrandCategories brandCategories)
+        public ActionResult AllVehicles(int id=0,string search = "")
         {
-
-            IReviewDAL.insertReviews(brandCategories);
-            return View(brandCategories);
-        }
-
-        public ActionResult AllVehicles(string search = "")
-        {
-            if (!string.IsNullOrEmpty(search))
+            if (!string.IsNullOrEmpty(search) || id!=null)
             {
                 BrandCategories brandCategories = new BrandCategories();
-                brandCategories.vehiclesModel = VehicleDAL.GetAllVehicleSearch(search);
+                brandCategories.vehiclesModel = VehicleDAL.GetAllVehicleSearch(id,search);
                 ViewBag.Search = search;
+                ViewBag.CheckBoxValue = id;
                 return View(brandCategories);
             } 
             else
@@ -218,7 +167,6 @@ namespace VehicleDetails.Controllers
 
             return View(data);
         }
-
 
         public ActionResult AllVehicleByBrand(int id)
         {
@@ -238,6 +186,13 @@ namespace VehicleDetails.Controllers
                 Mileage = VehicleModel.Mileage,
                 ImageUrl = VehicleModel.ImageUrl,
                 Status = VehicleModel.Status,
+                FuelType = VehicleModel.FuelType,
+                Color = VehicleModel.Color,
+                Owner=VehicleModel.Owner,
+                Description = VehicleModel.Description,
+                Address = VehicleModel.Address,
+                RegistrationNumber = VehicleModel.RegistrationNumber,
+                Transmission = VehicleModel.Transmission,
             }).ToList();
             
 
@@ -245,14 +200,19 @@ namespace VehicleDetails.Controllers
 
         }
 
-      
-
-
-     
-        public ActionResult RemoveComment(int id)
+        public ActionResult RemoveComment(int id,int userIDs)
         {
-            IReviewDAL.DetachReviews(id);
+            IReviewDAL.DeleteReviews(id, userIDs);
+
             return RedirectToAction("Index", "Home");
+        }
+
+
+        public ActionResult DeleteVehicleData(int id, int userID)
+        {
+            VehicleDAL.DeleteVehicle(id, userID);
+            
+            return RedirectToAction("Index");
         }
 
         public ActionResult Comment(int id)
@@ -275,6 +235,12 @@ namespace VehicleDetails.Controllers
             model.vehicles.FuelType = data.FuelType;
             model.vehicles.ImageUrl = data.ImageUrl;
             model.vehicles.Mileage = data.Mileage;
+            model.vehicles.Color = data.Color;
+            model.vehicles.Description = data.Description;
+            model.vehicles.Address = data.Address;
+            model.vehicles.RegistrationNumber = data.RegistrationNumber;
+            model.vehicles.Transmission = data.Transmission;
+            model.vehicles.Owner = data.Owner;
             model.brand.BrandID = data.Brand.BrandID;
             model.brand.Active = data.Brand.Active;
             model.brand.BrandCategoryID = data.Brand.BrandCategoryID;
@@ -284,11 +250,154 @@ namespace VehicleDetails.Controllers
             {
                 ReviewID = ReviewModel.ReviewID,
                 Comment = ReviewModel.Comment,
-                DateTime = ReviewModel.DateTime,
+                DateTimes = (DateTime)ReviewModel.DateTimes,
+                UserID= ReviewModel.UserID,
             }).ToList();
 
             return View();
         }
 
+
+        public ActionResult AboutUS()
+        {
+            return View();  
+        }
+
+        public ActionResult ContactUS()
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        public ActionResult QueryInfo(UserQueryModel query)
+        {
+            int? userID = Convert.ToInt32(Session["UserID"]);
+            userDAL.SendQueryInfo(query);
+            AllData.sendMails(query);
+            if (userID!=0 && userID!=null)
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+
+                return RedirectToAction("ContactUs","Home");
+            }
+           
+        }
+
+        [HttpPost]
+        public ActionResult SendEmail()
+        {
+           try
+            {
+                SmtpClient smtpClient = new SmtpClient("smtp.gmail.com")
+                {
+                    Port = 587,
+                    Credentials = new NetworkCredential("sanjusandeep12046@gmail.com", "lgotlmqgefomscda"),
+                    EnableSsl = true,
+
+                };
+                MailMessage mailMessage = new MailMessage
+                {
+
+                    From = new MailAddress("sanjusandeep12046@gmail.com"),
+                    Subject = "Thank You for Your Inquiry - Vehicle Hub Name Customer Service Will Reach Out Soon",
+                    Body = "Thank you for reaching out to Vehicle Hub regarding your interest in selling vehicles on our platform. " +
+                    "We appreciate your inquiry, and our dedicated customer service team is eager to assist you.\r\n\r\n" +
+                    "A representative from our customer service department will be contacting you shortly to discuss your questions and provide you with the information you need. " +
+                    "We understand that your time is valuable, and we want to ensure that we address all your queries comprehensively.\r\n\r\nIn the meantime, " +
+                    "if there's anything specific you'd like to share or if you have additional details you'd like us to be aware of, please feel free to reply to this email.\r\n\r\n" +
+                    "We look forward to the opportunity to assist you and facilitate your experience on Vehicle Hub.\r\n\r\n" +
+                    "Thank you for considering Vehicle Hub as your platform for selling vehicles.\r\n\r\nBest regards,\r\n\r\n" +
+                    "Customer Service Team\r\nVehicle Hub\r\n" +
+                    "980225544554",
+                    IsBodyHtml = false, 
+                };
+
+                mailMessage.To.Add("sanjusandeep12046@gmail.com");
+                smtpClient.Send(mailMessage);
+                return Redirect("index");
+            }
+            catch (Exception ex)
+            {
+                return Content($"Error sending email: {ex.Message}");
+            }
+        }
+
+
+        public ActionResult SendEmailContactUS()
+        {
+            try
+            {
+                SmtpClient smtpClient = new SmtpClient("smtp.gmail.com")
+                {
+                    Port = 587,
+                    Credentials = new NetworkCredential("sanjusandeep12046@gmail.com", "lgotlmqgefomscda"),
+                    EnableSsl = true,
+                };
+                MailMessage mailMessage = new MailMessage
+                {
+                    From = new MailAddress("sanjusandeep12046@gmail.com"),
+                    Subject = "Thank You for Contacting Us!",
+                    Body = "Dear[Customer's Name],\r\n\r\n       " +
+                    "Thank you for reaching out to us! We appreciate your interest in our products and services." +
+                    "A member of our Sales team will be in touch with you shortly to discuss your requirements and guide you " +
+                    "through the process of finding the right vehicle and pricing that best suits your needs.\r\n\r\n        " +
+                    "We look forward to assisting you in making an informed decision and ensuring a smooth and enjoyable experience with our team.\r\n\r\n" +
+                    "If you have any immediate questions or concerns, feel free to reach out to us at[Your Contact Information].\r\n\r\n" +
+                    "Best regards,\r\n\r\n" +
+                    "Vehicle Hub\r\n" +
+                    "9874554214155",
+                    IsBodyHtml = false,
+                };
+
+                mailMessage.To.Add("sanjusandeep12046@gmail.com");
+                smtpClient.Send(mailMessage);
+                return Redirect("index");
+            }
+            catch (Exception ex)
+            {
+                return Content($"Error sending email: {ex.Message}");
+            }
+        }
+        public ActionResult EmailTestDrive()
+        {
+             int id=Convert.ToInt32(Session["UserID"]);
+            //BrandCategories userData= new BrandCategories();
+            //userData.user = new UserModel();
+            UserModel userData = userDAL.GetUserInfoById(id);
+            AllData.TestDriveEmail(userData);
+
+            return View();
+            //try
+            //{
+            //    SmtpClient smtpClient = new SmtpClient("smtp.gmail.com")
+            //    {
+            //        Port = 587,
+            //        Credentials = new NetworkCredential("sanjusandeep12046@gmail.com", "lgotlmqgefomscda"),
+            //        EnableSsl = true,
+            //    };
+            //    MailMessage mailMessage = new MailMessage
+            //    {
+            //        From = new MailAddress("sanjusandeep12046@gmail.com"),
+            //        Subject = "Thank You for Contacting Us!",
+            //        Body = $"Dear {userData.UserName},\r\n\r\n" +
+            //       $"We're delighted to offer {userData.UserName} an exclusive home test drive experience! \r\n\r\n" +
+            //       $"Our representative will be bringing the latest models directly to {userData.UserName}'s doorstep at {userData.Address},\r\n\r\n " +
+            //       $"and they can be reached at {userData.PhoneNumber} to schedule this personalized test drive.\r\n",
+            //        IsBodyHtml = false,
+            //    };
+
+            //    mailMessage.To.Add("sanjusandeep12046@gmail.com");
+            //    smtpClient.Send(mailMessage);
+            //    return Redirect("index");
+            //}
+            //catch (Exception ex)
+            //{
+            //    return Content($"Error sending email: {ex.Message}");
+            //}
+        }
     }
 }

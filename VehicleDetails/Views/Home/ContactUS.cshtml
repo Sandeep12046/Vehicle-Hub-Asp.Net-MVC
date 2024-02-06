@@ -1,0 +1,159 @@
+﻿@model VehicleDetails.Models.RequiredModels.ViewModels.UserQueryModel
+@{
+    ViewBag.Title = "ContactUS";
+    Layout = "~/Views/Shared/MainView.cshtml";
+
+
+}
+
+
+
+<div>
+
+    <div class="d-flex" style=" justify-content: center; background-color: honeydew; padding: 5rem; margin: 1rem;">
+        <div class="col-5" style="background-color: #ffff;">
+            <p style=" font-size: 42px; font-family: emoji; font-weight: lighter;">Contact Us</p>
+        </div>
+        <div class="col-5 p-0">
+            <img src="https://static.vecteezy.com/system/resources/previews/000/453/432/original/vector-contact-us-background.jpg" style="height:25rem;width:35rem;" />
+        </div>
+    </div>
+
+    <div class="d-flex" style=" position: absolute; top: 10rem; left: 15rem; height: 17rem; padding: 1rem; margin: 2rem;">
+        <form action="/Home/SendEmail" method="post">
+            <div class="shadow-lg m-2 text-center" style="width: 25rem; background-color: #ffff; height: 14.6rem; padding: 2rem; ">
+                <p style=" color: darkslategrey !important; font-family: emoji; font-weight: bold; font-size: 24px;">Talk to a member of our Sales team</p>
+                <p style="font-style: oblique; color: #303030;">We will help you the right vehicle and pricing for your needs</p>
+                <button style="color: darkslategrey; background-color: darkslategrey; color: #ffff;">Contact Sales</button>
+            </div>
+        </form>
+        <form action="/Home/SendEmailContactUS" method="post">
+            <div class="shadow-lg m-2 text-center" style="width: 25rem; background-color: #ffff; padding: 2rem;">
+                <p style=" color: darkslategrey !important; font-family: emoji; font-weight: bold; font-size: 24px;">Product and account support</p>
+                <p style="font-style: oblique; color: #303030;">Your help center is always fresh and always open for help, If you con't find the answer you're looking for,We're here to lead a hand</p>
+                <button style="color: darkslategrey; background-color: darkslategrey; color: #ffff;">Go to the help Center</button>
+                @*<a href="" style="color: darkslategrey; background-color: darkslategrey; color: #ffff;">Go to the help Center</a>*@
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <div class="d-flex justify-content-center" style="z-index:0;">
+        <div class="card bg-dark text-white" style="width: 75%;">
+            <img class="card-img" src="https://th.bing.com/th/id/OIP.zYN6xYPKjholLFMCJFyejAHaEK?rs=1&pid=ImgDetMain" alt="Card image">
+            <div class="card-img-overlay">
+                <h5 class="card-title">Any queries let us know</h5>
+                <p class="card-text"></p>
+                <p class="card-text"></p>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="d-flex justify-content-center shadow-lg" style="width: 65%; width: 67%; position: relative; bottom: 24rem; left: 15.5rem; ">
+        <div class=" card bg-light text-dark p-4">
+            <div class="col">
+                <div class="d-flex">
+                    <img src="https://www.beepkart.com/images/phone.webp" style="height:48px;width:48px;" />
+                    <div class="pl-2">
+                        <p class="text-bg-dark headingStyle">
+                            Phone No.
+                        </p>
+                        <p>
+                            18001231442
+                        </p>
+                    </div>
+                </div>
+                <div class="d-flex">
+                    <img src="https://www.beepkart.com/images/mail.webp" style="height:48px;width:48px;" />
+                    <div class="pl-2">
+                        <p class="text-bg-dark headingStyle">
+                            Email
+                        </p>
+                        <p>
+                            contact@VehicleHub.com
+                        </p>
+                    </div>
+                </div>
+                <div class="d-flex">
+                    <img src="https://www.beepkart.com/images/location-pin.webp" style="height:48px;width:48px;" />
+                    <div class="pl-2">
+                        <p class="text-bg-dark headingStyle">
+                            Corporate Office
+                        </p>
+                        <p>
+                            Industrial Layout, Bengaluru, Karnataka 560095 <br />
+                            Jayaprakash Narayan Nagara, Mysore, Karnataka 560095
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-4 card bg-light text-dark" style="">
+
+            @using (Html.BeginForm("QueryInfo", "Home", FormMethod.Post, new { @class = "p-4" }))
+            {
+                <p style="font-size: 18px; color: #303030; font-family: emoji; font-weight: 700;">Let us know your queries</p>
+                <div class="form-group">
+                    @Html.HiddenFor(queryid => queryid.QueryID)
+                    @Html.LabelFor(name => name.FullName, new { @class = "headingStyle" })
+                    @Html.TextBoxFor(name => name.FullName, new { @class = "form-control", placeholder = "Enter Name" })
+                    @Html.ValidationMessageFor(name => name.FullName, null, new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(mobile => mobile.MobileNumber, new { @class = "headingStyle" })
+                    @Html.TextBoxFor(mobile => mobile.MobileNumber, new { @class = "form-control", placeholder = "Enter Mobile Number", maxlength = "10" })
+                    @Html.ValidationMessageFor(mobile => mobile.MobileNumber, null, new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(email => email.EmailID, new { @class = "headingStyle" })
+                    @Html.TextBoxFor(email => email.EmailID, new { @class = "form-control", placeholder = "Enter Email ID" })
+                    @Html.ValidationMessageFor(email => email.EmailID, null, new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(msg => msg.Message, new { @class = "headingStyle" })
+                    @Html.TextAreaFor(msg => msg.Message, new { @class = "form-control", placeholder = "Enter Message Here", row = "3" })
+                    @Html.ValidationMessageFor(msg => msg.Message, null, new { @class = "text-danger" })
+                </div>
+                <button type="submit" class="btn btn-primary">SEND MESSAGE</button>
+            }
+        </div>
+
+    </div>
+</div>
+
+
+<style>
+    .headingStyle {
+        font-size: 16px;
+        color: #303030;
+        font-family: emoji;
+        font-weight: 700;
+    }
+</style>
+
+
+<!-- Include Toastr CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+<!-- Include Toastr JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+<script>
+
+ showToast('success', 'Operation successful!');
+    function showToast(message, type) {
+
+      toastr.options = {
+          closeButton: true,
+          progressBar: true,
+          positionClass: 'toast-top-right',
+          timeOut: 5000,
+      };
+
+      toastr[success](message);
+  }
+
+
+</script>

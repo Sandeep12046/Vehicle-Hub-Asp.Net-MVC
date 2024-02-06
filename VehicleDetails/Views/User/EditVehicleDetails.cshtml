@@ -1,0 +1,107 @@
+﻿@model VehicleDetails.Models.RequiredModels.ViewModels.BrandCategories
+
+@{
+    ViewBag.Title = "EditVehicleDetails";
+    Layout = "~/Views/Shared/AdminMainView.cshtml";
+
+    var ids = Model.vehicles.VehicleID;
+}
+
+<h2 class="text-center">Edit Vehicle Details</h2>
+
+<div class="container-fluid border border-light">
+    @using (Html.BeginForm("EditVehicleDetails", "User", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+    <div class="form-row ">
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.vehicles.VehicleName)
+            @Html.HiddenFor(model => model.vehicles.VehicleID)
+            <input type="hidden" id="@Model.vehicles.VehicleID" name="@Model.vehicles.VehicleID" value="@ids" />
+            @Html.TextBoxFor(model => model.vehicles.VehicleName, new { @class = "form-control", placeholder = "Enter Vehicle Name" })
+            @Html.ValidationMessageFor(model => model.vehicles.VehicleName, null, new { @class = "text-danger" })
+        </div>
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.vehicles.price)
+            @Html.TextBoxFor(model => model.vehicles.price, new { @class = "form-control", placeholder = "Enter Price" })
+            @Html.ValidationMessageFor(model => model.vehicles.price, null, new { @class = "text-danger" })
+        </div>
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.vehicles.ManufactureDate)
+            @Html.TextBoxFor(model => model.vehicles.ManufactureDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date"})
+            @Html.ValidationMessageFor(model => model.vehicles.ManufactureDate, null, new { @class = "text-danger" })
+        </div>
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.vehicles.FuelType)
+            @Html.TextBoxFor(model => model.vehicles.FuelType, new { @class = "form-control", placeholder = "Enter Fuel Type" })
+            @Html.ValidationMessageFor(model => model.vehicles.FuelType, null, new { @class = "text-danger" })
+        </div>
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.vehicles.Mileage)
+            @Html.TextBoxFor(model => model.vehicles.Mileage, new { @class = "form-control", placeholder = "Enter Mileage" })
+            @Html.ValidationMessageFor(model => model.vehicles.Mileage, null, new { @class = "text-danger" })
+        </div>
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.vehicles.ImageUrl)
+            @Html.TextBoxFor(model => model.vehicles.ImageUrl, new { @class = "form-control", placeholder = "Enter Image URL" })
+            @Html.ValidationMessageFor(model => model.vehicles.ImageUrl, null, new { @class = "text-danger" })
+        </div>
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.vehicles.VehicleCategoryID)
+            @Html.DropDownListFor(model => model.vehicles.VehicleCategoryID, new SelectList(Model.Categories, "CategoryID", "CategoryName"), "Select Category", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.vehicles.VehicleCategoryID, null, new { @class = "text-danger" })
+        </div>
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.vehicles.VehicleBrandID)
+            @Html.DropDownListFor(model => model.vehicles.VehicleBrandID, new SelectList(Model.Brands, "BrandID", "BrandName"), "Select Brand", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.vehicles.VehicleBrandID, null, new { @class = "text-danger" })
+        </div>
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.vehicles.AvailabilityStatus)
+            @Html.DropDownListFor(model => model.vehicles.AvailabilityStatus, new SelectList(new List<string> { "Available", "UnAvailable" }), "Select AvailabilityStatus", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.vehicles.AvailabilityStatus, null, new { @class = "text-danger" })
+        </div>
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.vehicles.Color, new { @class = "control-label" })
+            @Html.TextBoxFor(model => model.vehicles.Color, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.vehicles.Color, null, new { @class = "text-danger" })
+        </div>
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.vehicles.RegistrationNumber, new { @class = "control-label" })
+            @Html.TextBoxFor(model => model.vehicles.RegistrationNumber, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.vehicles.RegistrationNumber, null, new { @class = "text-danger" })
+        </div>
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.vehicles.Transmission, new { @class = "control-label" })
+            @Html.DropDownListFor(model => model.vehicles.Transmission, new SelectList(new List<string> { "Automatic", "Manual" }), "Select Transmission", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.vehicles.Transmission, null, new { @class = "text-danger" })
+        </div>
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.vehicles.Owner, new { @class = "control-label" })
+            @Html.DropDownListFor(model => model.vehicles.Owner, new SelectList(new List<string> { "New","1st Hand", "2nd Hand","More" }), "Select Owner", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.vehicles.Owner, null, new { @class = "text-danger" })
+        </div>
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.vehicles.Address, new { @class = "control-label" })
+            @Html.TextBoxFor(model => model.vehicles.Address, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.vehicles.Address, null, new { @class = "text-danger" })
+        </div>
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.vehicles.Description, new { @class = "control-label" })
+            @Html.TextAreaFor(model => model.vehicles.Description, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.vehicles.Description, null, new { @class = "text-danger" })
+        </div>
+        <div class="form-group col-md-4">
+            <img src="@Model.vehicles.ImageUrl" alt="Vehicle Image" style="height: 15rem; width: 20rem;">
+        </div>
+    </div>
+
+        <span class="d-flex justify-content-end">
+            <button type="submit" class="btn btn-warning">Submit</button>
+        </span>
+    }
+</div>
+
+
+

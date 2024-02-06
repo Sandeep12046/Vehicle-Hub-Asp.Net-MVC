@@ -1,0 +1,119 @@
+﻿@model VehicleDetails.Models.RequiredModels.ViewModels.UserModel
+@{
+    ViewBag.Title = "UserProfile";
+    Layout = "~/Views/Shared/MainView.cshtml";
+}
+
+
+<div class="container-fluid">
+    <div class="d-flex ">
+        <div class="col-2">
+            @*<div class="col">profile</div>*@
+
+        </div>
+        <div class="col-8 text-start  m-3">
+            <div class="col shadow-lg p-3">
+                <ul>
+                    <li class="nav-item active list-unstyled">
+                        @*<img src="" alt="..." class="rounded-circle" style=" height: 2.5rem; width: 2.5rem;">*@
+                        <img src="@Url.Content(Model.UserImage)"  class="rounded-circle" style=" height: 2.5rem; width: 2.5rem;"/>
+                        <a class="navbar-brand text-dark" href="#"> @Session["UserName"]</a>
+                    </li>
+                </ul>
+                @*<div class="col d-flex justify-content-end"><button class="btn btn-info">Update</button></div>*@
+            </div>
+
+            <div class="col mt-3 shadow-sm shadow-lg p-3">
+
+                <p class="text-center" style=" font-size: 24px; font-size: 36px;font-weight:bolder; font-family: serif; color: #303030;">
+                    Change Information Here
+                </p>
+                @using (Html.BeginForm("UserProfile", "User", FormMethod.Post, new { enctype = "multipart/form-data" })) { 
+                @*@using (Html.BeginForm("UserProfile", "User", FormMethod.Post, new { @class = "", encrp }))
+                {*@
+                    @Html.AntiForgeryToken()
+                    <div class="form-row">
+                        <div class="form-group col-md-3">
+                            @Html.HiddenFor(model => model.UserID)
+                            @Html.LabelFor(model => model.UserImage)
+                            @*@Html.TextBoxFor(model => model.UserImage, new { @class = "form-control", placeholder = "Enter upload Image", type = "file" })*@
+                            <input type="file" id="UserImage" name="UserImage" required/>
+                            @Html.ValidationMessageFor(model => model.UserImage, null, new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-md-3">
+                            @Html.LabelFor(model => model.FirstName)
+                            @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control", placeholder = "Enter First name" })
+                            @Html.ValidationMessageFor(model => model.FirstName, null, new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-md-3">
+                            @Html.LabelFor(model => model.LastName)
+                            @Html.TextBoxFor(model => model.LastName, new { @class = "form-control", placeholder = "Enter Last Name" })
+                            @Html.ValidationMessageFor(model => model.LastName, null, new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-md-3">
+                            @Html.LabelFor(model => model.UserName)
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroupPrepend">#</span>
+                                </div>
+                                @Html.TextBoxFor(model => model.UserName, new { @class = "form-control", placeholder = "Enter User Name" })
+                                @Html.ValidationMessageFor(model => model.UserName, null, new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            @Html.LabelFor(model => model.Email)
+                            @Html.TextBoxFor(model => model.Email, new { @class = "form-control", placeholder = "Enter Email" })
+                            @Html.ValidationMessageFor(model => model.Email, null, new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group col-md-4">
+                            @Html.LabelFor(model => model.PhoneNumber)
+                            @Html.TextBoxFor(model => model.PhoneNumber, new { @class = "form-control", placeholder = "Enter Phone Number" })
+                            @Html.ValidationMessageFor(model => model.PhoneNumber, null, new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-md-4">
+                            @Html.LabelFor(model => model.City)
+                            @Html.TextBoxFor(model => model.City, new { @class = "form-control", placeholder = "Enter City" })
+                            @Html.ValidationMessageFor(model => model.City, null, new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-md-4">
+                            @Html.LabelFor(model => model.State)
+                            @Html.TextBoxFor(model => model.State, new { @class = "form-control", placeholder = "Enter State" })
+                            @Html.ValidationMessageFor(model => model.State, null, new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-md-4">
+                            @Html.LabelFor(model => model.ZipCode)
+                            @Html.TextBoxFor(model => model.ZipCode, new { @class = "form-control", placeholder = "Enter ZipCode" })
+                            @Html.ValidationMessageFor(model => model.ZipCode, null, new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-md-4">
+                            @Html.LabelFor(model => model.Country)
+                            @Html.TextBoxFor(model => model.Country, new { @class = "form-control", placeholder = "Enter Country" })
+                            @Html.ValidationMessageFor(model => model.Country, null, new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-md-5">
+                            @Html.LabelFor(model => model.Address)
+                            @Html.TextAreaFor(model => model.Address, new { @class = "form-control", placeholder = "Enter Address" })
+                            @Html.ValidationMessageFor(model => model.Address, null, new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-md-6">
+                            @Html.LabelFor(model => model.Passwords)
+                            @Html.TextBoxFor(model => model.Passwords, new { @class = "form-control", placeholder = "Enter Passwords" })
+                            @Html.ValidationMessageFor(model => model.Email, null, new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <p class="text-bg-danger">@ViewBag.imageErrorMsg</p>
+                    <div class="d-flex justify-content-end"><button class="btn btn-info" type="submit">Update Details</button></div>
+                }
+            </div>
+
+
+        </div>
+        <div>
+            @*<div class="col-2">profile</div>*@
+
+        </div>
+    </div>
+</div>

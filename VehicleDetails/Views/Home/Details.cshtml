@@ -2,105 +2,350 @@
 @{
     ViewBag.Title = "Details";
     Layout = "~/Views/Shared/MainView.cshtml";
+    var userIDs = Convert.ToInt32(Session["UserID"]);
 
 }
 
-@*@{
-        var add=5;
-        object check()
-        {
-            object data=Model.price > 0 ? "dsaf" : 5;
-            add = add + 10;
-            return data;
+
+@if (Model != null)
+{
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col p-3">
+              <div class="d-flex">
+                  <div class="col-6">
+                      <img class="card-img w-98" src="@Model.vehicles.ImageUrl" alt="Card image">
+                      <div class="d-flex justify-content-between m-2">
+
+
+                          @using (Html.BeginForm("EmailTestDrive", "Home", FormMethod.Post))
+                          {
+                              <button type="submit" class="btn btn-primary">HOME TEST DRIVE</button>
+                          }
+                          @using (Html.BeginForm("Create", "Favorite", FormMethod.Post))
+                          {
+                              <div class="form-group m-0">
+                                  @Html.HiddenFor(model => model.vehicles.VehicleID)
+                              </div>
+                              <div class="d-flex justify-content-start"><button type="submit" class="btn btn btn-warning">Add to Favorite</button></div>
+                          }
+                      </div>
+
+
+                      @if (Model.vehicles.VehicleUserID == userIDs)
+                      {
+                          <div class="d-flex justify-content-end">
+                              <a href="@Url.Action("DeleteVehicleData", "Home", new { id = Model.vehicles.VehicleID, userID = Session["UserID"] })" class="text-decoration-none text-bg-light btn btn-danger">Delete</a>
+
+                          </div>
+                      }
+                      else
+                      {
+                          <div class="d-flex justify-content-end">
+                              <button type="button" class="btn btn-info m-2" data-toggle="modal" data-target="#exampleModalCenter">
+                                  Contact Us
+                              </button>
+                          </div>
+
+                          <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                              <div class="modal-dialog modal-dialog-centered" role="document">
+                                  <div class="modal-content">
+                                      <div class="modal-header">
+                                          <h5 class="modal-title" id="exampleModalLongTitle">Contact Details</h5>
+                                          @*<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>*@
+                                      </div>
+                                      <div class="modal-body">
+
+                                          <p class="font-weight-bold">Name: @Model.user.FirstName</p>
+                                          <p class="font-weight-bold">Email-Id: @Model.user.Email</p>
+                                          <p class="font-weight-bold">Phone No: @Model.user.PhoneNumber</p>
+
+                                          <p class="font-weight-bold">Address: @Model.vehicles.Address</p>
+                                      </div>
+                                      <div class="modal-footer">
+                                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                          @*<button type="button" class="btn btn-primary">Save changes</button>*@
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      }
+                  <div>
+                      @if (Model.reviews.Count > 0)
+                      {
+
+
+                          <div>
+                              <p style=" margin: 1rem; font-size: 36px; font-family: emoji; font-style: inherit; font-weight: bold; text-align: start;">Reviews</p>
+                          </div>
+                      }
+                      else
+                      {
+                          <span></span>
+                      }
+
+                      <div class="owl-carousel owl-theme">
+
+                          @foreach (var data in Model.reviews)
+                          {
+
+                              <div class="card m-3">
+
+
+                                  <div class="">
+
+
+
+                                      @if (@data.UserID == @userIDs)
+                                      {
+                                          <a href="@Url.Action("RemoveComment", "Home", new { id = data.VehicleID, userIDs = data.UserID })" class="text-decoration-none text-bg-light" style="color:#303030; display:flex;justify-content:end;">☓</a>
+                                      }
+
+                                  </div>
+                                  <div class="card-body p-2">
+
+                                      <p class="card-text" style=" font-size: 20px; font-family: serif; font-weight: bolder;margin:0 !important;"><span class="text-muted">@data.Comment</span></p>
+                                      <p class="card-text text-muted" style=" font-size: 12px; text-align: end;">@data.DateTimes</p>
+                                  </div>
+                              </div>
+                          }
+                      </div>
+                      @if (Model.vehiclesModel.Count() > 0)
+                      {
+                          <div>
+                              <div>
+                                  <p style=" margin: 1rem; font-size: 36px; font-family: emoji; font-style: inherit; font-weight: bold; text-align: start;">Realted Vehicles</p>
+                              </div>
+
+
+
+                              <div class="owl-carousel owl-theme">
+
+                                  @foreach (var data in Model.vehiclesModel)
+                                  {
+                                      <div class="item">
+                                          <a href="/home/details/@data.VehicleID" class="text-decoration-none justify-content-between" style="color:black">
+                                              <div class="card shadow-lg" style="width: 14rem; margin: 1rem;">
+                                                  <img class="card-img-top" src="@data.ImageUrl" alt="Card image cap" style="height:10rem">
+                                                  <div class="card-body">
+                                                      <h4>@data.BrandName</h4>
+                                                      <p class="m-0">Price:<span class="text-muted">@data.price</span></p>
+                                                      <p class="m-0">Owner:<span class="text-muted">@data.Owner</span></p>
+                                                  </div>
+                                              </div>
+                                          </a>
+                                      </div>
+                                  }
+
+
+
+                              </div>
+
+
+                          </div>
+                      }
+                      else
+                      {
+                          <div></div>
+                      }
+                  </div>
+                  </div>
+                  <div class="col-6">
+                      <div>
+                          <p class="card-title" style="font-family: emoji; font-weight: bold; font-size: 24px; "> @Model.vehicles.VehicleName</p>
+                          <p style="font-size: 18px; font-family: emoji; font-weight: bold; color: midnightblue;">₹ @Model.vehicles.price</p>
+                      </div>
+                      <div style=" border: 3px solid #30303030; border-radius: 8px; padding: 10px;" class="mb-3">
+                          <p style="font-size: 16px; font-family: emoji; margin: 0 !important; font-weight: bold; color: #65656a;">Location: <span style="font-size: 18px; font-family: emoji; margin: 0 !important; font-weight: normal; color: #303030; ">@Model.vehicles.Address</span></p>
+                      </div>
+
+                      <div class="card border-dark mb-3" style="max-width: auto;">
+                          <div class="card-header bg-transparent border-dark mainHeading">Bike details</div>
+                          <div class="card-body d-flex justify-content-around">
+                              <div>
+                                  <p class="card-title headings">Brand</p>
+                                  <p class="card-text infoText">@Model.brand.BrandName</p>
+                              </div>
+                              <div>
+                                  <p class="card-title headings">Make year</p>
+                                  <p class="card-text infoText">@Model.vehicles.ManufactureDate.Value.ToString("dd-MM-yyyy")</p>
+                              </div>
+                              <div>
+                                  <p class="card-title headings">Transmission</p>
+                                  <p class="card-text infoText">@Model.vehicles.Transmission</p>
+                              </div>
+
+                          </div>
+                          <div class="card-footer bg-transparent border-dark" style=" display: flex; justify-content: space-around;">
+                              <div>
+                                  <p class="card-title headings">Registration No.</p>
+                                  <p class="card-text infoText">@Model.vehicles.RegistrationNumber</p>
+                              </div>
+                              <div>
+                                  <p class="card-title headings">Ownership</p>
+                                  <p class="card-text infoText">@Model.vehicles.Owner</p>
+                              </div>
+                              <div>
+                                  <p class="card-title headings">Fuel Type</p>
+                                  <p class="card-text infoText">@Model.vehicles.FuelType</p>
+                              </div>
+
+                          </div>
+                          <div class="card-footer bg-transparent border-dark mainHeading">Description</div>
+                          <div class="card-footer bg-transparent border-dark infoText">@Model.vehicles.Description</div>
+                      </div>
+
+
+
+                      <div class="card border-dark mb-3" style="max-width: auto;">
+                          <div class="card-header bg-transparent border-dark">
+                              <span class="mainHeading">Effortless Purchase</span>
+                              <p>Own your dream bike hassle-free with our flexible payment options.</p>
+                          </div>
+                          <div class="card-body d-flex justify-content-around infoText">
+                              <div class="text-center">
+                                  <p class="card-title"><img src="https://www.beepkart.com/images/purchase_option_cash.png" style=" width: 32px; aspect-ratio: auto 32 / 32; height: 32px;" /></p>
+                                  <p class="card-text">Cash</p>
+                              </div>
+                              <div class="text-center">
+
+                                  <p class="card-title"><img src="https://www.beepkart.com/images/purchase_option_debit.png" style=" width: 32px; aspect-ratio: auto 32 / 32; height: 32px;" /></p>
+                                  <p class="card-text">Debit Card</p>
+                              </div>
+                              <div class="text-center">
+                                  <p class="card-title"><img src="https://www.beepkart.com/images/purchase_option_debit.png" style=" width: 32px; aspect-ratio: auto 32 / 32; height: 32px;" /></p>
+                                  <p class="card-text">Credit Card</p>
+                              </div>
+                              <div class="text-center">
+                                  <p class="card-title"><img src="https://www.beepkart.com/images/purchase_option_loan.png" style=" width: 32px; aspect-ratio: auto 32 / 32; height: 32px;" /></p>
+                                  <p class="card-text">Loan</p>
+                              </div>
+                              <div class="text-center">
+                                  <p class="card-title"><img src="https://www.beepkart.com/images/purchase_option_upi.png" style=" width: 32px; aspect-ratio: auto 32 / 32; height: 32px;" /></p>
+                                  <p class="card-text">UPI</p>
+                              </div>
+                              <div class="text-center">
+                                  <p class="card-title"><img src="https://www.beepkart.com/images/purchase_option_digital.png" style=" width: 32px; aspect-ratio: auto 32 / 32; height: 32px;" /></p>
+                                  <p class="card-text">Digital Wallet</p>
+                              </div>
+                              <div class="text-center">
+                                  <p class="card-title"><img src="https://www.beepkart.com/images/purchase_option_transfer.png" style=" width: 32px; aspect-ratio: auto 32 / 32; height: 32px;" /></p>
+                                  <p class="card-text">Bank Transfer</p>
+                              </div>
+                          </div>
+                          <div class="card-footer bg-transparent border-success infoText">
+                              <ul>
+                                  <li>
+                                      1.7% convenience fees (excl. GST) applicable on Debit/Credit Card & Net Banking transactions
+                                  </li>
+                                  <li>
+                                      Processing fees and other loan charges applicable for Loans
+                                  </li>
+                              </ul>
+                          </div>
+
+                      </div>
+                      @if (Model.vehicles.VehicleUserID == userIDs)
+                      {
+                          <span></span>
+                      }
+                      else
+                      {
+                          using (Html.BeginForm("CreateComment", "Review", FormMethod.Post))
+                          {
+                              <div class="form-group ">
+                                  @Html.HiddenFor(model => model.vehicles.VehicleID)
+                                  @Html.LabelFor(model => model.reviewModel.Comment, new { @class = "text-bg-dark mainHeading" })
+                                  @Html.TextAreaFor(model => model.reviewModel.Comment, new { @class = "form-control" })
+                              </div>
+                              <div class="d-flex justify-content-end"><button type="submit" class="btn btn btn-warning">Submit</button></div>
+                          }
+                      }
+
+                  </div>
+
+              </div>
+
+
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+}
+
+<style>
+    .discription {
+        color: #8585d7;
+        font-size: 18px;
+        font-family: emoji;
+    }
+
+    .ContactHead {
+        font-family: emoji;
+        font-size: 36px;
+        font-weight: bold;
+    }
+
+    .HeadText {
+        color: #8585d7;
+        font-size: 18px;
+        font-family: emoji;
+    }
+
+    .HeadValue {
+        font-size: 14px;
+        /*     color: #303030;*/
+        font-family: emoji;
+    }
+
+
+    .headings {
+        font-size: 16px; 
+        font-family: emoji; 
+        margin: 0 !important; 
+        font-weight: bold; 
+        color: #65656a;
+    }
+
+    .mainHeading {
+        color: #303030;
+        font-weight: bold;
+    }
+    .infoText {
+        font-family: emoji;
+        font-size: 16px;
+        color: #303030;
+    }
+</style>
+<script>
+    $('.owl-carousel').owlCarousel({
+        loop: true,
+        margin: 10,
+        responsiveClass: true,
+        responsive: {
+            0: {
+                items: 1,
+                nav: true
+            },
+            600: {
+                items: 3,
+                nav: false
+            },
+            1000: {
+                items: 3,
+                nav: true,
+                loop: false
+            }
         }
-    }*@
-@*<div class="container-fluid">
-    <div class="row">
-        <div class="col">
+    })
+</script>
 
-            <div class="container d-flex justify-content-center rounded border border-dark pl-0">
-                <div class="text-black bg-light d-flex">
-                    <img class="card-img w-98" src="@Model.vehicles.ImageUrl" alt="Card image">
-                </div>
-                <div class="card-img bg-light ml-2">
-                    <h4 class="card-title">Brand : @Model.brand.BrandName</h4>
-                    <h5 class="card-title">Vehicle : @Model.vehicles.VehicleName</h5>
-                    <p class="card-text">Fuel: @Model.vehicles.FuelType</p>
-                    <p class="card-text">Mailage : @Model.vehicles.Mileage</p>
-                    <p class="card-text">Price: @Model.vehicles.price</p>
-                    <p class="card-text">Availability Status: @Model.vehicles.AvailabilityStatus</p>
-                    <p class="card-text">Manufacture Date: @Model.vehicles.ManufactureDate.Value.ToString("d/MM/yyy")</p>
-                  
-                    <div class="d-flex justify-content-around">
-                        <a href="/home/edit/@Model.vehicles.VehicleID" class="btn btn-danger" type="submit">edit</a>
-                        <a href="/home/delete/@Model.vehicles.VehicleID" class="btn btn-danger" type="submit">Delete</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>*@
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col">
-            <div class="card text-center">
-                <div class="card-header text-bg-dark">
-                    <h4>@Model.brand.BrandName @Model.vehicles.VehicleName</h4>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <img class="card-img w-98" src="@Model.vehicles.ImageUrl" alt="Card image">
-                        </div>
-                        <div class="col-md-6" style="text-align:start !important">
-                            <h4 class="card-title">Brand : @Model.brand.BrandName</h4>
-                            <h5 class="card-title">Vehicle : @Model.vehicles.VehicleName</h5>
-                            <p class="card-text">Fuel: @Model.vehicles.FuelType</p>
-                            <p class="card-text">Mailage : @Model.vehicles.Mileage</p>
-                            <p class="card-text">Price: @Model.vehicles.price</p>
-                            <p class="card-text">Availability Status: @Model.vehicles.AvailabilityStatus</p>
-                            <p class="card-text">Manufacture Date: @Model.vehicles.ManufactureDate.Value.ToString("d/MM/yyy")</p>
-                            @using (Html.BeginForm("CreateComment", "Review", FormMethod.Post))
-                            {
-                                <div class="form-group ">
-                                    @Html.HiddenFor(model => model.vehicles.VehicleID)
-                                    @Html.LabelFor(model => model.reviewModel.Comment, new { @class= "text-bg-dark" })
-                                    @Html.TextAreaFor(model => model.reviewModel.Comment, new { @class = "form-control" })
-                                </div>
-                                <div class="d-flex justify-content-end"><button type="submit" class="btn btn btn-warning">Submit</button></div>
-                            }
-
-                        </div>
-                    </div>
-                </div>
-                <div class="card-footer text-bg-dark">
-                    <h6>Reviews @Model.reviews.Count()</h6>
-                </div>
-
-            </div>
-            <div class="col-12">
-                <div class="d-flex justify-content-center flex-wrap">
-                    @foreach (var data in Model.reviews)
-                    {
-
-                        <div class="card-group col-2 m-3">
-                            <div class="card">
-                                <div class="">
-                                    <div class="d-flex justify-content-end"><a href="/Home/RemoveComment/@Model.vehicles.VehicleID" type="submit" class="text-decoration-none text-bg-light">☓</a></div>
-                                    
-                                </div>
-                                <div class="card-body">
-                                    <small class="text-muted"></small>
-                                    <p class="card-text">@data.Comment</p>
-                                </div>
-                            </div>
-                        </div>
-
-                    }
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 

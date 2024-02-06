@@ -36,6 +36,14 @@
     <EntitySetMapping Name="Vehicles">
       <EntityTypeMapping TypeName="VehicleDBContext.Vehicle">
         <MappingFragment StoreEntitySet="Vehicles">
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="VehicleType" ColumnName="VehicleType" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Owner" ColumnName="Owner" />
+          <ScalarProperty Name="Transmission" ColumnName="Transmission" />
+          <ScalarProperty Name="RegistrationNumber" ColumnName="RegistrationNumber" />
+          <ScalarProperty Name="Color" ColumnName="Color" />
+          <ScalarProperty Name="VehicleUserID" ColumnName="VehicleUserID" />
           <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
           <ScalarProperty Name="Status" ColumnName="Status" />
           <ScalarProperty Name="Mileage" ColumnName="Mileage" />
@@ -54,6 +62,7 @@
     <EntitySetMapping Name="Favorities">
       <EntityTypeMapping TypeName="VehicleDBContext.Favority">
         <MappingFragment StoreEntitySet="Favorities">
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
           <ScalarProperty Name="Status" ColumnName="Status" />
           <ScalarProperty Name="Active" ColumnName="Active" />
           <ScalarProperty Name="DateTime" ColumnName="DateTime" />
@@ -65,14 +74,62 @@
     <EntitySetMapping Name="Reviews">
       <EntityTypeMapping TypeName="VehicleDBContext.Review">
         <MappingFragment StoreEntitySet="Reviews">
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="DateTimes" ColumnName="DateTimes" />
           <ScalarProperty Name="Status" ColumnName="Status" />
           <ScalarProperty Name="Active" ColumnName="Active" />
-          <ScalarProperty Name="DateTime" ColumnName="DateTime" />
           <ScalarProperty Name="Comment" ColumnName="Comment" />
           <ScalarProperty Name="VehicleID" ColumnName="VehicleID" />
           <ScalarProperty Name="ReviewID" ColumnName="ReviewID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="Users">
+      <EntityTypeMapping TypeName="VehicleDBContext.User">
+        <MappingFragment StoreEntitySet="Users">
+          <ScalarProperty Name="Country" ColumnName="Country" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="ZipCode" ColumnName="ZipCode" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="UserImage" ColumnName="UserImage" />
+          <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+          <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+          <ScalarProperty Name="UserTypeName" ColumnName="UserTypeName" />
+          <ScalarProperty Name="UserType" ColumnName="UserType" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="Passwords" ColumnName="Passwords" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="VehicleDBContext.Store.sp_alterdiagram" />
+    <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="VehicleDBContext.Store.sp_creatediagram" />
+    <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="VehicleDBContext.Store.sp_dropdiagram" />
+    <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="VehicleDBContext.Store.sp_helpdiagramdefinition">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="VehicleDBContext.sp_helpdiagramdefinition_Result">
+          <ScalarProperty Name="version" ColumnName="version" />
+          <ScalarProperty Name="definition" ColumnName="definition" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="VehicleDBContext.Store.sp_helpdiagrams">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="VehicleDBContext.sp_helpdiagrams_Result">
+          <ScalarProperty Name="Database" ColumnName="Database" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Owner" ColumnName="Owner" />
+          <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="VehicleDBContext.Store.sp_renamediagram" />
+    <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="VehicleDBContext.Store.sp_upgraddiagrams" />
+    <FunctionImportMapping FunctionImportName="DeleteVehicleByUserID" FunctionName="VehicleDBContext.Store.DeleteVehicleByUserID" />
   </EntityContainerMapping>
 </Mapping>

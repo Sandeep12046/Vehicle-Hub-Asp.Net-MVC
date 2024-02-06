@@ -24,13 +24,12 @@ namespace VehicleDetails.Controllers
             return View();
         }
 
-
-
         [HttpPost]
         public ActionResult CreateComment(BrandCategories data)
         {
             var id = data.vehicles.VehicleID;
-            IReviewDAL.insertReviews(data);
+            var UserID = Convert.ToInt32(Session["UserID"]);
+            IReviewDAL.insertReviews(data, UserID);
 
             return RedirectToAction("Index", "Home");
         }

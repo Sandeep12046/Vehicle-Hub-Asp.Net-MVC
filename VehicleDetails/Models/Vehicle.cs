@@ -33,6 +33,14 @@ namespace VehicleDetails.Models
         public Nullable<int> Mileage { get; set; }
         public Nullable<int> Status { get; set; }
         public string ImageUrl { get; set; }
+        public Nullable<int> VehicleUserID { get; set; }
+        public string Color { get; set; }
+        public string RegistrationNumber { get; set; }
+        public string Transmission { get; set; }
+        public string Owner { get; set; }
+        public string Description { get; set; }
+        public Nullable<int> VehicleType { get; set; }
+        public string Address { get; set; }
     
         public virtual Category Category { get; set; }
         public virtual Brand Brand { get; set; }
@@ -40,5 +48,6 @@ namespace VehicleDetails.Models
         public virtual ICollection<Favority> Favorities { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Review> Reviews { get; set; }
+        public virtual User User { get; set; }
     }
 }

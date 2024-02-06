@@ -19,7 +19,9 @@ namespace VehicleDetails.Models
         public Nullable<System.DateTime> DateTime { get; set; }
         public Nullable<int> Active { get; set; }
         public Nullable<int> Status { get; set; }
+        public Nullable<int> UserID { get; set; }
     
         public virtual Vehicle Vehicle { get; set; }
+        public virtual User User { get; set; }
     }
 }

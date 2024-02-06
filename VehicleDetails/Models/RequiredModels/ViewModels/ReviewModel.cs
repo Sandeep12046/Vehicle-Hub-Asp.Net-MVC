@@ -10,10 +10,11 @@ namespace VehicleDetails.Models.RequiredModels.ViewModels
         public int ReviewID { get; set; }
         public Nullable<int> VehicleID { get; set; }
         public string Comment { get; set; }
-        public byte[] DateTime { get; set; }
+        public DateTime DateTimes { get; set; }
         public Nullable<int> Active { get; set; }
         public Nullable<int> Status { get; set; }
-
+        public Nullable<int> UserID { get; set; }
+        public virtual User User { get; set; }
         public virtual Vehicle Vehicle { get; set; }
     }
 }

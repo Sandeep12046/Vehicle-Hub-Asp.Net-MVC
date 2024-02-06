@@ -1,0 +1,209 @@
+﻿@model VehicleDetails.Models.RequiredModels.ViewModels.BrandCategories
+@{
+    ViewBag.Title = "CreateNewVehicle";
+    Layout = "~/Views/Shared/AdminMainView.cshtml";
+}
+<div class="d-flex justify-content-center h-100 align-items-center">
+    <div class=" w-50 shadow shadow-lg">
+        <h2 class="text-center ">Create Vehicle</h2>
+        @using (Html.BeginForm("CreateNewVehicle", "User", FormMethod.Post, new { @class = "d-flex justify-content-center m-5" }))
+        {
+            @Html.AntiForgeryToken()
+
+    <div class="form-row  ">
+
+        <div class="form-group col-md-6">
+            @Html.LabelFor(model => model.vehicles.VehicleName, new { @class = "control-label" })
+            @Html.TextBoxFor(model => model.vehicles.VehicleName, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.vehicles.VehicleName, null, new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group col-md-6">
+            @Html.LabelFor(model => model.vehicles.price, new { @class = "control-label" })
+            @Html.TextBoxFor(model => model.vehicles.price, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.vehicles.price, null, new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.vehicles.ManufactureDate, new { @class = "control-label" })
+            @Html.TextBoxFor(model => model.vehicles.ManufactureDate, new { @class = "form-control", type = "date" })
+            @Html.ValidationMessageFor(model => model.vehicles.ManufactureDate, null, new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.vehicles.AvailabilityStatus, new { @class = "control-label" })
+            @Html.DropDownListFor(model => model.vehicles.AvailabilityStatus, new SelectList(new List<string> { "Available", "UnAvailable" }), "Select AvailabilityStatus", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.vehicles.AvailabilityStatus, null, new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.vehicles.VehicleCategoryID, new { @class = "control-label" })
+            @Html.DropDownListFor(model => model.vehicles.VehicleCategoryID, new SelectList(Model.Categories, "CategoryID", "CategoryName"), "Select Category", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.vehicles.VehicleCategoryID, null, new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.vehicles.VehicleBrandID, new { @class = "control-label" })
+            @Html.DropDownListFor(model => model.vehicles.VehicleBrandID, new SelectList(Model.Brands, "BrandID", "BrandName"), "Select Brand", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.vehicles.VehicleBrandID, null, new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.vehicles.Mileage, new { @class = "control-label" })
+            @Html.TextBoxFor(model => model.vehicles.Mileage, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.vehicles.Mileage, null, new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.vehicles.FuelType, new { @class = "control-label" })
+            @Html.TextBoxFor(model => model.vehicles.FuelType, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.vehicles.FuelType, null, new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.vehicles.ImageUrl, new { @class = "control-label" })
+            @Html.TextBoxFor(model => model.vehicles.ImageUrl, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.vehicles.ImageUrl, null, new { @class = "text-danger" })
+        </div>
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.vehicles.Color, new { @class = "control-label" })
+            @Html.TextBoxFor(model => model.vehicles.Color, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.vehicles.Color, null, new { @class = "text-danger" })
+        </div>
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.vehicles.RegistrationNumber, new { @class = "control-label" })
+            @Html.TextBoxFor(model => model.vehicles.RegistrationNumber, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.vehicles.RegistrationNumber, null, new { @class = "text-danger" })
+        </div>
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.vehicles.Transmission, new { @class = "control-label" })
+            @Html.DropDownListFor(model => model.vehicles.Transmission, new SelectList(new List<string> { "Automatic", "Manual" }), "Select Transmission", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.vehicles.Transmission, null, new { @class = "text-danger" })
+        </div>
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.vehicles.Owner, new { @class = "control-label" })
+            @Html.DropDownListFor(model => model.vehicles.Owner, new SelectList(new List<string> { "New", "1st Hand", "2nd Hand", "More" }), "Select Owner", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.vehicles.Owner, null, new { @class = "text-danger" })
+        </div>
+        @*<div class="form-group col-md-4">
+            @Html.LabelFor(model => model.vehicles.Owner1, new { @class = "control-label" })
+            @Html.ListBoxFor(model => model.vehicles.Owner1, new MultiSelectList(new List<string> { "New", "1st Hand", "2nd Hand", "More" }), new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.vehicles.Owner1, null, new { @class = "text-danger" })
+        </div>*@
+        @*<div class="form-group col-md-4">
+            @Html.LabelFor(model => model.Location.LocationID, new { @class = "control-label" })
+            @Html.ListBoxFor(model => model.Location.LocationID, new MultiSelectList(Model.locationModel, "LocationID", "Locations"), new { @class = "form-control", size = 3 })
+
+
+            @Html.ValidationMessageFor(model => model.Location.LocationID, null, new { @class = "text-danger" })
+        </div>*@
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.vehicles.Address, new { @class = "control-label" })
+            @Html.TextBoxFor(model => model.vehicles.Address, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.vehicles.Address, null, new { @class = "text-danger" })
+        </div>
+
+
+
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.vehicles.Description, new { @class = "control-label" })
+            @Html.TextAreaFor(model => model.vehicles.Description, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.vehicles.Description, null, new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group col-md-4 d-flex align-items-center">
+            <label class="p-0 m-0">Create Category And Brand </label>
+            <input type="checkbox" class="m-2" id="cbCreate" name="cbCreate" value="true" onclick="CreateCatBrand()" />
+        </div>
+        <div class="form-group col-md-4 d-flex align-items-center justify-content-end">
+            <label class="p-0 m-0">Create Brand </label>
+            <input type="checkbox" class="m-2" id="createBrand" name="createBrand" value="true" onclick="CreateBrand()" />
+        </div>
+        <div class="form-group col-md-12 d-flex justify-content-end">
+            <input type="submit" value="Create" class="btn btn-primary" />
+        </div>
+    </div>
+
+        }
+
+
+        <div id="showCatBrand" style="display:none">
+            @using (Html.BeginForm("CreateCategoryData", "User", FormMethod.Post, new { @class = "d-flex m-5" }))
+            {
+                <div class="form-row  ">
+                    <div class="form-group col-md-6 ">
+                        @Html.LabelFor(c => c.category.CategoryName, new { @class = "control-label" })
+                        @Html.TextBoxFor(c => c.category.CategoryName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.category.CategoryName, null, new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group col-md-6">
+                        @Html.LabelFor(c => c.category.ImageUrl, new { @class = "control-label" })
+                        @Html.TextBoxFor(c => c.category.ImageUrl, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.category.ImageUrl, null, new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group col-md-6">
+                        @Html.LabelFor(c => c.brand.BrandName, new { @class = "control-label" })
+                        @Html.TextBoxFor(c => c.brand.BrandName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.brand.BrandName, null, new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group col-md-6">
+                        @Html.LabelFor(c => c.brand.ImageUrl, new { @class = "control-label" })
+                        @Html.TextBoxFor(c => c.brand.ImageUrl, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.brand.ImageUrl, null, new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group col-md-2 d-flex justify-content-center align-items-sm-end">
+                        <input type="submit" value="Create" class=" btn btn-primary d-flex justify-content-center align-bottom h-3" />
+                    </div>
+                </div>
+            }
+        </div>
+
+
+
+        <div id="showBrand" style="display:none">
+            @using (Html.BeginForm("CreateBrandData", "User", FormMethod.Post, new { @class = "d-flex " }))
+            {
+                <div class="form-group col-md-3">
+                    @Html.LabelFor(c => c.brand.BrandName, new { @class = "control-label" })
+                    @Html.TextBoxFor(c => c.brand.BrandName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.brand.BrandName, null, new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group col-md-3">
+                    @Html.LabelFor(model => model.category.CategoryID, new { @class = "control-label" })
+                    @Html.DropDownListFor(model => model.category.CategoryID, new SelectList(Model.Categories, "CategoryID", "CategoryName"), "Select Category", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.category.CategoryID, null, new { @class = "text-danger" })
+                </div>
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(c => c.brand.ImageUrl, new { @class = "control-label" })
+                    @Html.TextBoxFor(c => c.brand.ImageUrl, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.brand.ImageUrl, null, new { @class = "text-danger" })
+                </div>
+                <div class="form-group col-md-2 d-flex justify-content-center align-items-sm-end">
+                    <input type="submit" value="Create" class=" btn btn-primary d-flex justify-content-center align-bottom h-3" />
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+    var show = false;
+    function CreateCatBrand() {
+        show = !show
+        var element = document.getElementById("showCatBrand");
+        element.style.display = show ? "block" : "none"
+    }
+
+
+
+    function CreateBrand() {
+        show = !show
+        var element = document.getElementById("showBrand");
+        element.style.display = show ? "block" : "none"
+    }
+</script>
