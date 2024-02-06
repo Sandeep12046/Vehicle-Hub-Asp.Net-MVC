@@ -32,44 +32,54 @@
 </div>
 <p class="m-4 titleStyle text-center">Buy a Vehicles in 3 simple steps</p>
 <div class="d-flex">
-    
+
     <div class="col text-center">
-    <img src="https://th.bing.com/th/id/OIP.WWHqhGEDbSFiANaRu7c9fAAAAA?rs=1&pid=ImgDetMain" style="height:19rem">
-    <p class="" style=" font-weight: bold;">Find your perfect ride</p>
-    <p class="text-muted" style="width: 28rem;">Explore our diverse collection and select the bike that best matches your needs</p>
+        <img src="https://th.bing.com/th/id/OIP.WWHqhGEDbSFiANaRu7c9fAAAAA?rs=1&pid=ImgDetMain" style="height:19rem">
+        <p class="" style=" font-weight: bold;">Find your perfect ride</p>
+        <p class="text-muted" style="width: 28rem;">Explore our diverse collection and select the bike that best matches your needs</p>
     </div>
     <div class="col text-center">
         <img src="https://img.freepik.com/premium-vector/man-riding-motorcycle-with-helmet_444663-127.jpg?w=360">
         <p style=" font-weight: bold;">
-            Get a test drive  
+            Get a test drive
         </p>
         <p class="text-muted">Pay ₹999 & test drive the bike at our Hub. 100% refundable"</p>
     </div>
     <div class="col text-center">
-        <img src="https://media.istockphoto.com/vectors/hand-giving-keys-vector-id623438452?k=6&m=623438452&s=612x612&w=0&h=fx3My66482hygPpeMfur51653HQFyJgTi2osoGya_vQ="  style="height:19rem">
+        <img src="https://media.istockphoto.com/vectors/hand-giving-keys-vector-id623438452?k=6&m=623438452&s=612x612&w=0&h=fx3My66482hygPpeMfur51653HQFyJgTi2osoGya_vQ=" style="height:19rem">
         <p style=" font-weight: bold;">Find your perfect ride</p>
         <p class="text-muted">Explore our diverse collection and select the bike that best matches your needs</p>
     </div>
 </div>
-<div class="container-fluid" id="gridView" style="display:block">
+
+
+@*<div class="container-fluid" id="gridView" style="display:block">
     <div class="text-xl-center"><div class="m-4 titleStyle">All Vehicles</div></div>
     <div class="container-fluid col-12 g-6 d-flex flex-wrap justify-content-center">
-        @foreach (var data in Model.vehiclesModel.Take(4))
-        {
-            <a href="/home/details/@data.VehicleID" class="text-decoration-none justify-content-between" style="color:black">
-                <div class="card shadow-lg" style="width: 18rem; margin: 1rem;">
-                    <img class="card-img-top" src="@data.ImageUrl" alt="Card image cap" style="height:10rem">
-                    <div class="card-body">
-                        <h4>@data.VehicleName</h4>
-                        <p class="m-0">Price:<span class="text-muted">₹@data.price</span></p>
-                        <p class="m-0">Owner:<span class="text-muted">@data.Owner</span></p>
-                    </div>
-                </div>
-            </a>
-        }
+        @{ Html.RenderPartial("VehiclesCard", Model); }
+
     </div>
     <div class="text-xl-center"><div class="m-5"><a href="/Home/AllVehicles" class="btn btn-light">View More</a></div></div>
-</div>
+</div>*@
+<div class="container-fluid" id="gridView" style="display:block">
+        <div class="text-xl-center"><div class="m-4 titleStyle">All Vehicles</div></div>
+        <div class="container-fluid col-12 g-6 d-flex flex-wrap justify-content-center">
+            @foreach (var data in Model.vehiclesModel.Take(4))
+            {
+                <a href="/home/details/@data.VehicleID" class="text-decoration-none justify-content-between" style="color:black">
+                    <div class="card shadow-lg" style="width: 18rem; margin: 1rem;">
+                        <img class="card-img-top" src="@data.ImageUrl" alt="Card image cap" style="height:10rem">
+                        <div class="card-body">
+                            <h4>@data.VehicleName</h4>
+                            <p class="m-0">Price:<span class="text-muted">₹@data.price</span></p>
+                            <p class="m-0">Owner:<span class="text-muted">@data.Owner</span></p>
+                        </div>
+                    </div>
+                </a>
+            }
+        </div>
+        <div class="text-xl-center"><div class="m-5"><a href="/Home/AllVehicles" class="btn btn-light">View More</a></div></div>
+    </div>
 
 
 
@@ -113,7 +123,7 @@
 </div>
 
 
-<div class="d-flex" style="justify-content: center; background-color: aquamarine;">  
+<div class="d-flex" style="justify-content: center; background-color: aquamarine;">
     <div class="col-3"><img src="https://th.bing.com/th/id/OIP.H7YCtEab8nUM0MP_Jt5K3wAAAA?rs=1&pid=ImgDetMain" style="height:19rem"></div>
     <div class="col-8 text-center">
         <p style=" font-size: 24px; font-family: emoji; font-weight: bold; ">WANT TO SELL YOUR VEHICLES?</p>

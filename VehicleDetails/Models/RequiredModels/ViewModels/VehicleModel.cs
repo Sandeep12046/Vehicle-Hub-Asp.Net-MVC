@@ -47,12 +47,15 @@ namespace VehicleDetails.Models.RequiredModels.ViewModels
         public Nullable<int> VehicleUserID { get; set; }
 
         [Required(ErrorMessage = "Please enter color")]
+        [StringLength(30, ErrorMessage = "Color should be less than 30 characters")]
         [Display(Name = "Color")]
         public string Color { get; set; }
         [Required(ErrorMessage = "Please enter registration Number")]
+        [StringLength(20, ErrorMessage = "Registration number should be less than 20 characters")]
         [Display(Name = "Registration Number")]
         public string RegistrationNumber { get; set; }
         [Required(ErrorMessage = "Please select transmission")]
+
         [Display(Name = "Transmission")]
         public string Transmission { get; set; }
         [Required(ErrorMessage = "Please select owner1")]
@@ -62,9 +65,11 @@ namespace VehicleDetails.Models.RequiredModels.ViewModels
         [Display(Name = "Owner")]
         public string Owner { get; set; }
         [Required(ErrorMessage = "Please enter Address")]
+        [StringLength(200, ErrorMessage = "Address should be less than 200 characters")]
         [Display(Name = "Address")]
         public string Address { get; set; }
         [Required(ErrorMessage = "Please enter Description")]
+        [StringLength(500, ErrorMessage = "Description should be less than 500 characters")]
         [Display(Name = "Description")]
         public string Description { get; set; }
         public Nullable<int> VehicleType { get; set; }
@@ -72,7 +77,7 @@ namespace VehicleDetails.Models.RequiredModels.ViewModels
         public virtual Category Category { get; set; }
         public virtual Brand Brand { get; set; }
 
-       
+        public List<ReviewModel> ReviewsList { get; set; }
         public virtual ICollection<Favority> Favorities { get; set; }
      
         public virtual ICollection<Review> Reviews { get; set; }

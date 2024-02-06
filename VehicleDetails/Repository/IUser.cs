@@ -10,7 +10,7 @@ namespace VehicleDetails.Repository
 {
     internal interface IUser
     {
-        void CreateUser(UserModel user);
+        void CreateUser(UserModel user,string path);
 
         string Signin(UserModel user);
         UserModel SignInID(UserModel user);
@@ -26,7 +26,11 @@ namespace VehicleDetails.Repository
 
         void UpdateUserData(UserModel user,string path);
 
+        void SendQueryInfo(UserQueryModel query);
+
         //void DeactivateUserAccount(int id);
+
+        List<VehicleModel> GetVehiclesByUserID(int id);
 
     }
 }

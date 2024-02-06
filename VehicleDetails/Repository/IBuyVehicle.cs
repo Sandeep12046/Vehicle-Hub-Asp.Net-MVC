@@ -9,6 +9,6 @@ namespace VehicleDetails.Repository
 {
     internal interface IBuyVehicle
     {
-        List<VehicleModel> getBudgets();
+        BrandCategories getvehicleInfo();
     }
 }

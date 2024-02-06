@@ -54,12 +54,6 @@
                     @Html.ValidationMessageFor(model => model.vehicles.Mileage, null, new { @class = "text-danger" })
                 </div>
 
-                @*<div class="form-group col-md-4">
-                    @Html.LabelFor(model => model.vehicles.Status, new { @class = "control-label" })
-                    @Html.TextBoxFor(model => model.vehicles.Status, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.vehicles.Status)
-                </div>*@
-
                 <div class="form-group col-md-4">
                     @Html.LabelFor(model => model.vehicles.FuelType, new { @class = "control-label" })
                     @Html.TextBoxFor(model => model.vehicles.FuelType, new { @class = "form-control" })
@@ -103,7 +97,7 @@
                 </div>
 
 
-                @if (Model.user.UserType !=0)
+                @if (Model.user.UserType != 0)
                 {
                     <div class="form-group col-md-4 d-flex align-items-center">
                         <label class="p-0 m-0">Create Category And Brand </label>
@@ -123,7 +117,9 @@
                 }
                 else
                 {
-                    <span></span>
+                    <div class="form-group col-md-12 d-flex justify-content-end">
+                        <input type="submit" value="Create" class="btn btn-primary" />
+                    </div>
                 }
             </div>
 
@@ -196,10 +192,10 @@
 
 <script>
     var show = false;
-    function CreateCatBrand() { 
-     show=!show
-     var element = document.getElementById("showCatBrand");
-     element.style.display = show ? "block" : "none" 
+    function CreateCatBrand() {
+        show = !show
+        var element = document.getElementById("showCatBrand");
+        element.style.display = show ? "block" : "none"
     }
 
 
@@ -207,6 +203,10 @@
     function CreateBrand() {
         show = !show
         var element = document.getElementById("showBrand");
-        element.style.display = show ? "block" : "none" 
+        element.style.display = show ? "block" : "none"
     }
+
+
+
+
 </script>

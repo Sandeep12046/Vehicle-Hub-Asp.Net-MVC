@@ -22,21 +22,21 @@
 
 
 
-<form action="/home/allvehicles" method="post" class="d-flex justify-content-center m-3">
+<form action="/home/allvehicles" method="post" class="d-flex justify-content-center m-3" style=" font-family: emoji; font-size: large; color: black;">
     <div class="form-check form-check-inline">
         <input class="form-check-input" type="checkbox" id="inlineCheckbox1" name="id" value="0" @(ViewBag.CheckBoxValue== 0 ? "checked" : "")>
-        <label class="form-check-label" for="inlineCheckbox1">All</label>
+        <label class="form-check-label" for="inlineCheckbox1">All Vehicles</label>
     </div>
     <div class="form-check form-check-inline">
         <input class="form-check-input" type="checkbox" id="inlineCheckbox2" name="id" value="1" @(ViewBag.CheckBoxValue == 1 ? "checked" : "")>
-        <label class="form-check-label" for="inlineCheckbox1">New</label>
+        <label class="form-check-label" for="inlineCheckbox1">New Vehicles</label>
     </div>
     <div class="form-check form-check-inline">
         <input class="form-check-input" type="checkbox" id="inlineCheckbox3" name="id" value="2" @(ViewBag.CheckBoxValue == 2 ? "checked" : "")>
-        <label class="form-check-label" for="inlineCheckbox2">Old</label>
+        <label class="form-check-label" for="inlineCheckbox2">Old Vehicles</label>
     </div>
     
-    <button class="btn btn-warning">Apply</button>
+    <button class="btn btn-warning" style=" font-family: emoji; font-size: 18px; color: black;">Apply</button>
 </form>
 
 
@@ -89,27 +89,5 @@
 </script>*@
 
 
-@*<script>
-        var checkedValue = 0;
-        $(document).ready(() => {
-            $("#checkBoxSubmit").on('click', () => {
-                check = document.getElementById("inlineCheckbox1").value;
-                check = document.getElementById("inlineCheckbox2").value;
-                check = document.getElementById("inlineCheckbox3").value;
-                console.log(check, "check")
 
-                switch (check) {
-                    case 1: $("inlineCheckbox1").prop("checked", true);
-                        break;
-                    case 2: $("inlineCheckbox2").prop("checked", true);
-                        break;
-                    case 3: $("inlineCheckbox3").prop("checked", true);
-                        break;
-                    default: $("inlineCheckbox1").prop("checked", true);
-                        break;
-                }
-            })
-        })
-
-    </script>*@
 

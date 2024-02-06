@@ -269,6 +269,23 @@ namespace VehicleDetails.Controllers
         }
 
 
+        [HttpPost]
+        public ActionResult QueryInfo(UserQueryModel query)
+        {
+            int? userID = Convert.ToInt32(Session["UserID"]);
+            userDAL.SendQueryInfo(query);
+            AllData.sendMails(query);
+            if (userID!=0 && userID!=null)
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+
+                return RedirectToAction("ContactUs","Home");
+            }
+           
+        }
 
         [HttpPost]
         public ActionResult SendEmail()
@@ -351,33 +368,36 @@ namespace VehicleDetails.Controllers
             //BrandCategories userData= new BrandCategories();
             //userData.user = new UserModel();
             UserModel userData = userDAL.GetUserInfoById(id);
-            try
-            {
-                SmtpClient smtpClient = new SmtpClient("smtp.gmail.com")
-                {
-                    Port = 587,
-                    Credentials = new NetworkCredential("sanjusandeep12046@gmail.com", "lgotlmqgefomscda"),
-                    EnableSsl = true,
-                };
-                MailMessage mailMessage = new MailMessage
-                {
-                    From = new MailAddress("sanjusandeep12046@gmail.com"),
-                    Subject = "Thank You for Contacting Us!",
-                    Body = $"Dear {userData.UserName},\r\n\r\n" +
-                   $"We're delighted to offer {userData.UserName} an exclusive home test drive experience! \r\n\r\n" +
-                   $"Our representative will be bringing the latest models directly to {userData.UserName}'s doorstep at {userData.Address},\r\n\r\n " +
-                   $"and they can be reached at {userData.PhoneNumber} to schedule this personalized test drive.\r\n",
-                    IsBodyHtml = false,
-                };
+            AllData.TestDriveEmail(userData);
 
-                mailMessage.To.Add("sanjusandeep12046@gmail.com");
-                smtpClient.Send(mailMessage);
-                return Redirect("index");
-            }
-            catch (Exception ex)
-            {
-                return Content($"Error sending email: {ex.Message}");
-            }
+            return View();
+            //try
+            //{
+            //    SmtpClient smtpClient = new SmtpClient("smtp.gmail.com")
+            //    {
+            //        Port = 587,
+            //        Credentials = new NetworkCredential("sanjusandeep12046@gmail.com", "lgotlmqgefomscda"),
+            //        EnableSsl = true,
+            //    };
+            //    MailMessage mailMessage = new MailMessage
+            //    {
+            //        From = new MailAddress("sanjusandeep12046@gmail.com"),
+            //        Subject = "Thank You for Contacting Us!",
+            //        Body = $"Dear {userData.UserName},\r\n\r\n" +
+            //       $"We're delighted to offer {userData.UserName} an exclusive home test drive experience! \r\n\r\n" +
+            //       $"Our representative will be bringing the latest models directly to {userData.UserName}'s doorstep at {userData.Address},\r\n\r\n " +
+            //       $"and they can be reached at {userData.PhoneNumber} to schedule this personalized test drive.\r\n",
+            //        IsBodyHtml = false,
+            //    };
+
+            //    mailMessage.To.Add("sanjusandeep12046@gmail.com");
+            //    smtpClient.Send(mailMessage);
+            //    return Redirect("index");
+            //}
+            //catch (Exception ex)
+            //{
+            //    return Content($"Error sending email: {ex.Message}");
+            //}
         }
     }
 }

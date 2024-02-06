@@ -1,0 +1,8 @@
+﻿@model VehicleDetails.Models.RequiredModels.ViewModels.BrandCategories
+@{
+    ViewBag.Title = "MyVehicles";
+    Layout = "~/Views/Shared/MainView.cshtml";
+}
+
+
+@{ Html.RenderPartial("VehicleList", Model);}

@@ -1,0 +1,39 @@
+﻿@model VehicleDetails.Models.RequiredModels.ViewModels.BrandCategories
+
+
+@if (Model.vehiclesModel.Count>0)
+            {
+
+
+<div class="card">
+    <h5 class="card-header" style="text-align: center; font-family: emoji; font-weight: bold;">Our Vehicles</h5>
+    @foreach (var data in Model.vehiclesModel)
+    {
+
+        <div class="card-body shadow-lg" style=" margin: 1rem; border: 3px solid lightseagreen;">
+            <div class="d-flex">
+                <div class="col-2">
+                    <img src="@data.ImageUrl" style=" width: 10rem; height: 10rem; " />
+                </div>
+                <div class="col">
+                    <p style="font-family: emoji; font-weight: bold; font-size: 24px; ">Price : <span style="color: #808080; font-size: 18px;">₹ @data.price</span></p>
+                    <p style="font-family: emoji; font-weight: bold; font-size: 24px; ">Address : <span style="color: #808080; font-size: 18px;"> @data.VehicleName</span></p>
+                    <p style="font-size: 24px; font-family: emoji; margin: 0 !important; font-weight:bold; color: #303030;">Color : <span style="color:@data.Color;font-size: 18px;"> @data.Color</span></p>
+                </div>
+                <div class="col" style="text-align:end">
+
+                    <a href="/home/details/@data.VehicleID" class="btn btn-warning">View More Details</a>
+                </div>
+            </div>
+
+        </div>
+
+    }
+</div>
+}
+else
+{
+<div style="height:75vh; display:flex;justify-content:center;align-content:center;align-items:center;">
+    <span style="font-family: emoji; font-weight: bolder; font-size: xxx-large;">No Vehicle Found</span>
+</div>
+}

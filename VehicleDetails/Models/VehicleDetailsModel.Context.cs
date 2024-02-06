@@ -34,6 +34,8 @@ namespace VehicleDetails.Models
         public virtual DbSet<Favority> Favorities { get; set; }
         public virtual DbSet<Review> Reviews { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<PlatformReview> PlatformReviews { get; set; }
+        public virtual DbSet<UserQuery> UserQuerys { get; set; }
     
         public virtual int DeleteVehicleDataByUser(Nullable<int> id, string userID)
         {

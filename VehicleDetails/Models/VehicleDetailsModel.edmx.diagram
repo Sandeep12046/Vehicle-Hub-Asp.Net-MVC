@@ -20,6 +20,8 @@
         <AssociationConnector Association="VehicleDBContext.FK_Favorities_Users" />
         <AssociationConnector Association="VehicleDBContext.FK_Reviews_Users" />
         <AssociationConnector Association="VehicleDBContext.FK_Vehicles_Vehicles" />
+        <EntityTypeShape EntityType="VehicleDBContext.PlatformReview" Width="1.5" PointX="8.375" PointY="0.75" />
+        <EntityTypeShape EntityType="VehicleDBContext.UserQuery" Width="1.5" PointX="9.375" PointY="3.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

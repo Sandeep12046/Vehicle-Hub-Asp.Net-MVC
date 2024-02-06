@@ -35,6 +35,14 @@
           <Property Name="Status" Type="int" />
           <Property Name="UserID" Type="int" />
         </EntityType>
+        <EntityType Name="PlatformReviews">
+          <Key>
+            <PropertyRef Name="PlatformReviewID" />
+          </Key>
+          <Property Name="PlatformReviewID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PlatformReview" Type="nvarchar(max)" />
+          <Property Name="PlatformUserID" Type="int" />
+        </EntityType>
         <EntityType Name="Reviews">
           <Key>
             <PropertyRef Name="ReviewID" />
@@ -56,6 +64,17 @@
           <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="version" Type="int" />
           <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="UserQuerys">
+          <Key>
+            <PropertyRef Name="QueryID" />
+          </Key>
+          <Property Name="QueryID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FullName" Type="varchar" MaxLength="50" />
+          <Property Name="MobileNumber" Type="nchar" MaxLength="20" />
+          <Property Name="EmailID" Type="nvarchar" MaxLength="150" />
+          <Property Name="Message" Type="nvarchar(max)" />
+          <Property Name="MsgDateTime" Type="datetime" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
@@ -232,8 +251,10 @@
           <EntitySet Name="Brands" EntityType="Self.Brands" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Favorities" EntityType="Self.Favorities" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PlatformReviews" EntityType="Self.PlatformReviews" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Reviews" EntityType="Self.Reviews" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserQuerys" EntityType="Self.UserQuerys" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Vehicles" EntityType="Self.Vehicles" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Brands_Category" Association="Self.FK_Brands_Category">
@@ -434,6 +455,8 @@
             <Parameter Name="id" Mode="In" Type="Int32" />
             <Parameter Name="userID" Mode="In" Type="String" />
           </FunctionImport>
+          <EntitySet Name="PlatformReviews" EntityType="VehicleDBContext.PlatformReview" />
+          <EntitySet Name="UserQuerys" EntityType="VehicleDBContext.UserQuery" />
         </EntityContainer>
         <EntityType Name="Favority">
           <Key>
@@ -569,6 +592,25 @@
           <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
           <Property Type="Int32" Name="OwnerID" Nullable="false" />
         </ComplexType>
+        <EntityType Name="PlatformReview">
+          <Key>
+            <PropertyRef Name="PlatformReviewID" />
+          </Key>
+          <Property Name="PlatformReviewID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PlatformReview1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PlatformUserID" Type="Int32" />
+        </EntityType>
+        <EntityType Name="UserQuery">
+          <Key>
+            <PropertyRef Name="QueryID" />
+          </Key>
+          <Property Name="QueryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FullName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="MobileNumber" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
+          <Property Name="EmailID" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Message" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MsgDateTime" Type="DateTime" Precision="3" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -705,6 +747,27 @@
           <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="VehicleDBContext.Store.sp_renamediagram" />
           <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="VehicleDBContext.Store.sp_upgraddiagrams" />
           <FunctionImportMapping FunctionImportName="DeleteVehicleByUserID" FunctionName="VehicleDBContext.Store.DeleteVehicleByUserID" />
+          <EntitySetMapping Name="PlatformReviews">
+            <EntityTypeMapping TypeName="VehicleDBContext.PlatformReview">
+              <MappingFragment StoreEntitySet="PlatformReviews">
+                <ScalarProperty Name="PlatformUserID" ColumnName="PlatformUserID" />
+                <ScalarProperty Name="PlatformReview1" ColumnName="PlatformReview" />
+                <ScalarProperty Name="PlatformReviewID" ColumnName="PlatformReviewID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserQuerys">
+            <EntityTypeMapping TypeName="VehicleDBContext.UserQuery">
+              <MappingFragment StoreEntitySet="UserQuerys">
+                <ScalarProperty Name="MsgDateTime" ColumnName="MsgDateTime" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="EmailID" ColumnName="EmailID" />
+                <ScalarProperty Name="MobileNumber" ColumnName="MobileNumber" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="QueryID" ColumnName="QueryID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

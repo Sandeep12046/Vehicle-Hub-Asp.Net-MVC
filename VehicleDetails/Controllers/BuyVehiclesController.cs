@@ -20,9 +20,9 @@ namespace VehicleDetails.Controllers
         }
         public ActionResult Index()
         {
-            BrandCategories price = new BrandCategories();
-            price.vehiclesModel = buyVehicle.getBudgets();
-            return View();
+            BrandCategories allVehicle = new BrandCategories();
+            allVehicle = buyVehicle.getvehicleInfo();
+            return View(allVehicle);
         }
 
         public ActionResult getDataByBudget(int price)

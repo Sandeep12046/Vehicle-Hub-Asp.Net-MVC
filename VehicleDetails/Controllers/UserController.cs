@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Ajax.Utilities;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -22,6 +23,7 @@ namespace VehicleDetails.Controllers
         ICategory CategoryDAL;
         ILocation LocationDal;
         HttpCookie cookie;
+        int userIDs = 0;
         VehicleDBEntities db=new VehicleDBEntities();
         public UserController()
         {
@@ -74,6 +76,7 @@ namespace VehicleDetails.Controllers
                         var UserName = userData.user.UserName ?? "NA";
                         var UserID = userData.user.UserID != 0 ? userData.user.UserID : 0;
                         var UserImage = userData.user.UserImage;
+                        userIDs = UserID;
                         if (Sigin == "Admin")
                         {
                             Session["UserName"] = UserName;
@@ -146,12 +149,11 @@ namespace VehicleDetails.Controllers
         [HttpGet]
         public ActionResult Register()
         {
-
             return View();
         }
 
         [HttpPost]
-        public ActionResult Register(UserModel user)
+        public ActionResult Register(UserModel user,HttpPostedFileBase UserImage)
         {
             if (ModelState.IsValid)
             {
@@ -161,13 +163,14 @@ namespace VehicleDetails.Controllers
                 }
                 else
                 {
-              
-                    UserDAl.CreateUser(user);
+                    string path = UploadImage(UserImage);
+                    UserDAl.CreateUser(user,path);
                     Session["UserName"] = user.UserName;
                     BrandCategories userData = new BrandCategories();
                     userData.user = new UserModel();
                     userData.user = UserDAl.SignInID(user);
                     Session["UserID"] = userData.user.UserID;
+                    Session["UserImage"] = path;
                     return RedirectToAction("Index", "Home");
                 }
              
@@ -410,6 +413,35 @@ namespace VehicleDetails.Controllers
                 return path;
             }
            
+        }
+
+
+        public ActionResult MyVehicles()
+        {
+            int id = Convert.ToInt32(Session["UserID"]);
+            BrandCategories userVehicles = new BrandCategories()
+            {
+                vehiclesModel = UserDAl.GetVehiclesByUserID(id).Select(data => new VehicleModel
+                {
+                    VehicleID = data.VehicleID,
+                    VehicleName = data.VehicleName,
+                    price = data.price,
+                    ManufactureDate = data.ManufactureDate,
+                    AvailabilityStatus = data.AvailabilityStatus,
+                    FuelType = data.FuelType,
+                    Mileage = data.Mileage,
+                    ImageUrl = data.ImageUrl,
+                    Color = data.Color,
+                    RegistrationNumber = data.RegistrationNumber,
+                    Transmission = data.Transmission,
+                    Owner = data.Owner,
+                    Address = data.Address,
+                    Description = data.Description,
+                }).ToList()
+            };
+            ViewBag.VehUserID = id;
+   
+            return View(userVehicles);
         }
     }
 

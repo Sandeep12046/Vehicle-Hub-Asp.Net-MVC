@@ -22,117 +22,114 @@
 <div class="d-flex" style="background-color: aliceblue;">
     <div class="overflow-auto" style="margin: 1rem; padding: 1rem; overflow: auto; height: 41rem;">
         <div class="border border-info" style="background-color: #ffff; padding: 1rem;margin: 1rem;">
+            <p class="heading">Categories</p>
+            <div class="options">
+
+
+                @if (Model.CategoriesList != null)
+                {
+                    foreach (var category in Model.CategoriesList)
+                    {
+                        <span>
+                            <input type="checkbox" aria-label="Checkbox for following text input" id="categoryID" name="categoryID">
+                            <label for="Budget">@category.CategoryName</label>
+                        </span><br />
+                    }
+                }
+                else
+                {
+                    <p>No categories available.</p>
+                }
+
+
+            </div>
+
+        </div>
+        <div class="border border-info" style="background-color: #ffff; padding: 1rem;margin: 1rem;">
+            <p class="heading">Brands</p>
+            <div class="options">
+
+                @if (Model.CategoriesList != null)
+                {
+                    foreach (var brand in Model.CategoriesList.Take(1))
+                    {
+                        foreach (var brands in brand.BrandsList.Distinct())
+                        {
+                            <span>
+                                <input type="checkbox" aria-label="Checkbox for following text input" id="categoryID" name="categoryID">
+                                <label for="Budget">@brands.BrandName</label>
+                            </span><br />
+                        }
+
+                    }
+                }
+                else
+                {
+                    <p>No categories available.</p>
+                }
+
+            </div>
+
+        </div>
+        <div class="border border-info" style="background-color: #ffff; padding: 1rem;margin: 1rem;">
             <p class="heading">Budget</p>
             <div class="options">
 
-                @foreach (var amount in Model.vehiclesModel)
+
+                @if (Model.CategoriesList != null)
                 {
-                    <span>
-                        <input type="checkbox" aria-label="Checkbox for following text input" id="price" name="price">
-                        <label for="Budget">@amount.price</label>
-                    </span><br />
+                    foreach (var vehicle in Model.CategoriesList.Take(1).Distinct())
+                    {
+                        foreach (var vehicles in vehicle.BrandsList.Distinct())
+                        {
+
+                            foreach (var veh in vehicles.vehiclesModelList.Distinct())
+                            {
+                                <span>
+                                    <input type="checkbox" aria-label="Checkbox for following text input" id="categoryID" name="categoryID">
+                                    <label for="Budget">@veh.price</label>
+                                </span><br />
+                            }
+
+                        }
+
+                    }
                 }
-                @*<span>
-                    <input type="checkbox" aria-label="Checkbox for following text input">
-                    <label for="Budget">30000 to 250000</label>
-                </span><br />
-                <span>
-                    <input type="checkbox" aria-label="Checkbox for following text input">
-                    <label for="Budget">30000 to 250000</label>
-                </span><br />
-                <span>
-                    <input type="checkbox" aria-label="Checkbox for following text input">
-                    <label for="Budget">30000 to 250000</label>
-                </span><br />
-                <span>
-                    <input type="checkbox" aria-label="Checkbox for following text input">
-                    <label for="Budget">30000 to 250000</label>
-                </span><br />
-                <span>
-                    <input type="checkbox" aria-label="Checkbox for following text input">
-                    <label for="Budget">30000 to 250000</label>
-                </span><br />*@
+                else
+                {
+                    <p>No categories available.</p>
+                }
+
             </div>
 
         </div>
         <div class="border border-info" style="background-color: #ffff; padding: 1rem;margin: 1rem;">
-            <p class="heading">Category and Brand</p>
+            <p class="heading">Manufacture Date</p>
             <div class="options">
 
-                <span>
-                    <input type="checkbox" aria-label="Checkbox for following text input">
-                    <label for="Budget">30000 to 250000</label>
-                </span><br />
-                <span>
-                    <input type="checkbox" aria-label="Checkbox for following text input">
-                    <label for="Budget">30000 to 250000</label>
-                </span><br />
-                <span>
-                    <input type="checkbox" aria-label="Checkbox for following text input">
-                    <label for="Budget">30000 to 250000</label>
-                </span><br />
-                <span>
-                    <input type="checkbox" aria-label="Checkbox for following text input">
-                    <label for="Budget">30000 to 250000</label>
-                </span><br />
-                <span>
-                    <input type="checkbox" aria-label="Checkbox for following text input">
-                    <label for="Budget">30000 to 250000</label>
-                </span><br />
-            </div>
+                @if (Model.CategoriesList != null)
+                {
+                    foreach (var vehicle in Model.CategoriesList.Take(1).Distinct())
+                    {
+                        foreach (var vehicles in vehicle.BrandsList.Distinct())
+                        {
 
-        </div>
-        <div class="border border-info" style="background-color: #ffff; padding: 1rem;margin: 1rem;">
-            <p class="heading">Make Year</p>
-            <div class="options">
+                            foreach (var veh in vehicles.vehiclesModelList.Distinct())
+                            {
+                                <span>
+                                    <input type="checkbox" aria-label="Checkbox for following text input" id="categoryID" name="categoryID">
+                                    <label for="Budget">@veh.ManufactureDate</label>
+                                </span><br />
+                            }
 
-                <span>
-                    <input type="checkbox" aria-label="Checkbox for following text input">
-                    <label for="Budget">30000 to 250000</label>
-                </span><br />
-                <span>
-                    <input type="checkbox" aria-label="Checkbox for following text input">
-                    <label for="Budget">30000 to 250000</label>
-                </span><br />
-                <span>
-                    <input type="checkbox" aria-label="Checkbox for following text input">
-                    <label for="Budget">30000 to 250000</label>
-                </span><br />
-                <span>
-                    <input type="checkbox" aria-label="Checkbox for following text input">
-                    <label for="Budget">30000 to 250000</label>
-                </span><br />
-                <span>
-                    <input type="checkbox" aria-label="Checkbox for following text input">
-                    <label for="Budget">30000 to 250000</label>
-                </span><br />
-            </div>
+                        }
 
-        </div>
-        <div class="border border-info" style="background-color: #ffff; padding: 1rem;margin: 1rem;">
-            <p class="heading">K m Driven</p>
-            <div class="options">
-
-                <span>
-                    <input type="checkbox" aria-label="Checkbox for following text input">
-                    <label for="Budget">30000 to 250000</label>
-                </span><br />
-                <span>
-                    <input type="checkbox" aria-label="Checkbox for following text input">
-                    <label for="Budget">30000 to 250000</label>
-                </span><br />
-                <span>
-                    <input type="checkbox" aria-label="Checkbox for following text input">
-                    <label for="Budget">30000 to 250000</label>
-                </span><br />
-                <span>
-                    <input type="checkbox" aria-label="Checkbox for following text input">
-                    <label for="Budget">30000 to 250000</label>
-                </span><br />
-                <span>
-                    <input type="checkbox" aria-label="Checkbox for following text input">
-                    <label for="Budget">30000 to 250000</label>
-                </span><br />
+                    }
+                }
+                else
+                {
+                    <p>No categories available.</p>
+                }
             </div>
 
         </div>
@@ -140,50 +137,90 @@
             <p class="heading">Ownership</p>
             <div class="options">
 
-                <span>
-                    <input type="checkbox" aria-label="Checkbox for following text input">
-                    <label for="Budget">New</label>
-                </span><br />
-                <span>
-                    <input type="checkbox" aria-label="Checkbox for following text input">
-                    <label for="Budget">First Hand</label>
-                </span><br />
-                <span>
-                    <input type="checkbox" aria-label="Checkbox for following text input">
-                    <label for="Budget">Second Hand</label>
-                </span><br />
-                <span>
-                    <input type="checkbox" aria-label="Checkbox for following text input">
-                    <label for="Budget">More</label>
-                </span><br />
+                @if (Model.CategoriesList != null)
+                {
+                    foreach (var vehicle in Model.CategoriesList.Take(1).Distinct())
+                    {
+                        foreach (var vehicles in vehicle.BrandsList.Distinct())
+                        {
+
+                            foreach (var veh in vehicles.vehiclesModelList.Distinct())
+                            {
+                                <span>
+                                    <input type="checkbox" aria-label="Checkbox for following text input" id="categoryID" name="categoryID">
+                                    <label for="Budget">@veh.Owner</label>
+                                </span><br />
+                            }
+
+                        }
+
+                    }
+                }
+                else
+                {
+                    <p>No categories available.</p>
+                }
 
             </div>
 
         </div>
         <div class="border border-info" style="background-color: #ffff; padding: 1rem;margin: 1rem;">
-            <p class="heading">Hub Location</p>
+            <p class="heading">Fuel Type</p>
             <div class="options">
 
-                <span>
-                    <input type="checkbox" aria-label="Checkbox for following text input">
-                    <label for="Budget">Bangalore</label>
-                </span><br />
-                <span>
-                    <input type="checkbox" aria-label="Checkbox for following text input">
-                    <label for="Budget">Mysore</label>
-                </span><br />
-                <span>
-                    <input type="checkbox" aria-label="Checkbox for following text input">
-                    <label for="Budget">Mangalore</label>
-                </span><br />
-                <span>
-                    <input type="checkbox" aria-label="Checkbox for following text input">
-                    <label for="Budget">Chennai</label>
-                </span><br />
-                <span>
-                    <input type="checkbox" aria-label="Checkbox for following text input">
-                    <label for="Budget">Goa</label>
-                </span><br />
+                @if (Model.CategoriesList != null)
+                {
+                    foreach (var vehicle in Model.CategoriesList.Take(1).Distinct())
+                    {
+                        foreach (var vehicles in vehicle.BrandsList.Distinct())
+                        {
+
+                            foreach (var veh in vehicles.vehiclesModelList.Distinct())
+                            {
+                                <span>
+                                    <input type="checkbox" aria-label="Checkbox for following text input" id="categoryID" name="categoryID">
+                                    <label for="Budget">@veh.FuelType</label>
+                                </span><br />
+                            }
+
+                        }
+
+                    }
+                }
+                else
+                {
+                    <p>No categories available.</p>
+                }
+            </div>
+
+        </div>
+        <div class="border border-info" style="background-color: #ffff; padding: 1rem;margin: 1rem;">
+            <p class="heading">Transmission</p>
+            <div class="options">
+
+                @if (Model.CategoriesList != null)
+                {
+                    foreach (var vehicle in Model.CategoriesList.Take(1).Distinct())
+                    {
+                        foreach (var vehicles in vehicle.BrandsList.Distinct())
+                        {
+
+                            foreach (var veh in vehicles.vehiclesModelList.Distinct())
+                            {
+                                <span>
+                                    <input type="checkbox" aria-label="Checkbox for following text input" id="categoryID" name="categoryID">
+                                    <label for="Budget">@veh.Transmission</label>
+                                </span><br />
+                            }
+
+                        }
+
+                    }
+                }
+                else
+                {
+                    <p>No categories available.</p>
+                }
             </div>
 
         </div>
@@ -191,18 +228,62 @@
             <p class="heading">Availability</p>
             <div class="options">
 
-                <span>
-                    <input type="checkbox" aria-label="Checkbox for following text input">
-                    <label for="Budget">Available</label>
-                </span><br />
-                <span>
-                    <input type="checkbox" aria-label="Checkbox for following text input">
-                    <label for="Budget">UnAvailable</label>
-                </span><br />
+                @if (Model.CategoriesList != null)
+                {
+                    foreach (var vehicle in Model.CategoriesList.Take(1).Distinct())
+                    {
+                        foreach (var vehicles in vehicle.BrandsList.Distinct())
+                        {
+
+                            foreach (var veh in vehicles.vehiclesModelList.Distinct())
+                            {
+                                <span>
+                                    <input type="checkbox" aria-label="Checkbox for following text input" id="categoryID" name="categoryID">
+                                    <label for="Budget">@veh.AvailabilityStatus</label>
+                                </span><br />
+                            }
+
+                        }
+
+                    }
+                }
+                else
+                {
+                    <p>No categories available.</p>
+                }
             </div>
 
         </div>
+        <div class="border border-info" style="background-color: #ffff; padding: 1rem;margin: 1rem;">
+            <p class="heading">Colors</p>
+            <div class="options">
 
+                @if (Model.CategoriesList != null)
+                {
+                    foreach (var vehicle in Model.CategoriesList.Take(1).Distinct())
+                    {
+                        foreach (var vehicles in vehicle.BrandsList.Distinct())
+                        {
+
+                            foreach (var veh in vehicles.vehiclesModelList.Distinct())
+                            {
+                                <span>
+                                    <input type="checkbox" aria-label="Checkbox for following text input" id="categoryID" name="categoryID">
+                                    <label for="Budget">@veh.Color</label>
+                                </span><br />
+                            }
+
+                        }
+
+                    }
+                }
+                else
+                {
+                    <p>No categories available.</p>
+                }
+            </div>
+
+        </div>
     </div>
 
     @{

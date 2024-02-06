@@ -24,6 +24,6 @@ namespace VehicleDetails.Models.RequiredModels.ViewModels
 
         public List<FavoriteModel> favoriteModels { get; set;}
 
-       
+        public List<CategoryModel> CategoriesList { get; set; }
     }
 }

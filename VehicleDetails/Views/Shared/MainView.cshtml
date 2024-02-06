@@ -1,10 +1,10 @@
 ﻿@{
-                ViewBag.Title = "MainView";
-                var signInfo = Convert.ToInt32(Session["UserID"]) != 0 ? "Logout" : "Login";
-
-                var restruct = ViewBag.Active == true ? true : false;
-                var images = (string)@Session["UserImage"];
-            }
+    ViewBag.Title = "MainView";
+    //var signInfo = Convert.ToInt32(Session["UserID"]) != 0 ? "Logout" : "Login";
+    var signInfo = (Session["UserID"] != null && Convert.ToInt32(Session["UserID"]) != 0) ? "Logout" : "Login";
+    var restruct = ViewBag.Active == true ? true : false;
+    var images = (string)@Session["UserImage"];
+}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -68,7 +68,7 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
 
-            <div class="collapse navbar-collapse"  id="navbarSupportedContent">
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     @if (Convert.ToInt32(Session["UserID"]) != 0)
                     {
@@ -110,7 +110,9 @@
                         </li>
                     }
                 </ul>
-                @if (signInfo == "Logout")
+
+
+                @if (signInfo.Equals("Logout"))
                 {
                     <div class="dropdown d-flex justify-content-end mr-2">
                         <img src="@Url.Content(@images)" class="rounded-circle mr-3" style=" height: 2.5rem; width: 2.5rem;" />
@@ -118,8 +120,17 @@
                             @Session["UserName"]
                         </button>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
-                            <a class="nav-link catLinks" href="/User/UserProfile" style="color: #303030; font-family: emoji; font-size: 16px;">Profile</a>
-                            @*<button class="dropdown-item" type="button">Another action</button>*@
+                            <a class="nav-link catLinks" href="/User/UserProfile" style="color: #303030; font-family: emoji;  font-size: 16px; ">Profile</a>
+                            @if (@ViewBag.VehUserID != 1)
+                            {
+                                <a class="nav-link catLinks" href="/User/MyVehicles" style="color: #303030; cursor: no-drop; cursor: @(ViewBag.VehUserID != 1 ? "default" : "no-drop"); font-family: emoji; font-size: 16px;">My Vehicles</a>
+                            }
+                            else
+                            {
+                                <span style="display:none"></span>
+
+                            }
+                            @*<button class="dropdown-item" type="button">Another action</button> cursor: no-drop;*@
                             <a class="nav-link catLinks" href="/User/SignOut" style="color: #303030; font-family: emoji; font-size: 16px;">@signInfo </a>
                             <a class="nav-link catLinks" href="/Home/ContactUs" style="color: #303030; font-family: emoji; font-size: 16px;"> Contact Us  </a>
                         </div>
@@ -128,19 +139,18 @@
                 else
                 {
                     <a class="nav-link catLinks btn btn-light" href="/User/SignOut" style="color: #303030; font-family: emoji; font-size: 16px;">Login </a>
-                
                 }
                 @RenderSection("search", false)
                 @RenderSection("Inbox", false)
                 <!--<div class="nav-item text-center d-flex">
-        @if (signInfo == "Logout")
-        {
+                @if (signInfo == "Logout")
+                {
 
 
-            <div></div>
-        }-->
+                    <div></div>
+                }-->
                 @*<a class="nav-link" href="#" style="color: #303030; font-family: emoji; font-size: 18px;">@Session["UserName"]</a>
-        <a class="nav-link" href="/User/SignOut" style="color: #303030; font-family: emoji; font-size: 18px;">@signInfo </a>*@
+                    <a class="nav-link" href="/User/SignOut" style="color: #303030; font-family: emoji; font-size: 18px;">@signInfo </a>*@
                 <!--</div>-->
             </div>
         </nav>

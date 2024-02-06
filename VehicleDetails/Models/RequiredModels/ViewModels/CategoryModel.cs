@@ -18,6 +18,8 @@ namespace VehicleDetails.Models.RequiredModels.ViewModels
         [Display(Name = "Category Image")]
         public string ImageUrl { get; set; }
         public int? Active { get; set; }
+
+        public List<BrandModel> BrandsList { get; set; }
         public virtual ICollection<Brand> Brands { get; set; }
         public virtual ICollection<Vehicle> Vehicles { get; set; }
     }

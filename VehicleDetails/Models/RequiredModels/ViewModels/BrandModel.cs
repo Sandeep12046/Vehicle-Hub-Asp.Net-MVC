@@ -22,7 +22,7 @@ namespace VehicleDetails.Models.RequiredModels.ViewModels
         public string ImageUrl { get; set; }
 
         public virtual Category Category { get; set; }
-      
+        public List<VehicleModel> vehiclesModelList { get; set; }
         public virtual ICollection<Vehicle> Vehicles { get; set; }
     }
 }

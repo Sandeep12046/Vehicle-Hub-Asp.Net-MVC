@@ -19,13 +19,14 @@
         <div class="col-6">
             <div class="shadow shadow-lg p-5 opacity-75">
                 <p class="text-center" style=" font-size: xx-large; font-family: emoji; font-weight: bold;">Sign Up</p>
-                @using (Html.BeginForm("Register", "User", FormMethod.Post, new { @class = "" }))
+                @using (Html.BeginForm("Register", "User", FormMethod.Post, new { enctype = "multipart/form-data" , @class = "" }))
                 {
                     @Html.AntiForgeryToken()
             <div class="form-row">
                 <div class="form-group col-md-3">
                     @Html.LabelFor(model => model.UserImage)
-                    @Html.TextBoxFor(model => model.UserImage, new { @class = "form-control", placeholder = "Enter upload Image", type = "file" })
+                    @*@Html.TextBoxFor(model => model.UserImage, new { @class = "form-control", placeholder = "Enter upload Image", type = "file" })*@
+                    <input type="file" id="UserImage" name="UserImage" required />
                     @Html.ValidationMessageFor(model => model.UserImage, null, new { @class = "text-danger" })
                 </div>
                 <div class="form-group col-md-3">
@@ -58,7 +59,7 @@
 
                 <div class="form-group col-md-4">
                     @Html.LabelFor(model => model.PhoneNumber)
-                    @Html.TextBoxFor(model => model.PhoneNumber, new { @class = "form-control", placeholder = "Enter Phone Number" })
+                    @Html.TextBoxFor(model => model.PhoneNumber, new { @class = "form-control", placeholder = "Enter Phone Number", maxlength = "10" })
                     
                     @Html.ValidationMessageFor(model => model.PhoneNumber, null, new { @class = "text-danger" })
                 </div>
